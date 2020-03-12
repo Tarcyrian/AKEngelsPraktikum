@@ -1012,7 +1012,7 @@ def main():
     make_sh(step, step2, xyz1, xyz2)
 
     #Abschicken der Rechnung
-    subprocess.call('qsub -V gauss.sh', shell = True)
+    #subprocess.call('qsub -V gauss.sh', shell = True)
 
     #Schleife, die die ebengenannten Schritte wiederholt.
     i = shiftstart
@@ -1054,7 +1054,7 @@ def main():
             make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char)
             make_sh(step, step2, xyz1, xyz2)
 
-            subprocess.call('qsub -V gauss.sh', shell = True)
+            #subprocess.call('qsub -V gauss.sh', shell = True)
 
             j = j + shiftsize2
         
@@ -1101,7 +1101,7 @@ def main():
             make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char)
             make_sh(step, step2, xyz1, xyz2)
 
-            subprocess.call('qsub -V gauss.sh', shell = True)
+            #subprocess.call('qsub -V gauss.sh', shell = True)
 
         else:
         	break
