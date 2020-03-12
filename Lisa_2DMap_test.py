@@ -213,7 +213,7 @@ Die Ladungen werden anhand der Rotationsaxe ausgewählt.'''
 count=0
 def getchargesPDIR(charge, difb, a, rotAxis):
     newcharge = []
-    
+    global count
     difbplusa = difb[0] + a
     difbminusa = difb[0] - a
     minusdifbminusa = - difb[0] - a
@@ -826,6 +826,7 @@ def main():
     new_charges = []
     first_charges = []
     geo_chargesPDIR = []
+    global count
 
     first_input = []
     verschiebung1 = ""
