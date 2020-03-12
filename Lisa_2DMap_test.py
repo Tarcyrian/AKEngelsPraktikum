@@ -219,7 +219,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
     minusdifbplusa = - difb[0] + a
 
     #+a
-    if rotAxis=="a" || rotAxis=="0":
+    if rotAxis=="a" or rotAxis=="0":
         count +=1
         charge1 = copy.deepcopy(charge)
         for i in range(len(charge1)):
@@ -227,7 +227,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
             newcharge.append(charge_xyz(charge1[i].coords, charge1[i].charge))
 
     #-a
-    if rotAxis=="a" || rotAxis=="b" || rotAxis=="0":
+    if rotAxis=="a" or rotAxis=="b" or rotAxis=="0":
         count +=1
         charge2 = copy.deepcopy(charge)
         for i in range(len(charge2)):
@@ -235,7 +235,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
             newcharge.append(charge_xyz(charge2[i].coords, charge2[i].charge))
 
     #+b
-    if rotAxis=="b" || rotAxis=="0":
+    if rotAxis=="b" or rotAxis=="0":
         count +=1
         charge3 = copy.deepcopy(charge)
         for i in range(len(charge3)):
@@ -253,7 +253,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
             newcharge.append(charge_xyz(charge4[i].coords, charge4[i].charge))
     
     #+b-a
-    if rotAxis=="b" || rotAxis=="0":
+    if rotAxis=="b" or rotAxis=="0":
         count +=1
         charge5 = copy.deepcopy(charge)
         for i in range(len(charge5)): 
@@ -262,7 +262,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
             newcharge.append(charge_xyz(charge5[i].coords, charge5[i].charge))
 
     #-b
-    if rotAxis=="a" || rotAxis=="b" || rotAxis=="0":
+    if rotAxis=="a" or rotAxis=="b" or rotAxis=="0":
         count +=1
         charge6 = copy.deepcopy(charge)
         for i in range(len(charge6)):
@@ -271,7 +271,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
             newcharge.append(charge_xyz(charge6[i].coords, charge6[i].charge))
 
     #-b-a
-    if rotAxis=="a" || rotAxis=="b" || rotAxis=="0":
+    if rotAxis=="a" or rotAxis=="b" or rotAxis=="0":
         count +=1
         charge7 = copy.deepcopy(charge)
         for i in range(len(charge7)):
@@ -280,7 +280,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
             newcharge.append(charge_xyz(charge7[i].coords, charge7[i].charge))
 
     #-b+a
-    if rotAxis=="a" || rotAxis=="0":
+    if rotAxis=="a" or rotAxis=="0":
         count +=1
         charge8 = copy.deepcopy(charge)
         for i in range(len(charge8)):
@@ -290,7 +290,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #Begin second layer
     #+2a
-    if rotAxis=="a" || rotAxis=="0":
+    if rotAxis=="a" or rotAxis=="0":
         count +=1
         charge9 = copy.deepcopy(charge)
         for i in range(len(charge9)):
@@ -298,7 +298,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
             newcharge.append(charge_xyz(charge9[i].coords, charge9[i].charge))
 
     #-2a
-    if rotAxis=="a" || rotAxis=="0":
+    if rotAxis=="a" or rotAxis=="0":
         count +=1
         charge10 = copy.deepcopy(charge)
         for i in range(len(charge10)):
@@ -324,7 +324,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
             newcharge.append(charge_xyz(charge12[i].coords, charge12[i].charge))
 
     #-a+2b
-    if rotAxis=="b" || rotAxis=="0":
+    if rotAxis=="b" or rotAxis=="0":
         count +=1
         charge13 = copy.deepcopy(charge)
         for i in range(len(charge13)):
@@ -360,7 +360,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
             newcharge.append(charge_xyz(charge16[i].coords, charge16[i].charge))
 
     #+2b
-    if rotAxis=="b" || rotAxis=="0":
+    if rotAxis=="b" or rotAxis=="0":
         count +=1
         charge17 = copy.deepcopy(charge)
         for i in range(len(charge17)):
@@ -370,7 +370,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #gap of one because of duplicate charge
     #-2a-b
-    if rotAxis=="a" || rotAxis=="0":
+    if rotAxis=="a" or rotAxis=="0":
         count +=1
         charge19 = copy.deepcopy(charge)
         for i in range(len(charge19)):
@@ -379,7 +379,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
             newcharge.append(charge_xyz(charge19[i].coords, charge19[i].charge))
 
     #+2a-b
-    if rotAxis=="a" || rotAxis=="0":
+    if rotAxis=="a" or rotAxis=="0":
         count +=1
         charge20 = copy.deepcopy(charge)
         for i in range(len(charge20)):
@@ -406,7 +406,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
             newcharge.append(charge_xyz(charge22[i].coords, charge22[i].charge))
 
     #-2b
-    if rotAxis=="b" || rotAxis=="0":
+    if rotAxis=="b" or rotAxis=="0":
         count +=1
         charge23 = copy.deepcopy(charge)
         for i in range(len(charge23)):
@@ -415,7 +415,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
             newcharge.append(charge_xyz(charge23[i].coords, charge23[i].charge))
 
     #-2b-a
-    if rotAxis=="b" || rotAxis=="0":
+    if rotAxis=="b" or rotAxis=="0":
         count +=1
         charge24 = copy.deepcopy(charge)
         for i in range(len(charge24)):
