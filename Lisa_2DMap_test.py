@@ -832,6 +832,13 @@ def main():
     '''Liest die Ladungen von DIP und PDIR ein, verschiebt sie,
     	speichert sie in 2 Listen und macht centerofGeo von beiden'''
     file_geo = getcenterofGeo(file_input)
+
+    # Vorgriff auf die Rotation, um zu wissen welche Charges ausgewählt werden müssen
+    axis == "0" # Wenn die 0 nicht überschrieben wird, wurde nicht gedreht.
+    wahl = input("Willst du den Kristall rotieren? (Ja, Nein): ")
+    if wahl == "Ja":
+        axis = input("Um welche Achse soll rotiert werden? (a, b, c): ")
+
     if char == "Ja":
         chargesDIP1 = readcharges("first_DIP_charges.txt")
         chargesDIP2 = readcharges("second_DIP_charges.txt")
@@ -841,7 +848,7 @@ def main():
     
         shiftchargesdip1 = getchargesDIP1(chargesDIP1, lengthaDIP, lengthbDIP) 
         shiftchargesdip2 = getchargesDIP2(chargesDIP2, lengthaDIP, lengthbDIP)
-        PDIRcharges = getchargesPDIR(chargesPDIR, difb, lengthaPDIR)
+        PDIRcharges = getchargesPDIR(chargesPDIR, difb, lengthaPDIR, axis)
 
         for i in range(len(shiftchargesdip2)):
             shiftchargesdip1.append(charge_xyz(shiftchargesdip2[i].coords, shiftchargesdip2[i].charge))
@@ -873,9 +880,9 @@ def main():
             file_geo2.append(atom_xyz(file_geo2_verschoben[i].symbol, file_geo2_verschoben[i].coords))
 
     #Rotation des Kristalls
-    wahl = input("Willst du den Kristall rotieren? (Ja, Nein): ")
+    
     if wahl == "Ja":
-        axis = input("Um welche Achse soll rotiert werden? (a, b, c): ")
+        
         if axis == "a":
             axis = [1,0,0]
             angle = 180 - alphaPDIR
