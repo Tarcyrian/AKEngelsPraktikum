@@ -220,6 +220,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #+a
     if rotAxis=="a" || rotAxis=="0":
+        count +=1
         charge1 = copy.deepcopy(charge)
         for i in range(len(charge1)):
             charge1[i].coords[0] += a
@@ -227,6 +228,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-a
     if rotAxis=="a" || rotAxis=="b" || rotAxis=="0":
+        count +=1
         charge2 = copy.deepcopy(charge)
         for i in range(len(charge2)):
             charge2[i].coords[0] -= a
@@ -234,6 +236,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #+b
     if rotAxis=="b" || rotAxis=="0":
+        count +=1
         charge3 = copy.deepcopy(charge)
         for i in range(len(charge3)):
              charge3[i].coords[0] += difb[0]
@@ -242,6 +245,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
     
     #+b+a
     if rotAxis=="0":
+        count +=1
         charge4 = copy.deepcopy(charge)
         for i in range(len(charge4)): 
             charge4[i].coords[0] += difbplusa         
@@ -250,6 +254,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
     
     #+b-a
     if rotAxis=="b" || rotAxis=="0":
+        count +=1
         charge5 = copy.deepcopy(charge)
         for i in range(len(charge5)): 
             charge5[i].coords[0] += difbminusa    
@@ -258,6 +263,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-b
     if rotAxis=="a" || rotAxis=="b" || rotAxis=="0":
+        count +=1
         charge6 = copy.deepcopy(charge)
         for i in range(len(charge6)):
             charge6[i].coords[0] -= difb[0]
@@ -266,6 +272,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-b-a
     if rotAxis=="a" || rotAxis=="b" || rotAxis=="0":
+        count +=1
         charge7 = copy.deepcopy(charge)
         for i in range(len(charge7)):
             charge7[i].coords[0] += minusdifbminusa
@@ -274,6 +281,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-b+a
     if rotAxis=="a" || rotAxis=="0":
+        count +=1
         charge8 = copy.deepcopy(charge)
         for i in range(len(charge8)):
             charge8[i].coords[0] += minusdifbplusa
@@ -283,6 +291,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
     #Begin second layer
     #+2a
     if rotAxis=="a" || rotAxis=="0":
+        count +=1
         charge9 = copy.deepcopy(charge)
         for i in range(len(charge9)):
             charge9[i].coords[0] += 2*a
@@ -290,6 +299,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-2a
     if rotAxis=="a" || rotAxis=="0":
+        count +=1
         charge10 = copy.deepcopy(charge)
         for i in range(len(charge10)):
             charge10[i].coords[0] -= 2*a
@@ -297,6 +307,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-2a+b
     if rotAxis=="0":
+        count +=1
         charge11 = copy.deepcopy(charge)
         for i in range(len(charge11)):
             charge11[i].coords[0] += -2*a + difb[0]
@@ -305,6 +316,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-2a+2b
     if rotAxis=="0":
+        count +=1
         charge12 = copy.deepcopy(charge)
         for i in range(len(charge12)):
             charge12[i].coords[0] += -2 * (a + difb[0])
@@ -313,6 +325,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-a+2b
     if rotAxis=="b" || rotAxis=="0":
+        count +=1
         charge13 = copy.deepcopy(charge)
         for i in range(len(charge13)):
             charge13[i].coords[0] += -a + 2*difb[0]
@@ -321,6 +334,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #+a+2b
     if rotAxis=="0":
+        count +=1
         charge14 = copy.deepcopy(charge)
         for i in range(len(charge14)):
             charge14[i].coords[0] += a + 2*difb[0]
@@ -329,6 +343,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #+2a+2b
     if rotAxis=="0":
+        count +=1
         charge15 = copy.deepcopy(charge)
         for i in range(len(charge15)):
             charge15[i].coords[0] += 2*(a + difb[0])
@@ -337,6 +352,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #+2a+b
     if rotAxis=="0":
+        count +=1
         charge16 = copy.deepcopy(charge)
         for i in range(len(charge16)):
             charge16[i].coords[0] += 2*a + difb[0]
@@ -345,6 +361,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #+2b
     if rotAxis=="b" || rotAxis=="0":
+        count +=1
         charge17 = copy.deepcopy(charge)
         for i in range(len(charge17)):
             charge17[i].coords[0] += 2*difb[0]
@@ -354,6 +371,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
     #gap of one because of duplicate charge
     #-2a-b
     if rotAxis=="a" || rotAxis=="0":
+        count +=1
         charge19 = copy.deepcopy(charge)
         for i in range(len(charge19)):
             charge19[i].coords[0] += -2*a - difb[0]
@@ -362,6 +380,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #+2a-b
     if rotAxis=="a" || rotAxis=="0":
+        count +=1
         charge20 = copy.deepcopy(charge)
         for i in range(len(charge20)):
             charge20[i].coords[0] += 2*a - difb[0]
@@ -370,6 +389,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #+2a-2b
     if rotAxis=="0":
+        count +=1
         charge21 = copy.deepcopy(charge)
         for i in range(len(charge21)):
             charge21[i].coords[0] += 2*(a - difb[0])
@@ -378,6 +398,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #+a-2b
     if rotAxis=="0":
+        count +=1
         charge22 = copy.deepcopy(charge)
         for i in range(len(charge22)):
             charge22[i].coords[0] += a - 2*difb[0]
@@ -386,6 +407,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-2b
     if rotAxis=="b" || rotAxis=="0":
+        count +=1
         charge23 = copy.deepcopy(charge)
         for i in range(len(charge23)):
             charge23[i].coords[0] -= 2*difb[0]
@@ -394,6 +416,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-2b-a
     if rotAxis=="b" || rotAxis=="0":
+        count +=1
         charge24 = copy.deepcopy(charge)
         for i in range(len(charge24)):
             charge24[i].coords[0] -= 2*difb[0] + a
@@ -402,6 +425,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-2b-2a
     if rotAxis=="0":
+        count +=1
         charge25 = copy.deepcopy(charge)
         for i in range(len(charge25)):
             charge25[i].coords[0] -= 2*difb[0] + a
@@ -574,7 +598,7 @@ def outputeverythingDIPPDIR(retDIP, retPDIR, retDIPPDIR, chargesDIP,
         i += 1
 
     n = 0
-    while n < 8:
+    while n < count:
         for j in range(len(retPDIR)):
             ret3.append(atom_xyz(retPDIR[j].symbol, retPDIR[j].coords))
         n += 1
@@ -853,6 +877,7 @@ def main():
 
     # Vorgriff auf die Rotation, um zu wissen welche Charges ausgewählt werden müssen
     axis == "0" # Wenn die 0 nicht überschrieben wird, wurde nicht gedreht.
+    count =0
     wahl = input("Willst du den Kristall rotieren? (Ja, Nein): ")
     if wahl == "Ja":
         axis = input("Um welche Achse soll rotiert werden? (a, b, c): ")
