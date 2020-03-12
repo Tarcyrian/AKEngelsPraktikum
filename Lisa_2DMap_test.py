@@ -209,7 +209,7 @@ def getchargesDIP2(charge, a, b):
     return charge
 
 '''Bildet die Ladungen um PDIR und speichert sie in einer Liste.'''
-def getchargesPDIR(charge, difb, a):
+def getchargesPDIR(charge, difb, a, rotAxis):
     charge1 = copy.deepcopy(charge)
     charge2 = copy.deepcopy(charge)
     charge3 = copy.deepcopy(charge)
