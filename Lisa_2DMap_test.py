@@ -210,6 +210,7 @@ def getchargesDIP2(charge, a, b):
 
 '''Bildet die Ladungen um PDIR und speichert sie in einer Liste.
 Die Ladungen werden anhand der Rotationsaxe ausgewählt.'''
+count=0
 def getchargesPDIR(charge, difb, a, rotAxis):
     newcharge = []
     
