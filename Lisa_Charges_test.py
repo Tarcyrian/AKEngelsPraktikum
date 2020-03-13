@@ -157,7 +157,7 @@ def duplicatePDIR(ret, x, difb, difc, verschiebung):
 '''Bildet die Ladungen um DIP1 und speichert sie in einer Liste.'''  
 countChargesDIP1 = 0
 def getchargesDIP1(charge, a, b):
-	global countChargesDIP1
+    global countChargesDIP1
     newcharge =[]
     charge1 = copy.deepcopy(charge)
     charge2 = copy.deepcopy(charge)
@@ -189,7 +189,7 @@ def getchargesDIP1(charge, a, b):
 '''Bildet die Ladungen um DIP2 und speichert sie in einer Liste.'''
 countChargesDIP2 = 0 
 def getchargesDIP2(charge, a, b):
-	global countChargesDIP2
+    global countChargesDIP2
     #charge1 = copy.deepcopy(charge)
     charge2 = copy.deepcopy(charge)
     charge3 = copy.deepcopy(charge)
