@@ -218,13 +218,13 @@ def getchargesDIP2(charge, a, b):
     countChargesDIP2 +=1  
     for i in range(len(charge4)):
         charge4[i].coords[1] -= b
-        charge.append(charge_xyz(charge4[i].coords, charge4[i].charge))
+        chargegeaendert.append(charge_xyz(charge4[i].coords, charge4[i].charge))
     
     countChargesDIP2 +=1                  
     for i in range(len(charge5)):
         charge5[i].coords[1] -= b
         charge5[i].coords[0] += a
-        charge.append(charge_xyz(charge5[i].coords, charge5[i].charge))
+        chargegeaendert.append(charge_xyz(charge5[i].coords, charge5[i].charge))
 
     countChargesDIP2 +=1
     for i in range(len(charge6)):
