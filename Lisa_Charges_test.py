@@ -181,26 +181,26 @@ def getchargesDIP1(charge, a, b):
 
 '''Bildet die Ladungen um DIP2 und speichert sie in einer Liste.'''
 def getchargesDIP2(charge, a, b):
-    charge1 = copy.deepcopy(charge)
+    #charge1 = copy.deepcopy(charge)
     charge2 = copy.deepcopy(charge)
     charge3 = copy.deepcopy(charge)
     #charge4 = copy.deepcopy(charge)
     #charge5 = copy.deepcopy(charge)
     charge6 = copy.deepcopy(charge)
 
-    for i in range(len(charge)):
-        charge1[i].coords[0] += a
-        charge.append(charge_xyz(charge1[i].coords, charge1[i].charge))
+    # for i in range(len(charge)):
+    #     charge1[i].coords[0] += a
+    #     charge.append(charge_xyz(charge1[i].coords, charge1[i].charge))
 
     chargegeaendert = []
         
-    # for i in range(len(charge2)):
-    #     charge2[i].coords[0] -= a
-    #     chargegeaendert.append(charge_xyz(charge2[i].coords, charge2[i].charge))
+    for i in range(len(charge2)):
+        charge2[i].coords[0] -= a
+        chargegeaendert.append(charge_xyz(charge2[i].coords, charge2[i].charge))
         
-    # for i in range(len(charge3)):
-    #     charge3[i].coords[1] += b
-    #     chargegeaendert.append(charge_xyz(charge3[i].coords, charge3[i].charge))
+    for i in range(len(charge3)):
+        charge3[i].coords[1] += b
+        chargegeaendert.append(charge_xyz(charge3[i].coords, charge3[i].charge))
 
     '''for i in range(len(charge4)):
                     charge4[i].coords[1] -= b
@@ -910,7 +910,7 @@ def main():
 
         for i in range(len(shiftchargesdip2)):
             shiftchargesdip1.append(charge_xyz(shiftchargesdip2[i].coords, shiftchargesdip2[i].charge))
-        geo_chargesDIP = shiftchargesdip1
+        geo_chargesDIP = moveToCenterofGeo(shiftchargesdip1)
 
         
        
