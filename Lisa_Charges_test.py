@@ -155,24 +155,31 @@ def duplicatePDIR(ret, x, difb, difc, verschiebung):
     return ret
 
 '''Bildet die Ladungen um DIP1 und speichert sie in einer Liste.'''  
+countChargesDIP1 = 0
 def getchargesDIP1(charge, a, b):
+	global countChargesDIP1
     newcharge =[]
     charge1 = copy.deepcopy(charge)
     charge2 = copy.deepcopy(charge)
     charge3 = copy.deepcopy(charge)
     charge4 = copy.deepcopy(charge)
 
+    countChargesDIP1 += 1
     for i in range(len(charge)):
         charge1[i].coords[0] += a
         newcharge.append(charge_xyz(charge1[i].coords, charge1[i].charge))
 
+    countChargesDIP1 += 1
     for i in range(len(charge)):   
         charge2[i].coords[0] -= a
         newcharge.append(charge_xyz(charge2[i].coords, charge2[i].charge))
+
+    countChargesDIP1 += 1
     for i in range(len(charge)):
         charge3[i].coords[0] += 2*a
         newcharge.append(charge_xyz(charge3[i].coords, charge3[i].charge))
 
+    countChargesDIP1 += 1
     for i in range(len(charge)):   
         charge4[i].coords[0] -= 2*a
         newcharge.append(charge_xyz(charge4[i].coords, charge4[i].charge))
@@ -180,7 +187,9 @@ def getchargesDIP1(charge, a, b):
     return newcharge
 
 '''Bildet die Ladungen um DIP2 und speichert sie in einer Liste.'''
+countChargesDIP2 = 0 
 def getchargesDIP2(charge, a, b):
+	global countChargesDIP2
     #charge1 = copy.deepcopy(charge)
     charge2 = copy.deepcopy(charge)
     charge3 = copy.deepcopy(charge)
@@ -193,11 +202,13 @@ def getchargesDIP2(charge, a, b):
     #     charge.append(charge_xyz(charge1[i].coords, charge1[i].charge))
 
     chargegeaendert = []
-        
+    
+    countChargesDIP2 +=1    
     for i in range(len(charge2)):
         charge2[i].coords[0] -= a
         chargegeaendert.append(charge_xyz(charge2[i].coords, charge2[i].charge))
-        
+    
+    countChargesDIP2 +=1    
     for i in range(len(charge3)):
         charge3[i].coords[1] += b
         chargegeaendert.append(charge_xyz(charge3[i].coords, charge3[i].charge))
@@ -211,6 +222,7 @@ def getchargesDIP2(charge, a, b):
                     charge5[i].coords[0] += a
                     charge.append(charge_xyz(charge5[i].coords, charge5[i].charge))'''
 
+    countChargesDIP2 +=1
     for i in range(len(charge6)):
         charge6[i].coords[1] += b
         charge6[i].coords[0] -= a
@@ -220,10 +232,10 @@ def getchargesDIP2(charge, a, b):
 
 '''Bildet die Ladungen um PDIR und speichert sie in einer Liste.
 Die Ladungen werden anhand der Rotationsaxe ausgewählt.'''
-count=0
+countChargesPDIR=0
 def getchargesPDIR(charge, difb, a, rotAxis):
     newcharge = []
-    global count
+    global countChargesPDIR
     difbplusa = difb[0] + a
     difbminusa = difb[0] - a
     minusdifbminusa = - difb[0] - a
@@ -231,7 +243,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #+a
     if rotAxis=="a" or rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge1 = copy.deepcopy(charge)
         for i in range(len(charge1)):
             charge1[i].coords[0] += a
@@ -239,7 +251,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-a
     if rotAxis=="a" or rotAxis=="b" or rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge2 = copy.deepcopy(charge)
         for i in range(len(charge2)):
             charge2[i].coords[0] -= a
@@ -247,7 +259,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #+b
     if rotAxis=="b" or rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge3 = copy.deepcopy(charge)
         for i in range(len(charge3)):
              charge3[i].coords[0] += difb[0]
@@ -256,7 +268,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
     
     #+b+a
     if rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge4 = copy.deepcopy(charge)
         for i in range(len(charge4)): 
             charge4[i].coords[0] += difbplusa         
@@ -265,7 +277,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
     
     #+b-a
     if rotAxis=="b" or rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge5 = copy.deepcopy(charge)
         for i in range(len(charge5)): 
             charge5[i].coords[0] += difbminusa    
@@ -274,7 +286,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-b
     if rotAxis=="a" or rotAxis=="b" or rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge6 = copy.deepcopy(charge)
         for i in range(len(charge6)):
             charge6[i].coords[0] -= difb[0]
@@ -283,7 +295,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-b-a
     if rotAxis=="a" or rotAxis=="b" or rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge7 = copy.deepcopy(charge)
         for i in range(len(charge7)):
             charge7[i].coords[0] += minusdifbminusa
@@ -292,7 +304,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-b+a
     if rotAxis=="a" or rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge8 = copy.deepcopy(charge)
         for i in range(len(charge8)):
             charge8[i].coords[0] += minusdifbplusa
@@ -302,7 +314,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
     #Begin second layer
     #+2a
     if rotAxis=="a" or rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge9 = copy.deepcopy(charge)
         for i in range(len(charge9)):
             charge9[i].coords[0] += 2*a
@@ -310,7 +322,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-2a
     if rotAxis=="a" or rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge10 = copy.deepcopy(charge)
         for i in range(len(charge10)):
             charge10[i].coords[0] -= 2*a
@@ -318,7 +330,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-2a+b
     if rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge11 = copy.deepcopy(charge)
         for i in range(len(charge11)):
             charge11[i].coords[0] += -2*a + difb[0]
@@ -327,7 +339,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-2a+2b
     if rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge12 = copy.deepcopy(charge)
         for i in range(len(charge12)):
             charge12[i].coords[0] += -2 * (a + difb[0])
@@ -336,7 +348,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-a+2b
     if rotAxis=="b" or rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge13 = copy.deepcopy(charge)
         for i in range(len(charge13)):
             charge13[i].coords[0] += -a + 2*difb[0]
@@ -345,7 +357,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #+a+2b
     if rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge14 = copy.deepcopy(charge)
         for i in range(len(charge14)):
             charge14[i].coords[0] += a + 2*difb[0]
@@ -354,7 +366,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #+2a+2b
     if rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge15 = copy.deepcopy(charge)
         for i in range(len(charge15)):
             charge15[i].coords[0] += 2*(a + difb[0])
@@ -363,7 +375,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #+2a+b
     if rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge16 = copy.deepcopy(charge)
         for i in range(len(charge16)):
             charge16[i].coords[0] += 2*a + difb[0]
@@ -372,7 +384,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #+2b
     if rotAxis=="b" or rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge17 = copy.deepcopy(charge)
         for i in range(len(charge17)):
             charge17[i].coords[0] += 2*difb[0]
@@ -382,7 +394,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
     #gap of one because of duplicate charge
     #-2a-b
     if rotAxis=="a" or rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge19 = copy.deepcopy(charge)
         for i in range(len(charge19)):
             charge19[i].coords[0] += -2*a - difb[0]
@@ -391,7 +403,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #+2a-b
     if rotAxis=="a" or rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge20 = copy.deepcopy(charge)
         for i in range(len(charge20)):
             charge20[i].coords[0] += 2*a - difb[0]
@@ -400,7 +412,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #+2a-2b
     if rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge21 = copy.deepcopy(charge)
         for i in range(len(charge21)):
             charge21[i].coords[0] += 2*(a - difb[0])
@@ -409,7 +421,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #+a-2b
     if rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge22 = copy.deepcopy(charge)
         for i in range(len(charge22)):
             charge22[i].coords[0] += a - 2*difb[0]
@@ -418,7 +430,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-2b
     if rotAxis=="b" or rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge23 = copy.deepcopy(charge)
         for i in range(len(charge23)):
             charge23[i].coords[0] -= 2*difb[0]
@@ -427,7 +439,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-2b-a
     if rotAxis=="b" or rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge24 = copy.deepcopy(charge)
         for i in range(len(charge24)):
             charge24[i].coords[0] -= 2*difb[0] + a
@@ -436,7 +448,7 @@ def getchargesPDIR(charge, difb, a, rotAxis):
 
     #-2b-2a
     if rotAxis=="0":
-        count +=1
+        countChargesPDIR +=1
         charge25 = copy.deepcopy(charge)
         for i in range(len(charge25)):
             charge25[i].coords[0] -= 2*difb[0] + a
@@ -594,7 +606,9 @@ def outputeverythingDIPPDIR(retDIP, retPDIR, retDIPPDIR, chargesDIP,
     ret1 = copy.deepcopy(retDIP)
     ret2 = []
     ret3 = []
-    global count
+    global countChargesPDIR
+    global countChargesDIP1
+    global countChargesDIP2
 
     lengthfile = lengthchargesDIP + totallength + lengthchargesPDIR
 
@@ -604,13 +618,13 @@ def outputeverythingDIPPDIR(retDIP, retPDIR, retDIPPDIR, chargesDIP,
     f.write("\n")
 
     i = 0
-    while i < 5:
+    while i < (countChargesDIP2+countChargesDIP1):
         for j in range(len(ret1)):
             ret2.append(atom_xyz(ret1[j].symbol, ret1[j].coords))
         i += 1
 
     n = 0
-    while n < count:
+    while n < countChargesPDIR:
         for j in range(len(retPDIR)):
             ret3.append(atom_xyz(retPDIR[j].symbol, retPDIR[j].coords))
         n += 1
