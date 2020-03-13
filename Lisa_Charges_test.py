@@ -907,6 +907,7 @@ def main():
     '''Liest die Ladungen von DIP und PDIR ein, verschiebt sie,
         speichert sie in 2 Listen und macht centerofGeo von beiden'''
     file_geo = moveToCenterofGeo(file_input)  # Dip @ CoG
+    file_geo1 = moveToCenterofGeo(file_input1) #DIP2 @ CoG
     if char == "Ja":
 
         chargesDIP1 = readcharges("first_DIP_charges.txt")
