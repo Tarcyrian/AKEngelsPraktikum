@@ -474,12 +474,13 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
     if numberLayers >= 2:
         for i in range(5):
             for j in range(5):
+                countChargesPDIR +=1
                 chargeSecondLayer = copy.deepcopy(charge)
-                for i in range(len(chargeSecondLayer)):
-                    chargeSecondLayer[i].coords[0] += -2*a - 2*difb[0] + j*a + i*difb[0] + difc[0]
-                    chargeSecondLayer[i].coords[1] += -2*difb[1] + i*difb[1] + difc[1]
-                    chargeSecondLayer[i].coords[2] += -2*difb[2] + i*difb[2] + difc[2]
-                    newcharge.append(charge_xyz(chargeSecondLayer[i].coords, chargeSecondLayer[i].charge))
+                for k in range(len(chargeSecondLayer)):
+                    chargeSecondLayer[k].coords[0] += -2*a - 2*difb[0] + j*a + i*difb[0] + difc[0]
+                    chargeSecondLayer[k].coords[1] += -2*difb[1] + i*difb[1] + difc[1]
+                    chargeSecondLayer[k].coords[2] += difc[2]
+                    newcharge.append(charge_xyz(chargeSecondLayer[k].coords, chargeSecondLayer[k].charge))
 
 
     return newcharge
@@ -550,7 +551,7 @@ def getbPDIR(gamma, b):
 '''Mathematische Umformung um in Richtung der c-Achse des PDIRs zu verschieben.
     Gibt eine Liste zurück mit x-, y- und z-Koordinaten,
     welche die Differenz zur c-Achse beschreibt'''
-def getcPDIR(alpha, beta, gamma, c,):
+def getcPDIR(alpha, beta, gamma, c):
     difc = []
 
     betastrich = 90 - beta
@@ -916,7 +917,7 @@ def main():
 
     DIP2 = input("Soll das 2. DIP-Molekül aus der Einheitszelle dazugeladen werden? (Ja, Nein): ")
     char = str(input("Sollen Ladungen berücksichtigt werden? (Ja, Nein): "))
-    numberChargeLayers = input("Wie viele Layer an Ladungen sollen berücksichtigt werden? ")
+    numberChargeLayers = int(input("Wie viele Layer an Ladungen sollen berücksichtigt werden? "))
     dup = input("Soll DIP dupliziert werden? (Ja, Nein): ")
     dup2 = input("Soll PDIR dupliziert werden? (Ja, Nein): ")
     
@@ -947,7 +948,7 @@ def main():
     
         shiftchargesdip1 = getchargesDIP1(chargesDIP1, lengthaDIP, lengthbDIP) 
         shiftchargesdip2 = getchargesDIP2(chargesDIP2, lengthaDIP, lengthbDIP)
-        PDIRcharges = getchargesPDIR(geo_chargesPDIR, difb, lengthaPDIR, lengthcPDIR, axisDIP, numberChargeLayers)
+        PDIRcharges = getchargesPDIR(geo_chargesPDIR, difb, lengthaPDIR, difc, axisDIP, numberChargeLayers)
         geo_chargesDIP = moveToCenterofGeo(chargesDIP1)
 
         for i in range(len(shiftchargesdip2)):
