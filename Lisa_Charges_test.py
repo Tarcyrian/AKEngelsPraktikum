@@ -196,15 +196,19 @@ def getchargesDIP2(charge, a, b):
     charge4 = copy.deepcopy(charge)
     charge5 = copy.deepcopy(charge)
     charge6 = copy.deepcopy(charge)
+    charge7 = copy.deepcopy(charge)
 
     chargegeaendert = []
 
+    countChargesDIP2 += 1
+    for i in range(len(charge)):
+        chargegeaendert.append(charge_xyz(charge[i].coords, charge[i].charge))
+
     countChargesDIP2 +=1  
     for i in range(len(charge)):
-        charge1[i].coords[0] += a
+        charge1[i].coords[0] -= 2 * a
         chargegeaendert.append(charge_xyz(charge1[i].coords, charge1[i].charge))
 
-    
     countChargesDIP2 +=1    
     for i in range(len(charge2)):
         charge2[i].coords[0] -= a
@@ -217,20 +221,26 @@ def getchargesDIP2(charge, a, b):
 
     countChargesDIP2 +=1  
     for i in range(len(charge4)):
-        charge4[i].coords[1] -= b
+        charge4[i].coords[0] += a
+        charge4[i].coords[1] += b
         chargegeaendert.append(charge_xyz(charge4[i].coords, charge4[i].charge))
     
-    # countChargesDIP2 +=1                  
-    # for i in range(len(charge5)):
-    #     charge5[i].coords[1] -= b
-    #     charge5[i].coords[0] += a
-    #     chargegeaendert.append(charge_xyz(charge5[i].coords, charge5[i].charge))
+    countChargesDIP2 +=1                  
+    for i in range(len(charge5)):
+        charge5[i].coords[1] += b
+        charge5[i].coords[0] -= 2 * a
+        chargegeaendert.append(charge_xyz(charge5[i].coords, charge5[i].charge))
 
-    # countChargesDIP2 +=1
-    # for i in range(len(charge6)):
-    #     charge6[i].coords[1] += b
-    #     charge6[i].coords[0] -= a
-    #     chargegeaendert.append(charge_xyz(charge6[i].coords, charge6[i].charge))
+    countChargesDIP2 +=1
+    for i in range(len(charge6)):
+        charge6[i].coords[1] += b
+        charge6[i].coords[0] -= a
+        chargegeaendert.append(charge_xyz(charge6[i].coords, charge6[i].charge))
+
+    countChargesDIP2 +=1
+    for i in range(len(charge7)):
+        charge7[i].coords[0] += a
+        chargegeaendert.append(charge_xyz(charge7[i].coords, charge7[i].charge))
 
     return chargegeaendert
 
@@ -918,7 +928,7 @@ def main():
         chargesDIP2 = readcharges("second_DIP_charges.txt")
         chargesPDIR = readcharges("PDIR_S0_1_charges.txt")
 
-        
+        geo_chargesDIP = moveToCenterofGeo(chargesDIP1)
         geo_chargesPDIR = moveToCenterofGeo(chargesPDIR)
     
         shiftchargesdip1 = getchargesDIP1(chargesDIP1, lengthaDIP, lengthbDIP) 
@@ -927,7 +937,7 @@ def main():
 
         for i in range(len(shiftchargesdip2)):
             shiftchargesdip1.append(charge_xyz(shiftchargesdip2[i].coords, shiftchargesdip2[i].charge))
-        geo_chargesDIP = moveToCenterofGeo(shiftchargesdip1)
+        #geo_chargesDIP = moveToCenterofGeo(shiftchargesdip1)
 
         
        
