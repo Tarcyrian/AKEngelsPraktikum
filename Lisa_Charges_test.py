@@ -912,8 +912,6 @@ def main():
 
         chargesDIP1 = readcharges("first_DIP_charges.txt")
         chargesDIP2 = readcharges("second_DIP_charges.txt")
-        mergeChargeCoords(file_geo, chargesDIP1, "tempfile.txt")
-        chargesDIP1 = readcharges("tempfile.txt")
         chargesPDIR = readcharges("PDIR_S0_1_charges.txt")
 
         
