@@ -928,16 +928,17 @@ def main():
         chargesDIP2 = readcharges("second_DIP_charges.txt")
         chargesPDIR = readcharges("PDIR_S0_1_charges.txt")
 
-        geo_chargesDIP = moveToCenterofGeo(chargesDIP1)
+        
         geo_chargesPDIR = moveToCenterofGeo(chargesPDIR)
     
         shiftchargesdip1 = getchargesDIP1(chargesDIP1, lengthaDIP, lengthbDIP) 
         shiftchargesdip2 = getchargesDIP2(chargesDIP2, lengthaDIP, lengthbDIP)
         PDIRcharges = getchargesPDIR(geo_chargesPDIR, difb, lengthaPDIR, axisDIP)
+        geo_chargesDIP = moveToCenterofGeo(chargesDIP1)
 
         for i in range(len(shiftchargesdip2)):
             shiftchargesdip1.append(charge_xyz(shiftchargesdip2[i].coords, shiftchargesdip2[i].charge))
-        #geo_chargesDIP = moveToCenterofGeo(shiftchargesdip1)
+        geo_chargesDIP = moveToCenterofGeo(shiftchargesdip1)
 
         
        
