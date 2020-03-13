@@ -888,7 +888,7 @@ def main():
     axisDIP == "0" # Wenn die 0 nicht überschrieben wird, wurde nicht gedreht.
     count =0
     wahlDIP = input("Willst du den DIP Kristall rotieren? (Ja, Nein): ")
-    if wahl == "Ja":
+    if wahlDIP == "Ja":
         axisDIP = input("Um welche Achse soll rotiert werden? (a, b, c): ")
     '''Liest die Ladungen von DIP und PDIR ein, verschiebt sie,
         speichert sie in 2 Listen und macht centerofGeo von beiden'''
