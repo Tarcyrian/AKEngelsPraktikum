@@ -190,18 +190,20 @@ def getchargesDIP1(charge, a, b):
 countChargesDIP2 = 0 
 def getchargesDIP2(charge, a, b):
     global countChargesDIP2
-    #charge1 = copy.deepcopy(charge)
+    charge1 = copy.deepcopy(charge)
     charge2 = copy.deepcopy(charge)
     charge3 = copy.deepcopy(charge)
-    #charge4 = copy.deepcopy(charge)
-    #charge5 = copy.deepcopy(charge)
+    charge4 = copy.deepcopy(charge)
+    charge5 = copy.deepcopy(charge)
     charge6 = copy.deepcopy(charge)
 
-    # for i in range(len(charge)):
-    #     charge1[i].coords[0] += a
-    #     charge.append(charge_xyz(charge1[i].coords, charge1[i].charge))
-
     chargegeaendert = []
+
+    countChargesDIP2 +=1  
+    for i in range(len(charge)):
+        charge1[i].coords[0] += a
+        chargegeaendert.append(charge_xyz(charge1[i].coords, charge1[i].charge))
+
     
     countChargesDIP2 +=1    
     for i in range(len(charge2)):
@@ -213,14 +215,16 @@ def getchargesDIP2(charge, a, b):
         charge3[i].coords[1] += b
         chargegeaendert.append(charge_xyz(charge3[i].coords, charge3[i].charge))
 
-    '''for i in range(len(charge4)):
-                    charge4[i].coords[1] -= b
-                    charge.append(charge_xyz(charge4[i].coords, charge4[i].charge))
-                    
-                for i in range(len(charge5)):
-                    charge5[i].coords[1] -= b
-                    charge5[i].coords[0] += a
-                    charge.append(charge_xyz(charge5[i].coords, charge5[i].charge))'''
+    countChargesDIP2 +=1  
+    for i in range(len(charge4)):
+        charge4[i].coords[1] -= b
+        charge.append(charge_xyz(charge4[i].coords, charge4[i].charge))
+    
+    countChargesDIP2 +=1                  
+    for i in range(len(charge5)):
+        charge5[i].coords[1] -= b
+        charge5[i].coords[0] += a
+        charge.append(charge_xyz(charge5[i].coords, charge5[i].charge))
 
     countChargesDIP2 +=1
     for i in range(len(charge6)):
