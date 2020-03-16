@@ -470,7 +470,7 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
                 charge25[i].coords[1] -= 2*difb[1]
                 newcharge.append(charge_xyz(charge25[i].coords, charge25[i].charge))
 
-    #Begin second layer
+    #Begin second layer (+z)
     if numberLayers >= 2:
         for i in range(5):
             for j in range(5):
@@ -482,6 +482,17 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
                     chargeSecondLayer[k].coords[2] += difc[2]
                     newcharge.append(charge_xyz(chargeSecondLayer[k].coords, chargeSecondLayer[k].charge))
 
+    #Begin third layer (-z)
+    if numberLayers >= 3:
+        for i in range(5):
+            for j in range(5):
+                countChargesPDIR +=1
+                chargeThirdLayer = copy.deepcopy(charge)
+                for k in range(len(chargeSecondLayer)):
+                    chargeThirdLayer[k].coords[0] += -2*a - 2*difb[0] + j*a + i*difb[0] - difc[0]
+                    chargeThirdLayer[k].coords[1] += -2*difb[1] + i*difb[1] - difc[1]
+                    chargeThirdLayer[k].coords[2] += -difc[2]
+                    newcharge.append(charge_xyz(chargeThirdLayer[k].coords, chargeThirdLayer[k].charge))
 
     return newcharge
 
