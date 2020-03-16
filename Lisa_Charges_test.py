@@ -470,7 +470,7 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
                 charge25[i].coords[1] -= 2*difb[1]
                 newcharge.append(charge_xyz(charge25[i].coords, charge25[i].charge))
 
-    #Begin second layer (+z)
+    #Begin second layer (-z)
     if numberLayers >= 2:
         for i in range(5):
             for j in range(5):
@@ -482,8 +482,9 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
                     chargeSecondLayer[k].coords[2] += difc[2]
                     newcharge.append(charge_xyz(chargeSecondLayer[k].coords, chargeSecondLayer[k].charge))
 
-    #Begin third layer (-z)
+    #Begin third layer (+z)
     if numberLayers >= 3:
+        
         for i in range(5):
             for j in range(5):
                 countChargesPDIR +=1
@@ -921,7 +922,8 @@ def main():
     #Einlesen der Dateien
     file_input = readXYZ("output_first_DIP_molecule___with_opt_geo.xyz")
     file_input1 = readXYZ("output_second_DIP_molecule___with_opt_geo.xyz")
-    file_input2 = readXYZ("PDIR_S0_1.xyz")
+    file_input2 = readXYZ("PDIR_S0_1.xyz") #geometrieoptimierte Struktur
+    file_input3 = readXYZ("PDIRCN2_isomerenrein.xyz") #lädt das Molekül in der Struktur des Kristalls
 
     #Initalisieren der Variablen mit Userinput
     print("VORSICHT: Das Molekül wird in das Center of Geometry geschoben!")
@@ -948,11 +950,14 @@ def main():
         speichert sie in 2 Listen und macht centerofGeo von beiden'''
     file_geo = moveToCenterofGeo(file_input)  # Dip @ CoG
     file_geo1 = moveToCenterofGeo(file_input1) #DIP2 @ CoG
+    file_geo3 = moveToCenterofGeo(file_input3) #PDIR charges crystal structure
     if char == "Ja":
 
         chargesDIP1 = readcharges("first_DIP_charges.txt")
         chargesDIP2 = readcharges("second_DIP_charges.txt")
         chargesPDIR = readcharges("PDIR_S0_1_charges.txt")
+        mergeChargeCoords(file_input3, chargesPDIR, "Charges_Merged_PDIR.txt")
+        chargesPDIR = readcharges("Charges_Merged_PDIR.txt")
 
         
         geo_chargesPDIR = moveToCenterofGeo(chargesPDIR)
