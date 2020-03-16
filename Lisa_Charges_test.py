@@ -357,7 +357,7 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
             countChargesPDIR +=1
             charge12 = copy.deepcopy(charge)
             for i in range(len(charge12)):
-                charge12[i].coords[0] += -2 * (a + difb[0])
+                charge12[i].coords[0] += -2*a + 2*difb[0]
                 charge12[i].coords[1] += 2*difb[1]
                 newcharge.append(charge_xyz(charge12[i].coords, charge12[i].charge))
 
@@ -466,7 +466,7 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
             countChargesPDIR +=1
             charge25 = copy.deepcopy(charge)
             for i in range(len(charge25)):
-                charge25[i].coords[0] -= 2*difb[0] + a
+                charge25[i].coords[0] -= 2* (difb[0] + a)
                 charge25[i].coords[1] -= 2*difb[1]
                 newcharge.append(charge_xyz(charge25[i].coords, charge25[i].charge))
 
@@ -481,18 +481,6 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
                     chargeSecondLayer[k].coords[1] += -2*difb[1] + i*difb[1] + difc[1]
                     chargeSecondLayer[k].coords[2] += difc[2]
                     newcharge.append(charge_xyz(chargeSecondLayer[k].coords, chargeSecondLayer[k].charge))
-
-    #Begin third layer
-    if numberLayers >= 3:
-        for i in range(5):
-            for j in range(5):
-                countChargesPDIR +=1
-                chargeThirdLayer = copy.deepcopy(charge)
-                for k in range(len(chargeSecondLayer)):
-                    chargeThirdLayer[k].coords[0] += -2*a - 2*difb[0] + j*a + i*difb[0] - difc[0]
-                    chargeThirdLayer[k].coords[1] += -2*difb[1] + i*difb[1] - difc[1]
-                    chargeThirdLayer[k].coords[2] += -difc[2]
-                    newcharge.append(charge_xyz(chargeThirdLayer[k].coords, chargeThirdLayer[k].charge))
 
 
     return newcharge
@@ -940,7 +928,7 @@ def main():
 
 
     # Vorgriff auf die Rotation, um zu wissen welche Charges ausgewählt werden müssen
-    axisDIP == "0" # Wenn die 0 nicht überschrieben wird, wurde nicht gedreht.
+    axisDIP = "0" # Wenn die 0 nicht überschrieben wird, wurde nicht gedreht.
     count =0
     wahlDIP = input("Willst du den DIP Kristall rotieren? (Ja, Nein): ")
     if wahlDIP == "Ja":
