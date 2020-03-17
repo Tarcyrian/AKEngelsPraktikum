@@ -156,109 +156,123 @@ def duplicatePDIR(ret, x, difb, difc, verschiebung):
 
 '''Bildet die Ladungen um DIP1 und speichert sie in einer Liste.'''  
 countChargesDIP1 = 0
-def getchargesDIP1(charge, a, b):
+def getchargesDIP1(charge, a, b, c, numberLayers):
     global countChargesDIP1
     newcharge =[]
     
-    countChargesDIP1 += 1
-    charge1 = copy.deepcopy(charge)
-    for i in range(len(charge)):
-        charge1[i].coords[0] += a
-        newcharge.append(charge_xyz(charge1[i].coords, charge1[i].charge))
+    # First layer DIP1
+    if numberLayers >= 1:
+        countChargesDIP1 += 1
+        charge1 = copy.deepcopy(charge)
+        for i in range(len(charge)):
+            charge1[i].coords[0] += a
+            newcharge.append(charge_xyz(charge1[i].coords, charge1[i].charge))
 
-    countChargesDIP1 += 1
-    charge2 = copy.deepcopy(charge)
-    for i in range(len(charge)):   
-        charge2[i].coords[0] -= a
-        newcharge.append(charge_xyz(charge2[i].coords, charge2[i].charge))
+        countChargesDIP1 += 1
+        charge2 = copy.deepcopy(charge)
+        for i in range(len(charge)):   
+            charge2[i].coords[0] -= a
+            newcharge.append(charge_xyz(charge2[i].coords, charge2[i].charge))
 
-    countChargesDIP1 += 1
-    charge3 = copy.deepcopy(charge)
-    for i in range(len(charge)):
-        charge3[i].coords[0] += 2*a
-        newcharge.append(charge_xyz(charge3[i].coords, charge3[i].charge))
+        countChargesDIP1 += 1
+        charge3 = copy.deepcopy(charge)
+        for i in range(len(charge)):
+            charge3[i].coords[0] += 2*a
+            newcharge.append(charge_xyz(charge3[i].coords, charge3[i].charge))
 
-    countChargesDIP1 += 1
-    charge4 = copy.deepcopy(charge)
-    for i in range(len(charge)):   
-        charge4[i].coords[0] -= 2*a
-        newcharge.append(charge_xyz(charge4[i].coords, charge4[i].charge))
+        countChargesDIP1 += 1
+        charge4 = copy.deepcopy(charge)
+        for i in range(len(charge)):   
+            charge4[i].coords[0] -= 2*a
+            newcharge.append(charge_xyz(charge4[i].coords, charge4[i].charge))
 
-    # Begin row DIP1 +b
-    countChargesDIP1 += 1
-    charge5 = copy.deepcopy(charge)
-    for i in range(len(charge)):
-        charge5[i].coords[1] += b
-        newcharge.append(charge_xyz(charge5[i].coords, charge5[i].charge))
-    
-    countChargesDIP1 += 1
-    charge6 = copy.deepcopy(charge)
-    for i in range(len(charge)):
-        charge6[i].coords[0] += a
-        charge6[i].coords[1] += b
-        newcharge.append(charge_xyz(charge6[i].coords, charge6[i].charge))
+        # Begin row DIP1 +b
+        countChargesDIP1 += 1
+        charge5 = copy.deepcopy(charge)
+        for i in range(len(charge)):
+            charge5[i].coords[1] += b
+            newcharge.append(charge_xyz(charge5[i].coords, charge5[i].charge))
+        
+        countChargesDIP1 += 1
+        charge6 = copy.deepcopy(charge)
+        for i in range(len(charge)):
+            charge6[i].coords[0] += a
+            charge6[i].coords[1] += b
+            newcharge.append(charge_xyz(charge6[i].coords, charge6[i].charge))
 
-    countChargesDIP1 += 1
-    charge7 = copy.deepcopy(charge)
-    for i in range(len(charge)):   
-        charge7[i].coords[0] -= a
-        charge7[i].coords[1] += b
-        newcharge.append(charge_xyz(charge7[i].coords, charge7[i].charge))
+        countChargesDIP1 += 1
+        charge7 = copy.deepcopy(charge)
+        for i in range(len(charge)):   
+            charge7[i].coords[0] -= a
+            charge7[i].coords[1] += b
+            newcharge.append(charge_xyz(charge7[i].coords, charge7[i].charge))
 
-    countChargesDIP1 += 1
-    charge8 = copy.deepcopy(charge)
-    for i in range(len(charge)):
-        charge8[i].coords[0] += 2*a
-        charge8[i].coords[1] += b
-        newcharge.append(charge_xyz(charge8[i].coords, charge8[i].charge))
+        countChargesDIP1 += 1
+        charge8 = copy.deepcopy(charge)
+        for i in range(len(charge)):
+            charge8[i].coords[0] += 2*a
+            charge8[i].coords[1] += b
+            newcharge.append(charge_xyz(charge8[i].coords, charge8[i].charge))
 
-    countChargesDIP1 += 1
-    charge9 = copy.deepcopy(charge)
-    for i in range(len(charge)):   
-        charge9[i].coords[0] -= 2*a
-        charge9[i].coords[1] += b
-        newcharge.append(charge_xyz(charge9[i].coords, charge9[i].charge))
+        countChargesDIP1 += 1
+        charge9 = copy.deepcopy(charge)
+        for i in range(len(charge)):   
+            charge9[i].coords[0] -= 2*a
+            charge9[i].coords[1] += b
+            newcharge.append(charge_xyz(charge9[i].coords, charge9[i].charge))
 
-    # Begin row DIP1 -b
-    countChargesDIP1 += 1
-    charge10 = copy.deepcopy(charge)
-    for i in range(len(charge)):
-        charge10[i].coords[1] -= b
-        newcharge.append(charge_xyz(charge10[i].coords, charge10[i].charge))
-    
-    countChargesDIP1 += 1
-    charge11 = copy.deepcopy(charge)
-    for i in range(len(charge)):
-        charge11[i].coords[0] += a
-        charge11[i].coords[1] -= b
-        newcharge.append(charge_xyz(charge11[i].coords, charge11[i].charge))
+        # Begin row DIP1 -b
+        countChargesDIP1 += 1
+        charge10 = copy.deepcopy(charge)
+        for i in range(len(charge)):
+            charge10[i].coords[1] -= b
+            newcharge.append(charge_xyz(charge10[i].coords, charge10[i].charge))
+        
+        countChargesDIP1 += 1
+        charge11 = copy.deepcopy(charge)
+        for i in range(len(charge)):
+            charge11[i].coords[0] += a
+            charge11[i].coords[1] -= b
+            newcharge.append(charge_xyz(charge11[i].coords, charge11[i].charge))
 
-    countChargesDIP1 += 1
-    charge12 = copy.deepcopy(charge)
-    for i in range(len(charge)):   
-        charge12[i].coords[0] -= a
-        charge12[i].coords[1] -= b
-        newcharge.append(charge_xyz(charge12[i].coords, charge12[i].charge))
+        countChargesDIP1 += 1
+        charge12 = copy.deepcopy(charge)
+        for i in range(len(charge)):   
+            charge12[i].coords[0] -= a
+            charge12[i].coords[1] -= b
+            newcharge.append(charge_xyz(charge12[i].coords, charge12[i].charge))
 
-    countChargesDIP1 += 1
-    charge13 = copy.deepcopy(charge)
-    for i in range(len(charge)):
-        charge13[i].coords[0] += 2*a
-        charge13[i].coords[1] -= b
-        newcharge.append(charge_xyz(charge13[i].coords, charge13[i].charge))
+        countChargesDIP1 += 1
+        charge13 = copy.deepcopy(charge)
+        for i in range(len(charge)):
+            charge13[i].coords[0] += 2*a
+            charge13[i].coords[1] -= b
+            newcharge.append(charge_xyz(charge13[i].coords, charge13[i].charge))
 
-    countChargesDIP1 += 1
-    charge14 = copy.deepcopy(charge)
-    for i in range(len(charge)):   
-        charge14[i].coords[0] -= 2*a
-        charge14[i].coords[1] -= b
-        newcharge.append(charge_xyz(charge14[i].coords, charge14[i].charge))
+        countChargesDIP1 += 1
+        charge14 = copy.deepcopy(charge)
+        for i in range(len(charge)):   
+            charge14[i].coords[0] -= 2*a
+            charge14[i].coords[1] -= b
+            newcharge.append(charge_xyz(charge14[i].coords, charge14[i].charge))
+
+    # Second layer DIP1
+    if numberLayers >= 2:
+        for i in range(5):
+            for j in range(3):
+                countChargesDIP1 += 1
+                chargeSecondLayer = copy.deepcopy(charge)
+                for k in range(len(charge)):
+                    chargeSecondLayer[k].coords[0] += -2*a + i*a
+                    chargeSecondLayer[k].coords[1] += -b + j*b
+                    chargeSecondLayer[k].coords[2] += c
+                    newcharge.append(charge_xyz(chargeSecondLayer[k].coords, chargeSecondLayer[k].charge))
 
     return newcharge
 
 '''Bildet die Ladungen um DIP2 und speichert sie in einer Liste.'''
 countChargesDIP2 = 0 
-def getchargesDIP2(charge, a, b):
+def getchargesDIP2(charge, a, b, c, numberLayers):
     global countChargesDIP2
 
     chargegeaendert = []
@@ -367,6 +381,18 @@ def getchargesDIP2(charge, a, b):
         charge15[i].coords[1] -= b
         charge15[i].coords[0] -= a
         chargegeaendert.append(charge_xyz(charge15[i].coords, charge15[i].charge))
+
+    # Second layer DIP2
+    if numberLayers >= 2:
+        for i in range(4):
+            for j in range(4):
+                countChargesDIP2 +=1
+                chargeSecondLayer = copy.deepcopy(charge)
+                for k in range(len(charge)):
+                    chargeSecondLayer[k].coords[0] += -2*a + i*a
+                    chargeSecondLayer[k].coords[1] += -b + j*b
+                    chargeSecondLayer[k].coords[2] += c
+                    chargegeaendert.append(charge_xyz(chargeSecondLayer[k].coords, chargeSecondLayer[k].charge))
 
     return chargegeaendert
 
@@ -1057,7 +1083,9 @@ def main():
 
     DIP2 = input("Soll das 2. DIP-Molekül aus der Einheitszelle dazugeladen werden? (Ja, Nein): ")
     char = str(input("Sollen Ladungen berücksichtigt werden? (Ja, Nein): "))
-    numberChargeLayers = int(input("Wie viele Layer an Ladungen sollen berücksichtigt werden? "))
+    if char == "Ja":
+        numberChargeLayersPDIR = int(input("Wie viele Layer an PDIR Ladungen sollen berücksichtigt werden? "))
+        numberChargeLayersDIP = int(input("Wie viele Layer an DIP Ladungen sollen berücksichtigt werden? "))
     dup = input("Soll DIP dupliziert werden? (Ja, Nein): ")
     dup2 = input("Soll PDIR dupliziert werden? (Ja, Nein): ")
     
@@ -1075,8 +1103,7 @@ def main():
         axisDIP = input("Um welche Achse soll rotiert werden? (a, b, c): ")
     '''Liest die Ladungen von DIP und PDIR ein, verschiebt sie,
         speichert sie in 2 Listen und macht centerofGeo von beiden'''
-    file_geo = moveToCenterofGeo(file_input)  # Dip @ CoG
-    file_geo1 = moveToCenterofGeo(file_input1) #DIP2 @ CoG
+    
     file_geo3 = moveToCenterofGeo(file_input3) #PDIR charges crystal structure
     if char == "Ja":
 
@@ -1086,13 +1113,16 @@ def main():
         mergeChargeCoords(file_input3, chargesPDIR, "Charges_Merged_PDIR.txt")
         chargesPDIR = readcharges("Charges_Merged_PDIR.txt")
 
-        
         geo_chargesPDIR = moveToCenterofGeo(chargesPDIR)
+        #geo_chargesDIP = moveToCenterofGeo(chargesDIP1)
+        #geo_chargesDIP2 = moveToCenterofGeo(chargesDIP2)
     
-        shiftchargesdip1 = getchargesDIP1(chargesDIP1, lengthaDIP, lengthbDIP) 
-        shiftchargesdip2 = getchargesDIP2(chargesDIP2, lengthaDIP, lengthbDIP)
-        PDIRcharges = getchargesPDIR(geo_chargesPDIR, difb, lengthaPDIR, difc, axisDIP, numberChargeLayers)
-        geo_chargesDIP = moveToCenterofGeo(chargesDIP1)
+        shiftchargesdip1 = getchargesDIP1(chargesDIP1, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP) 
+        shiftchargesdip2 = getchargesDIP2(chargesDIP2, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP)
+        PDIRcharges = getchargesPDIR(geo_chargesPDIR, difb, lengthaPDIR, difc, axisDIP, numberChargeLayersPDIR)
+        #geo_chargesDIP = moveToCenterofGeo(chargesDIP1)
+        #shiftchargesdip1 = moveToCenterofGeo(shiftchargesdip1)
+        #shiftchargesdip2 = moveToCenterofGeo(shiftchargesdip2)
 
         for i in range(len(shiftchargesdip2)):
             shiftchargesdip1.append(charge_xyz(shiftchargesdip2[i].coords, shiftchargesdip2[i].charge))
@@ -1105,7 +1135,8 @@ def main():
         
 
     #Erstellt Center of Geometry der Moleküle
-    
+    file_geo = moveToCenterofGeo(file_input)  # Dip @ CoG
+    file_geo1 = moveToCenterofGeo(file_input1) #DIP2 @ CoG
     file_geo2 = moveToCenterofGeo(file_input2)
 
     #Duplizieren sowohl von DIP als auch von PDIR
