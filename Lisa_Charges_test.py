@@ -257,16 +257,16 @@ def getchargesDIP1(charge, a, b, c, numberLayers):
             newcharge.append(charge_xyz(charge14[i].coords, charge14[i].charge))
 
     # Second layer DIP1
-    if numberLayers >= 2:
-        for i in range(5):
-            for j in range(3):
-                countChargesDIP1 += 1
-                chargeSecondLayer = copy.deepcopy(charge)
-                for k in range(len(charge)):
-                    chargeSecondLayer[k].coords[0] += -2*a + i*a
-                    chargeSecondLayer[k].coords[1] += -b + j*b
-                    chargeSecondLayer[k].coords[2] += c
-                    newcharge.append(charge_xyz(chargeSecondLayer[k].coords, chargeSecondLayer[k].charge))
+    # if numberLayers >= 2:
+    #     for i in range(5):
+    #         for j in range(3):
+    #             countChargesDIP1 += 1
+    #             chargeSecondLayer = copy.deepcopy(charge)
+    #             for k in range(len(charge)):
+    #                 chargeSecondLayer[k].coords[0] += -2*a + i*a
+    #                 chargeSecondLayer[k].coords[1] += -b + j*b
+    #                 chargeSecondLayer[k].coords[2] += c
+    #                 newcharge.append(charge_xyz(chargeSecondLayer[k].coords, chargeSecondLayer[k].charge))
 
     return newcharge
 
@@ -383,16 +383,16 @@ def getchargesDIP2(charge, a, b, c, numberLayers):
         chargegeaendert.append(charge_xyz(charge15[i].coords, charge15[i].charge))
 
     # Second layer DIP2
-    if numberLayers >= 2:
-        for i in range(4):
-            for j in range(4):
-                countChargesDIP2 +=1
-                chargeSecondLayer = copy.deepcopy(charge)
-                for k in range(len(charge)):
-                    chargeSecondLayer[k].coords[0] += -2*a + i*a
-                    chargeSecondLayer[k].coords[1] += -b + j*b
-                    chargeSecondLayer[k].coords[2] += c
-                    chargegeaendert.append(charge_xyz(chargeSecondLayer[k].coords, chargeSecondLayer[k].charge))
+    # if numberLayers >= 2:
+    #     for i in range(4):
+    #         for j in range(4):
+    #             countChargesDIP2 +=1
+    #             chargeSecondLayer = copy.deepcopy(charge)
+    #             for k in range(len(charge)):
+    #                 chargeSecondLayer[k].coords[0] += -2*a + i*a
+    #                 chargeSecondLayer[k].coords[1] += -b + j*b
+    #                 chargeSecondLayer[k].coords[2] += c
+    #                 chargegeaendert.append(charge_xyz(chargeSecondLayer[k].coords, chargeSecondLayer[k].charge))
 
     return chargegeaendert
 
@@ -1023,6 +1023,17 @@ def useroutput(char, DIP2, dup, dup2, verschiebung1, verschiebung2,
     f.close()
 
 
+def duplicateLayerDIP(original, offset):
+    # Es ist egal ob man hier DIP1 oder DIP2 nimmt, denn es wird am Ende zusammengezählt.
+    global countChargesDIP2
+    newLayer = []
+    for i in range(len(original)):
+        countChargesDIP2 += 1
+        currentCharge = copy.deepcopy(original[i])
+        currentCharge.coords[2] += offset
+        newLayer.append(charge_xyz(currentCharge.coords, currentCharge.charge))
+
+    return newLayer
 
 
 
@@ -1127,8 +1138,18 @@ def main():
         for i in range(len(shiftchargesdip2)):
             shiftchargesdip1.append(charge_xyz(shiftchargesdip2[i].coords, shiftchargesdip2[i].charge))
         geo_chargesDIP = moveToCenterofGeo(shiftchargesdip1)
+        geo_chargeDIPOriginal = moveToCenterofGeo(chargesDIP1)
+        #geo_chargesDIP = shiftchargesdip1
 
-        
+        # duplicate the working first layer of DIP
+        if numberChargeLayersDIP >= 2:
+            DIPchargesSecondLayer = duplicateLayerDIP(geo_chargesDIP, lengthcDIP)
+            for i in range(len(DIPchargesSecondLayer)):
+                geo_chargesDIP.append(charge_xyz(DIPchargesSecondLayer[i].coords, DIPchargesSecondLayer[i].charge))
+            
+            Tempgeocharges = duplicateLayerDIP(geo_chargeDIPOriginal, lengthcDIP)
+            for i in range(len(Tempgeocharges)):
+                geo_chargesDIP.append(charge_xyz(Tempgeocharges[i].coords, Tempgeocharges[i].charge))
        
         geo_chargesPDIR = PDIRcharges
 
