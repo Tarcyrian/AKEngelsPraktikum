@@ -923,7 +923,7 @@ def main():
     file_input = readXYZ("output_first_DIP_molecule___with_opt_geo.xyz")
     file_input1 = readXYZ("output_second_DIP_molecule___with_opt_geo.xyz")
     file_input2 = readXYZ("PDIR_S0_1.xyz") #geometrieoptimierte Struktur
-    file_input3 = readXYZ("PDIRCN2_isomerenrein.xyz") #lädt das Molekül in der Struktur des Kristalls
+    file_input3 = readXYZ("PDIR_umsortiert.xyz") #lädt das Molekül in der Struktur des Kristalls
 
     #Initalisieren der Variablen mit Userinput
     print("VORSICHT: Das Molekül wird in das Center of Geometry geschoben!")
