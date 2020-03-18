@@ -407,234 +407,249 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
     minusdifbminusa = - difb[0] - a
     minusdifbplusa = - difb[0] + a
 
-    if numberLayers >= 1:
-        #+a
-        if rotAxis=="a" or rotAxis=="0":
-            countChargesPDIR +=1
-            charge1 = copy.deepcopy(charge)
-            for i in range(len(charge1)):
-                charge1[i].coords[0] += a
-                newcharge.append(charge_xyz(charge1[i].coords, charge1[i].charge))
+    # if numberLayers >= 1:
+        # #+a
+        # if rotAxis=="a" or rotAxis=="0":
+        #     countChargesPDIR +=1
+        #     charge1 = copy.deepcopy(charge)
+        #     for i in range(len(charge1)):
+        #         charge1[i].coords[0] += a
+        #         newcharge.append(charge_xyz(charge1[i].coords, charge1[i].charge))
 
-        #-a
-        if rotAxis=="a" or rotAxis=="b" or rotAxis=="0":
-            countChargesPDIR +=1
-            charge2 = copy.deepcopy(charge)
-            for i in range(len(charge2)):
-                charge2[i].coords[0] -= a
-                newcharge.append(charge_xyz(charge2[i].coords, charge2[i].charge))
+        # #-a
+        # if rotAxis=="a" or rotAxis=="b" or rotAxis=="0":
+        #     countChargesPDIR +=1
+        #     charge2 = copy.deepcopy(charge)
+        #     for i in range(len(charge2)):
+        #         charge2[i].coords[0] -= a
+        #         newcharge.append(charge_xyz(charge2[i].coords, charge2[i].charge))
 
-        #+b
-        if rotAxis=="b" or rotAxis=="0":
-            countChargesPDIR +=1
-            charge3 = copy.deepcopy(charge)
-            for i in range(len(charge3)):
-                 charge3[i].coords[0] += difb[0]
-                 charge3[i].coords[1] += difb[1]
-                 newcharge.append(charge_xyz(charge3[i].coords, charge3[i].charge))
+        # #+b
+        # if rotAxis=="b" or rotAxis=="0":
+        #     countChargesPDIR +=1
+        #     charge3 = copy.deepcopy(charge)
+        #     for i in range(len(charge3)):
+        #          charge3[i].coords[0] += difb[0]
+        #          charge3[i].coords[1] += difb[1]
+        #          newcharge.append(charge_xyz(charge3[i].coords, charge3[i].charge))
         
-        #+b+a
-        if rotAxis=="0":
-            countChargesPDIR +=1
-            charge4 = copy.deepcopy(charge)
-            for i in range(len(charge4)): 
-                charge4[i].coords[0] += difbplusa         
-                charge4[i].coords[1] += difb[1] 
-                newcharge.append(charge_xyz(charge4[i].coords, charge4[i].charge))
+        # #+b+a
+        # if rotAxis=="0":
+        #     countChargesPDIR +=1
+        #     charge4 = copy.deepcopy(charge)
+        #     for i in range(len(charge4)): 
+        #         charge4[i].coords[0] += difbplusa         
+        #         charge4[i].coords[1] += difb[1] 
+        #         newcharge.append(charge_xyz(charge4[i].coords, charge4[i].charge))
         
-        #+b-a
-        if rotAxis=="b" or rotAxis=="0":
-            countChargesPDIR +=1
-            charge5 = copy.deepcopy(charge)
-            for i in range(len(charge5)): 
-                charge5[i].coords[0] += difbminusa    
-                charge5[i].coords[1] += difb[1]
-                newcharge.append(charge_xyz(charge5[i].coords, charge5[i].charge))
+        # #+b-a
+        # if rotAxis=="b" or rotAxis=="0":
+        #     countChargesPDIR +=1
+        #     charge5 = copy.deepcopy(charge)
+        #     for i in range(len(charge5)): 
+        #         charge5[i].coords[0] += difbminusa    
+        #         charge5[i].coords[1] += difb[1]
+        #         newcharge.append(charge_xyz(charge5[i].coords, charge5[i].charge))
 
-        #-b
-        if rotAxis=="a" or rotAxis=="b" or rotAxis=="0":
-            countChargesPDIR +=1
-            charge6 = copy.deepcopy(charge)
-            for i in range(len(charge6)):
-                charge6[i].coords[0] -= difb[0]
-                charge6[i].coords[1] -= difb[1]
-                newcharge.append(charge_xyz(charge6[i].coords, charge6[i].charge))
+        # #-b
+        # if rotAxis=="a" or rotAxis=="b" or rotAxis=="0":
+        #     countChargesPDIR +=1
+        #     charge6 = copy.deepcopy(charge)
+        #     for i in range(len(charge6)):
+        #         charge6[i].coords[0] -= difb[0]
+        #         charge6[i].coords[1] -= difb[1]
+        #         newcharge.append(charge_xyz(charge6[i].coords, charge6[i].charge))
 
-        #-b-a
-        if rotAxis=="a" or rotAxis=="b" or rotAxis=="0":
-            countChargesPDIR +=1
-            charge7 = copy.deepcopy(charge)
-            for i in range(len(charge7)):
-                charge7[i].coords[0] += minusdifbminusa
-                charge7[i].coords[1] -= difb[1]
-                newcharge.append(charge_xyz(charge7[i].coords, charge7[i].charge))
+        # #-b-a
+        # if rotAxis=="a" or rotAxis=="b" or rotAxis=="0":
+        #     countChargesPDIR +=1
+        #     charge7 = copy.deepcopy(charge)
+        #     for i in range(len(charge7)):
+        #         charge7[i].coords[0] += minusdifbminusa
+        #         charge7[i].coords[1] -= difb[1]
+        #         newcharge.append(charge_xyz(charge7[i].coords, charge7[i].charge))
 
-        #-b+a
-        if rotAxis=="a" or rotAxis=="0":
-            countChargesPDIR +=1
-            charge8 = copy.deepcopy(charge)
-            for i in range(len(charge8)):
-                charge8[i].coords[0] += minusdifbplusa
-                charge8[i].coords[1] -= difb[1]
-                newcharge.append(charge_xyz(charge8[i].coords, charge8[i].charge))
+        # #-b+a
+        # if rotAxis=="a" or rotAxis=="0":
+        #     countChargesPDIR +=1
+        #     charge8 = copy.deepcopy(charge)
+        #     for i in range(len(charge8)):
+        #         charge8[i].coords[0] += minusdifbplusa
+        #         charge8[i].coords[1] -= difb[1]
+        #         newcharge.append(charge_xyz(charge8[i].coords, charge8[i].charge))
 
-        #Begin second shell
-        #+2a
-        if rotAxis=="a" or rotAxis=="0":
-            countChargesPDIR +=1
-            charge9 = copy.deepcopy(charge)
-            for i in range(len(charge9)):
-                charge9[i].coords[0] += 2*a
-                newcharge.append(charge_xyz(charge9[i].coords, charge9[i].charge))
+        # #Begin second shell
+        # #+2a
+        # if rotAxis=="a" or rotAxis=="0":
+        #     countChargesPDIR +=1
+        #     charge9 = copy.deepcopy(charge)
+        #     for i in range(len(charge9)):
+        #         charge9[i].coords[0] += 2*a
+        #         newcharge.append(charge_xyz(charge9[i].coords, charge9[i].charge))
 
-        #-2a
-        if rotAxis=="a" or rotAxis=="0" or rotAxis=="b":
-            countChargesPDIR +=1
-            charge10 = copy.deepcopy(charge)
-            for i in range(len(charge10)):
-                charge10[i].coords[0] -= 2*a
-                newcharge.append(charge_xyz(charge10[i].coords, charge10[i].charge))
+        # #-2a
+        # if rotAxis=="a" or rotAxis=="0" or rotAxis=="b":
+        #     countChargesPDIR +=1
+        #     charge10 = copy.deepcopy(charge)
+        #     for i in range(len(charge10)):
+        #         charge10[i].coords[0] -= 2*a
+        #         newcharge.append(charge_xyz(charge10[i].coords, charge10[i].charge))
 
-        #-2a+b
-        if rotAxis=="0" or rotAxis=="b":
-            countChargesPDIR +=1
-            charge11 = copy.deepcopy(charge)
-            for i in range(len(charge11)):
-                charge11[i].coords[0] += -2*a + difb[0]
-                charge11[i].coords[1] += difb[1]
-                newcharge.append(charge_xyz(charge11[i].coords, charge11[i].charge))
+        # #-2a+b
+        # if rotAxis=="0" or rotAxis=="b":
+        #     countChargesPDIR +=1
+        #     charge11 = copy.deepcopy(charge)
+        #     for i in range(len(charge11)):
+        #         charge11[i].coords[0] += -2*a + difb[0]
+        #         charge11[i].coords[1] += difb[1]
+        #         newcharge.append(charge_xyz(charge11[i].coords, charge11[i].charge))
 
-        #-2a+2b
-        if rotAxis=="0" or rotAxis=="b":
-            countChargesPDIR +=1
-            charge12 = copy.deepcopy(charge)
-            for i in range(len(charge12)):
-                charge12[i].coords[0] += -2*a + 2*difb[0]
-                charge12[i].coords[1] += 2*difb[1]
-                newcharge.append(charge_xyz(charge12[i].coords, charge12[i].charge))
+        # #-2a+2b
+        # if rotAxis=="0" or rotAxis=="b":
+        #     countChargesPDIR +=1
+        #     charge12 = copy.deepcopy(charge)
+        #     for i in range(len(charge12)):
+        #         charge12[i].coords[0] += -2*a + 2*difb[0]
+        #         charge12[i].coords[1] += 2*difb[1]
+        #         newcharge.append(charge_xyz(charge12[i].coords, charge12[i].charge))
 
-        #-a+2b
-        if rotAxis=="b" or rotAxis=="0":
-            countChargesPDIR +=1
-            charge13 = copy.deepcopy(charge)
-            for i in range(len(charge13)):
-                charge13[i].coords[0] += -a + 2*difb[0]
-                charge13[i].coords[1] += 2*difb[1]
-                newcharge.append(charge_xyz(charge13[i].coords, charge13[i].charge))
+        # #-a+2b
+        # if rotAxis=="b" or rotAxis=="0":
+        #     countChargesPDIR +=1
+        #     charge13 = copy.deepcopy(charge)
+        #     for i in range(len(charge13)):
+        #         charge13[i].coords[0] += -a + 2*difb[0]
+        #         charge13[i].coords[1] += 2*difb[1]
+        #         newcharge.append(charge_xyz(charge13[i].coords, charge13[i].charge))
 
-        #+a+2b
-        if rotAxis=="0":
-            countChargesPDIR +=1
-            charge14 = copy.deepcopy(charge)
-            for i in range(len(charge14)):
-                charge14[i].coords[0] += a + 2*difb[0]
-                charge14[i].coords[1] += 2*difb[1]
-                newcharge.append(charge_xyz(charge14[i].coords, charge14[i].charge))
+        # #+a+2b
+        # if rotAxis=="0":
+        #     countChargesPDIR +=1
+        #     charge14 = copy.deepcopy(charge)
+        #     for i in range(len(charge14)):
+        #         charge14[i].coords[0] += a + 2*difb[0]
+        #         charge14[i].coords[1] += 2*difb[1]
+        #         newcharge.append(charge_xyz(charge14[i].coords, charge14[i].charge))
 
-        #+2a+2b
-        if rotAxis=="0":
-            countChargesPDIR +=1
-            charge15 = copy.deepcopy(charge)
-            for i in range(len(charge15)):
-                charge15[i].coords[0] += 2*(a + difb[0])
-                charge15[i].coords[1] += 2*difb[1]
-                newcharge.append(charge_xyz(charge15[i].coords, charge15[i].charge))
+        # #+2a+2b
+        # if rotAxis=="0":
+        #     countChargesPDIR +=1
+        #     charge15 = copy.deepcopy(charge)
+        #     for i in range(len(charge15)):
+        #         charge15[i].coords[0] += 2*(a + difb[0])
+        #         charge15[i].coords[1] += 2*difb[1]
+        #         newcharge.append(charge_xyz(charge15[i].coords, charge15[i].charge))
 
-        #+2a+b
-        if rotAxis=="0":
-            countChargesPDIR +=1
-            charge16 = copy.deepcopy(charge)
-            for i in range(len(charge16)):
-                charge16[i].coords[0] += 2*a + difb[0]
-                charge16[i].coords[1] += difb[1]
-                newcharge.append(charge_xyz(charge16[i].coords, charge16[i].charge))
+        # #+2a+b
+        # if rotAxis=="0":
+        #     countChargesPDIR +=1
+        #     charge16 = copy.deepcopy(charge)
+        #     for i in range(len(charge16)):
+        #         charge16[i].coords[0] += 2*a + difb[0]
+        #         charge16[i].coords[1] += difb[1]
+        #         newcharge.append(charge_xyz(charge16[i].coords, charge16[i].charge))
 
-        #+2b
-        if rotAxis=="b" or rotAxis=="0":
-            countChargesPDIR +=1
-            charge17 = copy.deepcopy(charge)
-            for i in range(len(charge17)):
-                charge17[i].coords[0] += 2*difb[0]
-                charge17[i].coords[1] += 2*difb[1]
-                newcharge.append(charge_xyz(charge17[i].coords, charge17[i].charge))
+        # #+2b
+        # if rotAxis=="b" or rotAxis=="0":
+        #     countChargesPDIR +=1
+        #     charge17 = copy.deepcopy(charge)
+        #     for i in range(len(charge17)):
+        #         charge17[i].coords[0] += 2*difb[0]
+        #         charge17[i].coords[1] += 2*difb[1]
+        #         newcharge.append(charge_xyz(charge17[i].coords, charge17[i].charge))
 
-        #gap of one because of duplicate charge
-        #-2a-b
-        if rotAxis=="a" or rotAxis=="0" or rotAxis=="b":
-            countChargesPDIR +=1
-            charge19 = copy.deepcopy(charge)
-            for i in range(len(charge19)):
-                charge19[i].coords[0] += -2*a - difb[0]
-                charge19[i].coords[1] -= difb[1]
-                newcharge.append(charge_xyz(charge19[i].coords, charge19[i].charge))
+        # #gap of one because of duplicate charge
+        # #-2a-b
+        # if rotAxis=="a" or rotAxis=="0" or rotAxis=="b":
+        #     countChargesPDIR +=1
+        #     charge19 = copy.deepcopy(charge)
+        #     for i in range(len(charge19)):
+        #         charge19[i].coords[0] += -2*a - difb[0]
+        #         charge19[i].coords[1] -= difb[1]
+        #         newcharge.append(charge_xyz(charge19[i].coords, charge19[i].charge))
 
-        #+2a-b
-        if rotAxis=="a" or rotAxis=="0":
-            countChargesPDIR +=1
-            charge20 = copy.deepcopy(charge)
-            for i in range(len(charge20)):
-                charge20[i].coords[0] += 2*a - difb[0]
-                charge20[i].coords[1] -= difb[1]
-                newcharge.append(charge_xyz(charge20[i].coords, charge20[i].charge))
+        # #+2a-b
+        # if rotAxis=="a" or rotAxis=="0":
+        #     countChargesPDIR +=1
+        #     charge20 = copy.deepcopy(charge)
+        #     for i in range(len(charge20)):
+        #         charge20[i].coords[0] += 2*a - difb[0]
+        #         charge20[i].coords[1] -= difb[1]
+        #         newcharge.append(charge_xyz(charge20[i].coords, charge20[i].charge))
 
-        #+2a-2b
-        if rotAxis=="0" or rotAxis=="a":
-            countChargesPDIR +=1
-            charge21 = copy.deepcopy(charge)
-            for i in range(len(charge21)):
-                charge21[i].coords[0] += 2*(a - difb[0])
-                charge21[i].coords[1] -= 2*difb[1]
-                newcharge.append(charge_xyz(charge21[i].coords, charge21[i].charge))
+        # #+2a-2b
+        # if rotAxis=="0" or rotAxis=="a":
+        #     countChargesPDIR +=1
+        #     charge21 = copy.deepcopy(charge)
+        #     for i in range(len(charge21)):
+        #         charge21[i].coords[0] += 2*(a - difb[0])
+        #         charge21[i].coords[1] -= 2*difb[1]
+        #         newcharge.append(charge_xyz(charge21[i].coords, charge21[i].charge))
 
-        #+a-2b
-        if rotAxis=="0" or rotAxis=="a":
-            countChargesPDIR +=1
-            charge22 = copy.deepcopy(charge)
-            for i in range(len(charge22)):
-                charge22[i].coords[0] += a - 2*difb[0]
-                charge22[i].coords[1] -= 2*difb[1]
-                newcharge.append(charge_xyz(charge22[i].coords, charge22[i].charge))
+        # #+a-2b
+        # if rotAxis=="0" or rotAxis=="a":
+        #     countChargesPDIR +=1
+        #     charge22 = copy.deepcopy(charge)
+        #     for i in range(len(charge22)):
+        #         charge22[i].coords[0] += a - 2*difb[0]
+        #         charge22[i].coords[1] -= 2*difb[1]
+        #         newcharge.append(charge_xyz(charge22[i].coords, charge22[i].charge))
 
-        #-2b
-        if rotAxis=="b" or rotAxis=="0" or rotAxis=="a":
-            countChargesPDIR +=1
-            charge23 = copy.deepcopy(charge)
-            for i in range(len(charge23)):
-                charge23[i].coords[0] -= 2*difb[0]
-                charge23[i].coords[1] -= 2*difb[1]
-                newcharge.append(charge_xyz(charge23[i].coords, charge23[i].charge))
+        # #-2b
+        # if rotAxis=="b" or rotAxis=="0" or rotAxis=="a":
+        #     countChargesPDIR +=1
+        #     charge23 = copy.deepcopy(charge)
+        #     for i in range(len(charge23)):
+        #         charge23[i].coords[0] -= 2*difb[0]
+        #         charge23[i].coords[1] -= 2*difb[1]
+        #         newcharge.append(charge_xyz(charge23[i].coords, charge23[i].charge))
 
-        #-2b-a
-        if rotAxis=="b" or rotAxis=="0" or rotAxis=="a":
-            countChargesPDIR +=1
-            charge24 = copy.deepcopy(charge)
-            for i in range(len(charge24)):
-                charge24[i].coords[0] -= 2*difb[0] + a
-                charge24[i].coords[1] -= 2*difb[1]
-                newcharge.append(charge_xyz(charge24[i].coords, charge24[i].charge))
+        # #-2b-a
+        # if rotAxis=="b" or rotAxis=="0" or rotAxis=="a":
+        #     countChargesPDIR +=1
+        #     charge24 = copy.deepcopy(charge)
+        #     for i in range(len(charge24)):
+        #         charge24[i].coords[0] -= 2*difb[0] + a
+        #         charge24[i].coords[1] -= 2*difb[1]
+        #         newcharge.append(charge_xyz(charge24[i].coords, charge24[i].charge))
 
-        #-2b-2a
-        if rotAxis=="0" or rotAxis=="a" or rotAxis=="b":
-            countChargesPDIR +=1
-            charge25 = copy.deepcopy(charge)
-            for i in range(len(charge25)):
-                charge25[i].coords[0] -= 2* (difb[0] + a)
-                charge25[i].coords[1] -= 2*difb[1]
-                newcharge.append(charge_xyz(charge25[i].coords, charge25[i].charge))
+        # #-2b-2a
+        # if rotAxis=="0" or rotAxis=="a" or rotAxis=="b":
+        #     countChargesPDIR +=1
+        #     charge25 = copy.deepcopy(charge)
+        #     for i in range(len(charge25)):
+        #         charge25[i].coords[0] -= 2* (difb[0] + a)
+        #         charge25[i].coords[1] -= 2*difb[1]
+        #         newcharge.append(charge_xyz(charge25[i].coords, charge25[i].charge))
 
     beginMultiplierA = -2
     beginMultiplierB = -2
     moleculesA = 5
     moleculesB = 5
 
-    if rotAxis == "b":
-        moleculesA = 3
-
+    # Adjust values
     if rotAxis == "a":
-        moleculesB = 3
+        beginMultiplierB = 1 - numberLayers
+        moleculesB = numberLayers
+
+    if rotAxis == "b":
+        beginMultiplierA = 1 - numberLayers
+        moleculesA = numberLayers
+
+    #Begin first layer (middle)
+    if (numberLayers >= 1 and (rotAxis == "c" or rotAxis == "0")) or (rotAxis == "a") or (rotAxis == "b"):
+        for i in range(moleculesB):
+            for j in range(moleculesA):
+                if (beginMultiplierB != -i or beginMultiplierA != -j):
+                    countChargesPDIR +=1
+                    chargeFirstLayer = copy.deepcopy(charge)
+                    for k in range(len(chargeFirstLayer)):
+                        chargeFirstLayer[k].coords[0] += beginMultiplierA*a + beginMultiplierB*difb[0] + j*a + i*difb[0]
+                        chargeFirstLayer[k].coords[1] += beginMultiplierB*difb[1] + i*difb[1]
+                        newcharge.append(charge_xyz(chargeFirstLayer[k].coords, chargeFirstLayer[k].charge))
 
     #Begin second layer (-z)
-    if numberLayers >= 2:
+    if (numberLayers >= 2 and (rotAxis == "c" or rotAxis == "0")) or (rotAxis == "a") or (rotAxis == "b"):
         for i in range(moleculesB):
             for j in range(moleculesA):
                 countChargesPDIR +=1
@@ -646,7 +661,7 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
                     newcharge.append(charge_xyz(chargeSecondLayer[k].coords, chargeSecondLayer[k].charge))
 
     #Begin third layer (+z)
-    if numberLayers >= 3:
+    if (numberLayers >= 3 and (rotAxis == "c" or rotAxis == "0")) or (rotAxis == "a") or (rotAxis == "b"):
         for i in range(moleculesB):
             for j in range(moleculesA):
                 countChargesPDIR +=1
@@ -1243,7 +1258,7 @@ def main():
     
     shiftstart = float(input("Gib den Startpunkt der ersten Koordinate an: "))
     shiftsize = float(input("Gib die Schrittweite der Verschiebung der ersten Koordinate an: "))
-    shiftlength = float(input("Gib die Länge ein, um die die erste Koordinate verschoben werden soll: "))
+    shiftlength = float(input("Gib den Endpunkt der Verschiebung ein: "))
     
     #Erstellt einen neuen Ordner, geht hinein und macht ihn zum Hauptordner
     new= input ("Ordnernamen angeben: ")
@@ -1294,7 +1309,7 @@ def main():
     #subprocess.call('qsub -V gauss.sh', shell=True)
 
     #Schleife, die die ebengenannten Schritte wiederholt.
-    i = shiftsize
+    i = shiftstart
     while i < shiftlength:
 
         new_input = readXYZ("neueKoordinaten%s.xyz" %step)
