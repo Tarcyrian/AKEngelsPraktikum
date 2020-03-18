@@ -1144,12 +1144,23 @@ def main():
         # duplicate the working first layer of DIP
         if numberChargeLayersDIP >= 2:
             DIPchargesSecondLayer = duplicateLayerDIP(geo_chargesDIP, lengthcDIP)
+            if numberChargeLayersDIP >=3:
+                DIPchargesThirdLayer = duplicateLayerDIP(geo_chargesDIP, -lengthcDIP)
+                for i in range(len(DIPchargesThirdLayer)):
+                    geo_chargesDIP.append(charge_xyz(DIPchargesThirdLayer[i].coords, DIPchargesThirdLayer[i].charge))
+
             for i in range(len(DIPchargesSecondLayer)):
                 geo_chargesDIP.append(charge_xyz(DIPchargesSecondLayer[i].coords, DIPchargesSecondLayer[i].charge))
             
+            # Add in the charge directly over the original molecule
             Tempgeocharges = duplicateLayerDIP(geo_chargeDIPOriginal, lengthcDIP)
             for i in range(len(Tempgeocharges)):
                 geo_chargesDIP.append(charge_xyz(Tempgeocharges[i].coords, Tempgeocharges[i].charge))
+
+            if numberChargeLayersDIP >= 3:
+                Tempgeocharges = duplicateLayerDIP(geo_chargeDIPOriginal, -lengthcDIP)
+                for i in range(len(Tempgeocharges)):
+                    geo_chargesDIP.append(charge_xyz(Tempgeocharges[i].coords, Tempgeocharges[i].charge))
        
         geo_chargesPDIR = PDIRcharges
 
