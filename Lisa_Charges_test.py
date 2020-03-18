@@ -622,31 +622,38 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
                 charge25[i].coords[1] -= 2*difb[1]
                 newcharge.append(charge_xyz(charge25[i].coords, charge25[i].charge))
 
+    beginMultiplierA = -2
+    beginMultiplierB = -2
+    moleculesA = 5
+    moleculesB = 5
+
+    if rotAxis == "b":
+        moleculesA = 3
+
+    if rotAxis == "a":
+        moleculesB = 3
+
     #Begin second layer (-z)
     if numberLayers >= 2:
-        for i in range(5):
-            for j in range(5):
+        for i in range(moleculesB):
+            for j in range(moleculesA):
                 countChargesPDIR +=1
                 chargeSecondLayer = copy.deepcopy(charge)
                 for k in range(len(chargeSecondLayer)):
-                    chargeSecondLayer[k].coords[0] += -2*a - 2*difb[0] + j*a + i*difb[0] - difc[0]
-                    chargeSecondLayer[k].coords[1] += -2*difb[1] + i*difb[1] - difc[1]
+                    chargeSecondLayer[k].coords[0] += beginMultiplierA*a + beginMultiplierB*difb[0] + j*a + i*difb[0] - difc[0]
+                    chargeSecondLayer[k].coords[1] += beginMultiplierB*difb[1] + i*difb[1] - difc[1]
                     chargeSecondLayer[k].coords[2] += -difc[2]
                     newcharge.append(charge_xyz(chargeSecondLayer[k].coords, chargeSecondLayer[k].charge))
 
     #Begin third layer (+z)
     if numberLayers >= 3:
-        beginMultiplierA = -2
-        beginMultiplierB = -2
-        moleculesA = 5
-        moleculesB = 5
-        for i in range(5):
-            for j in range(5):
+        for i in range(moleculesB):
+            for j in range(moleculesA):
                 countChargesPDIR +=1
                 chargeThirdLayer = copy.deepcopy(charge)
                 for k in range(len(chargeThirdLayer)):
-                    chargeThirdLayer[k].coords[0] += -2*a - 2*difb[0] + j*a + i*difb[0] + difc[0]
-                    chargeThirdLayer[k].coords[1] += -2*difb[1] + i*difb[1] + difc[1]
+                    chargeThirdLayer[k].coords[0] += beginMultiplierA*a + beginMultiplierB*difb[0] + j*a + i*difb[0] + difc[0]
+                    chargeThirdLayer[k].coords[1] += beginMultiplierB*difb[1] + i*difb[1] + difc[1]
                     chargeThirdLayer[k].coords[2] += difc[2]
                     newcharge.append(charge_xyz(chargeThirdLayer[k].coords, chargeThirdLayer[k].charge))
 
