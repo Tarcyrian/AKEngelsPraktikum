@@ -1226,25 +1226,47 @@ def main():
 
     #Rotation des Kristalls
     
-    if wahl == "Ja":
-        
-        if axis == "a":
-            axis = [1,0,0]
-            angle = 180 - alphaPDIR
+    #Rotation des Kristalls
+    if wahlDIP == "Ja":
+        if axisDIP == "a":
+            axisDIP = [1,0,0]
+            angleDIP = 180 - alphaDIP
             print("Vorsicht: y = z und z = y")
-        elif axis == "b":
-            axis = [0,1,0]
-            angle = 180 - betaPDIR
+        elif axisDIP == "b":
+            axisDIP = [0,1,0]
+            angleDIP = 180 - betaDIP
             print("Vorsicht: x = z und z = x")
-        elif axis == "c":
-            axis = [0,0,1]
-            angle = 180 - gammaPDIR
+        elif axisDIP == "c":
+            axisDIP = [0,0,1]
+            angleDIP = 180 - gammaDIP
             print("Vorsicht: x = y und y = x")
 
-        file_geo = product_matrix_vector(rot_axis_angle(axis,angle),file_geo)
+        file_geo = product_matrix_vector(rot_axis_angle(axisDIP, angleDIP), file_geo)
 
         if char == "Ja":
-            geo_chargesDIP = product_matrix_vector_charges(rot_axis_angle(axis,angle),geo_chargesDIP)
+            geo_chargesDIP = product_matrix_vector_charges(rot_axis_angle(axisDIP, angleDIP), geo_chargesDIP)
+
+    #Rotation des Kristalls
+    wahlPDIR = input("Willst du den PDIR-Kristall rotieren? (Ja, Nein): ")
+    if wahlPDIR == "Ja":
+        axisPDIR = input("Um welche Achse soll rotiert werden? (a, b, c): ")
+        if axisPDIR == "a":
+            axisPDIR = [1,0,0]
+            anglePDIR = 180 - alphaPDIR
+
+        elif axisPDIR == "b":
+            axisPDIR = [0,1,0]
+            anglePDIR = 180 - betaPDIR
+
+        elif axisPDIR == "c":
+            axisPDIR = [0,0,1]
+            anglePDIR = 180 - gammaPDIR
+        
+
+        file_geo2 = product_matrix_vector(rot_axis_angle(axisPDIR, anglePDIR), file_geo2)
+
+        if char == "Ja":
+            geo_chargesPDIR = product_matrix_vector_charges(rot_axis_angle(axisPDIR, anglePDIR), geo_chargesPDIR)
 
     #Initalisieren weiterer Varibalen
     xyz1 = input("Gib die 1. Koordinate an, die verschoben werden soll (x, y, z): ")
@@ -1268,7 +1290,7 @@ def main():
     #Erstellt eine Datei, welche die Usereingaben beinhalten.
     useroutput(char, DIP2, dup, dup2, verschiebung1, verschiebung2,
         xyz1, xyz2, shiftstart, shiftstart2, shiftsize, shiftsize2,
-        shiftlength, shiftlength2, wahl, axis, angle)
+        shiftlength, shiftlength2, wahlDIP, axis, angle)
 
     #Erstellt einen neuen Ordner und geht hinein
     newdir="{}_{}_vacuum".format(step, xyz1)
