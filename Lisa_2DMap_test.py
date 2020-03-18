@@ -58,7 +58,7 @@ def readcharges(file):
 '''Funktion getcenterofGeo:
     Berechnet Center of Geometry und gibt die
     veränderten Koordinaten zurück.'''
-def getcenterofGeo(ret):
+def moveToCenterofGeo(ret):
     centerOfGeo = [0.0, 0.0, 0.0]
 
     for i in range(len(ret)):
