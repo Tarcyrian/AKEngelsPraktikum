@@ -256,7 +256,7 @@ def getchargesDIP1(charge, a, b, c, numberLayers):
             charge14[i].coords[1] -= b
             newcharge.append(charge_xyz(charge14[i].coords, charge14[i].charge))
 
-    # Second layer DIP1
+    # Second layer DIP1 failed attempt
     # if numberLayers >= 2:
     #     for i in range(5):
     #         for j in range(3):
@@ -382,7 +382,7 @@ def getchargesDIP2(charge, a, b, c, numberLayers):
         charge15[i].coords[0] -= a
         chargegeaendert.append(charge_xyz(charge15[i].coords, charge15[i].charge))
 
-    # Second layer DIP2
+    # Second layer DIP2 failed attempt
     # if numberLayers >= 2:
     #     for i in range(4):
     #         for j in range(4):
@@ -488,7 +488,7 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
                 newcharge.append(charge_xyz(charge9[i].coords, charge9[i].charge))
 
         #-2a
-        if rotAxis=="a" or rotAxis=="0":
+        if rotAxis=="a" or rotAxis=="0" or rotAxis=="b":
             countChargesPDIR +=1
             charge10 = copy.deepcopy(charge)
             for i in range(len(charge10)):
@@ -496,7 +496,7 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
                 newcharge.append(charge_xyz(charge10[i].coords, charge10[i].charge))
 
         #-2a+b
-        if rotAxis=="0":
+        if rotAxis=="0" or rotAxis=="b":
             countChargesPDIR +=1
             charge11 = copy.deepcopy(charge)
             for i in range(len(charge11)):
@@ -505,7 +505,7 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
                 newcharge.append(charge_xyz(charge11[i].coords, charge11[i].charge))
 
         #-2a+2b
-        if rotAxis=="0":
+        if rotAxis=="0" or rotAxis=="b":
             countChargesPDIR +=1
             charge12 = copy.deepcopy(charge)
             for i in range(len(charge12)):
@@ -560,7 +560,7 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
 
         #gap of one because of duplicate charge
         #-2a-b
-        if rotAxis=="a" or rotAxis=="0":
+        if rotAxis=="a" or rotAxis=="0" or rotAxis=="b":
             countChargesPDIR +=1
             charge19 = copy.deepcopy(charge)
             for i in range(len(charge19)):
@@ -578,7 +578,7 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
                 newcharge.append(charge_xyz(charge20[i].coords, charge20[i].charge))
 
         #+2a-2b
-        if rotAxis=="0":
+        if rotAxis=="0" or rotAxis=="a":
             countChargesPDIR +=1
             charge21 = copy.deepcopy(charge)
             for i in range(len(charge21)):
@@ -587,7 +587,7 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
                 newcharge.append(charge_xyz(charge21[i].coords, charge21[i].charge))
 
         #+a-2b
-        if rotAxis=="0":
+        if rotAxis=="0" or rotAxis=="a":
             countChargesPDIR +=1
             charge22 = copy.deepcopy(charge)
             for i in range(len(charge22)):
@@ -596,7 +596,7 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
                 newcharge.append(charge_xyz(charge22[i].coords, charge22[i].charge))
 
         #-2b
-        if rotAxis=="b" or rotAxis=="0":
+        if rotAxis=="b" or rotAxis=="0" or rotAxis=="a":
             countChargesPDIR +=1
             charge23 = copy.deepcopy(charge)
             for i in range(len(charge23)):
@@ -605,7 +605,7 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
                 newcharge.append(charge_xyz(charge23[i].coords, charge23[i].charge))
 
         #-2b-a
-        if rotAxis=="b" or rotAxis=="0":
+        if rotAxis=="b" or rotAxis=="0" or rotAxis=="a":
             countChargesPDIR +=1
             charge24 = copy.deepcopy(charge)
             for i in range(len(charge24)):
@@ -614,7 +614,7 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
                 newcharge.append(charge_xyz(charge24[i].coords, charge24[i].charge))
 
         #-2b-2a
-        if rotAxis=="0":
+        if rotAxis=="0" or rotAxis=="a" or rotAxis=="b":
             countChargesPDIR +=1
             charge25 = copy.deepcopy(charge)
             for i in range(len(charge25)):
@@ -636,6 +636,10 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
 
     #Begin third layer (+z)
     if numberLayers >= 3:
+        beginMultiplierA = -2
+        beginMultiplierB = -2
+        moleculesA = 5
+        moleculesB = 5
         for i in range(5):
             for j in range(5):
                 countChargesPDIR +=1
@@ -1142,10 +1146,13 @@ def main():
         #geo_chargesDIP = shiftchargesdip1
 
         # duplicate the working first layer of DIP
+        OneDirection = 1
+        if axisDIP == "a":
+            OneDirection = -1
         if numberChargeLayersDIP >= 2:
-            DIPchargesSecondLayer = duplicateLayerDIP(geo_chargesDIP, lengthcDIP)
+            DIPchargesSecondLayer = duplicateLayerDIP(geo_chargesDIP, OneDirection*lengthcDIP)
             if numberChargeLayersDIP >=3:
-                DIPchargesThirdLayer = duplicateLayerDIP(geo_chargesDIP, -lengthcDIP)
+                DIPchargesThirdLayer = duplicateLayerDIP(geo_chargesDIP, OneDirection*lengthcDIP)
                 for i in range(len(DIPchargesThirdLayer)):
                     geo_chargesDIP.append(charge_xyz(DIPchargesThirdLayer[i].coords, DIPchargesThirdLayer[i].charge))
 
@@ -1153,12 +1160,12 @@ def main():
                 geo_chargesDIP.append(charge_xyz(DIPchargesSecondLayer[i].coords, DIPchargesSecondLayer[i].charge))
             
             # Add in the charge directly over the original molecule
-            Tempgeocharges = duplicateLayerDIP(geo_chargeDIPOriginal, lengthcDIP)
+            Tempgeocharges = duplicateLayerDIP(geo_chargeDIPOriginal, OneDirection*lengthcDIP)
             for i in range(len(Tempgeocharges)):
                 geo_chargesDIP.append(charge_xyz(Tempgeocharges[i].coords, Tempgeocharges[i].charge))
 
             if numberChargeLayersDIP >= 3:
-                Tempgeocharges = duplicateLayerDIP(geo_chargeDIPOriginal, -lengthcDIP)
+                Tempgeocharges = duplicateLayerDIP(geo_chargeDIPOriginal, OneDirection*lengthcDIP)
                 for i in range(len(Tempgeocharges)):
                     geo_chargesDIP.append(charge_xyz(Tempgeocharges[i].coords, Tempgeocharges[i].charge))
        
