@@ -1070,7 +1070,17 @@ def duplicateLayerDIP(original, offset):
 
     return newLayer
 
-
+def mergeChargeCoords(coords, charges, path):
+    f = open(path, "w")
+    for j in range(len(coords)):
+        k = 0
+        while k < 3:
+            f.write(str(np.array(coords[j].coords[k])))
+            f.write("   ")
+            k += 1
+        f.write(str(charges[j].charge))
+        f.write("\n")
+    f.close()
 
 
 
