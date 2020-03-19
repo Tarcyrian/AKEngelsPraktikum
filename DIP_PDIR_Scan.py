@@ -1011,11 +1011,11 @@ def main():
     while mode != "1" and mode != "2": # safety measure to ensure correct choice
         mode = input("Soll ein 1D oder 2D Scan ausgeführt werden? (1/2): ")
 
-    sendCalculation = "Nein"
+    sendCalculation = "invalid"
     while sendCalculation != "Ja" and sendCalculation != "Nein":
         sendCalculation = input("Soll die Rechnung am Ende abgeschickt werden? (Ja/Nein): ")
 
-    if mode == "1"
+    if mode == "1":
         print("VORSICHT: Das Molekül wird in das Center of Geometry geschoben!")
 
         DIP2 = input("Soll das 2. DIP-Molekül aus der Einheitszelle dazugeladen werden? (Ja, Nein): ")
