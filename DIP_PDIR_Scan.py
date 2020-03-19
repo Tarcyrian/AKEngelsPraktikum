@@ -723,8 +723,24 @@ def mergeChargeCoords(coords, charges, path):
 '''Funktion output:
     Öffnet eine neue xyz-Datei und speichert dort
     die veränderten Koordinaten und Symbole ab.'''
-def output(newcoord, step):
+def output1D(newcoord, step):
     f = open("neueKoordinaten{}.xyz".format(step), "w")
+    f.write(str(int(len(newcoord))))
+    f.write("\n")
+    f.write("\n")
+    for a in range(len(newcoord)):
+        f.write(str(newcoord[a].symbol))
+        f.write("    ")
+        j = 0
+        while j < 3:
+            f.write(str(np.array(newcoord[a].coords[j])))
+            f.write("   ")
+            j += 1
+        f.write("\n")
+    f.close()
+
+def output2D(newcoord, step, step2):
+    f = open("neueKoordinaten{}_{}.xyz".format(step, step2), "w")
     f.write(str(int(len(newcoord))))
     f.write("\n")
     f.write("\n")
@@ -818,7 +834,7 @@ Dimer
 
 '''Funktion make_sh:
     Erstellt eine sh-Datei'''
-def make_sh(step, xyz):
+def make_sh1D(step, xyz):
     head = """#PBS -l nodes=1:ppn=8
 #PBS -l walltime=800:00:00
 #PBS -l mem=8GB
@@ -841,6 +857,30 @@ cp -rf * $PBS_O_WORKDIR
 """
     with open("gauss.sh", "w") as out_file:
         out_file.write(head.format("charge-field", step, xyz))
+
+def make_sh2D(step, step2, xyz1, xyz2):
+    head = """#PBS -l nodes=1:ppn=8
+#PBS -l walltime=800:00:00
+#PBS -l mem=8GB
+#PBS -N {}_{}_{}_{}Dimer
+
+cd $PBS_O_WORKDIR
+cp -rf * $TMPDIR
+cd $TMPDIR
+
+# setenv g16root /apps/gaussian/g16_A
+# source $g16root/g16/bsd/g16.login
+
+# setenv GAUSS_SCRDIR $TMPDIR
+
+g16  gauss.com
+rm Gau-*
+
+cp -rf * $PBS_O_WORKDIR
+
+"""
+    with open("gauss.sh","w") as out_file:
+        out_file.write(head.format("charge-field", step, step2, xyz1, xyz2))
 
 def useroutput1D(char, DIP2, dup, dup2, verschiebung1, verschiebung2,
     xyz, shiftstart, shiftsize, shiftlength, wahlPDIR, axisPDIR, anglePDIR,
@@ -939,6 +979,22 @@ def useroutput2D(char, DIP2, dup, dup2, verschiebung1, verschiebung2,
     f.write("\n")
     f.close()
 
+def thirdAxis(first, second):
+    if first == "x":
+        if second == "y":
+            return "z"
+        if second == "z":
+            return "y"
+    elif first == "y":
+        if second == "x":
+            return "z"
+        if second == "z":
+            return "x"
+    elif first == "z":
+        if second == "x":
+            return "y"
+        if second == "y":
+            return x
 
 def duplicateLayerDIP(original, offset):
     # Es ist egal ob man hier DIP1 oder DIP2 nimmt, denn es wird am Ende zusammengezählt.
@@ -975,6 +1031,7 @@ def main():
     anglePDIR = ""
 
     step = 0
+    step2 = 0
 
     #Länge der a-, b- und c-Achse des DIP-Einheitskristalles
     lengthaDIP = 7.1709
@@ -1175,7 +1232,7 @@ def main():
         '''Berechnet den Startpunkt, speichert die Symbole und
             veränderten Koordinaten in eine Datei und liest sie wieder ein.'''
         shiftxyz = shiftcoord(xyz, file_geo, shiftstart)
-        output(shiftxyz, step)
+        output1D(shiftxyz, step)
 
         first_input = readXYZ("neueKoordinaten{}.xyz".format(step)) 
 
@@ -1200,7 +1257,7 @@ def main():
 
         #Erstellen der com- und sh-Datei
         make_com(first_input, file_geo2, first_charges, geo_chargesPDIR, char)
-        make_sh(step,xyz)
+        make_sh1D(step,xyz)
 
         #Abschicken der Rechnung
         if sendCalculation == "Ja":
@@ -1223,7 +1280,7 @@ def main():
             os.mkdir(newdir)
             os.chdir(newdir)
 
-            output(shiftcoord(xyz, new_input, shiftsize), step)
+            output1D(shiftcoord(xyz, new_input, shiftsize), step)
             if char == "Ja":
                 shiftchargexyz = shiftcoordcharges(xyz, new_charges, shiftsize)
                 outputchargesDIP1D(shiftchargexyz, step)
@@ -1235,7 +1292,7 @@ def main():
             
 
             make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char)
-            make_sh(step, xyz)
+            make_sh1D(step, xyz)
             
             if sendCalculation == "Ja":                
                 subprocess.call('qsub -V gauss.sh', shell=True)
@@ -1420,7 +1477,7 @@ def main():
         #Erstellt eine Datei, welche die Usereingaben beinhalten.
         useroutput2D(char, DIP2, dup, dup2, verschiebung1, verschiebung2,
             xyz1, xyz2, shiftstart, shiftstart2, shiftsize, shiftsize2,
-            shiftlength, shiftlength2, wahlDIP, axis, angle)
+            shiftlength, shiftlength2, wahlDIP, axisDIP, angleDIP)
 
         #Erstellt einen neuen Ordner und geht hinein
         newdir="{}_{}_vacuum".format(step, xyz1)
@@ -1438,7 +1495,7 @@ def main():
         shiftz = shiftcoord(thirdAxis(xyz1, xyz2), shiftxyz1, distance)
         shiftall = shiftcoord(xyz2, shiftz, shiftstart2)
 
-        output(shiftall, step, step2)
+        output2D(shiftall, step, step2)
 
         first_input = readXYZ("neueKoordinaten{}_{}.xyz".format(step, step2))
 
@@ -1461,7 +1518,7 @@ def main():
 
         #Erstellen der com- und sh-Datei
         make_com(first_input, file_geo2, first_charges, geo_chargesPDIR, char)
-        make_sh(step, step2, xyz1, xyz2)
+        make_sh2D(step, step2, xyz1, xyz2)
 
         #Abschicken der Rechnung
         if sendCalculation == "Ja":
@@ -1490,7 +1547,7 @@ def main():
 
                 shifty = shiftcoord(xyz2, new_input, shiftsize2)
 
-                output(shifty, step, step2)
+                output2D(shifty, step, step2)
 
                 if char == "Ja":
                     shiftchargey = shiftcoordcharges(xyz2, new_charges, shiftsize2)
@@ -1505,7 +1562,7 @@ def main():
                 
      
                 make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char)
-                make_sh(step, step2, xyz1, xyz2)
+                make_sh2D(step, step2, xyz1, xyz2)
 
                 if sendCalculation == "Ja":
                     subprocess.call('qsub -V gauss.sh', shell = True)
@@ -1539,7 +1596,7 @@ def main():
 
                 shiftx = shiftcoord(xyz1, new_input, shiftsize)
 
-                output(shiftx, step, step2)
+                output2D(shiftx, step, step2)
 
                 if char == "Ja":
                     shiftchargex = shiftcoordcharges(xyz1, new_charges, shiftsize)
@@ -1553,7 +1610,7 @@ def main():
                     outputeverythingDIPPDIR2D(new_input, file_geo2, DIPPDIR, new_charges, geo_chargesPDIR, step, step2)
 
                 make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char)
-                make_sh(step, step2, xyz1, xyz2)
+                make_sh2D(step, step2, xyz1, xyz2)
 
                 if sendCalculation == "Ja":
                     subprocess.call('qsub -V gauss.sh', shell = True)
