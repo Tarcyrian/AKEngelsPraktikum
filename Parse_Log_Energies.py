@@ -35,7 +35,6 @@ if scanType == "1":
                     outputstring += line
         os.chdir('..')
 
-# Go deeper if needed and make a list here too
 if scanType == "2":
     outputstring += "Evaluating 2D Scan...\n"
     for directory in subdirs:
