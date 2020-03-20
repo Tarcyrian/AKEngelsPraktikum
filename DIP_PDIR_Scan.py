@@ -723,8 +723,8 @@ def mergeChargeCoords(coords, charges, path):
 '''Funktion output:
     Öffnet eine neue xyz-Datei und speichert dort
     die veränderten Koordinaten und Symbole ab.'''
-def output1D(newcoord, step):
-    f = open("neueKoordinaten{}.xyz".format(step), "w")
+def output1D(newcoord, step, fileName):
+    f = open(fileName, "w")
     f.write(str(int(len(newcoord))))
     f.write("\n")
     f.write("\n")
@@ -739,8 +739,8 @@ def output1D(newcoord, step):
         f.write("\n")
     f.close()
 
-def output2D(newcoord, step, step2):
-    f = open("neueKoordinaten{}_{}.xyz".format(step, step2), "w")
+def output2D(newcoord, step, step2, fileName):
+    f = open(fileName, "w")
     f.write(str(int(len(newcoord))))
     f.write("\n")
     f.write("\n")
@@ -1229,10 +1229,19 @@ def main():
         useroutput1D(char, DIP2, dup, dup2, verschiebung1, verschiebung2, xyz, shiftstart,
             shiftsize, shiftlength, wahlPDIR, axisPDIR, anglePDIR, wahlDIP, axisDIP, angleDIP)
         
+        newdir="{}_{}_vacuum".format(step, xyz)
+        os.mkdir(newdir)
+        os.chdir(newdir)
+
         '''Berechnet den Startpunkt, speichert die Symbole und
             veränderten Koordinaten in eine Datei und liest sie wieder ein.'''
         shiftxyz = shiftcoord(xyz, file_geo, shiftstart)
-        output1D(shiftxyz, step)
+        bothMolecules = copy.deepcopy(shiftxyz)
+        for singleAtom in file_input2:
+            bothMolecules.append(atom_xyz(singleAtom.symbol, singleAtom.coords))
+
+        output1D(bothMolecules, step, "neueKoordinatenBeide{}.xyz".format(step))
+        output1D(shiftxyz, step, "neueKoordinaten{}.xyz".format(step))
 
         first_input = readXYZ("neueKoordinaten{}.xyz".format(step)) 
 
@@ -1280,7 +1289,13 @@ def main():
             os.mkdir(newdir)
             os.chdir(newdir)
 
-            output1D(shiftcoord(xyz, new_input, shiftsize), step)
+            shiftxyzstep = shiftcoord(xyz, new_input, shiftsize)
+            bothMoleculesstep = copy.deepcopy(shiftxyzstep)
+            for singleAtom in file_input2:
+                bothMoleculesstep.append(atom_xyz(singleAtom.symbol, singleAtom.coords))
+
+            output1D(bothMolecules, step, "neueKoordinatenBeide{}.xyz".format(step))
+            output1D(shiftxyzstep, step, "neueKoordinaten{}.xyz".format(step))
             if char == "Ja":
                 shiftchargexyz = shiftcoordcharges(xyz, new_charges, shiftsize)
                 outputchargesDIP1D(shiftchargexyz, step)
@@ -1495,7 +1510,7 @@ def main():
         shiftz = shiftcoord(thirdAxis(xyz1, xyz2), shiftxyz1, distance)
         shiftall = shiftcoord(xyz2, shiftz, shiftstart2)
 
-        output2D(shiftall, step, step2)
+        output2D(shiftall, step, step2, "neueKoordinaten{}_{}.xyz".format(step, step2))
 
         first_input = readXYZ("neueKoordinaten{}_{}.xyz".format(step, step2))
 
@@ -1547,7 +1562,7 @@ def main():
 
                 shifty = shiftcoord(xyz2, new_input, shiftsize2)
 
-                output2D(shifty, step, step2)
+                output2D(shifty, step, step2, "neueKoordinaten{}_{}.xyz".format(step, step2))
 
                 if char == "Ja":
                     shiftchargey = shiftcoordcharges(xyz2, new_charges, shiftsize2)
@@ -1596,7 +1611,7 @@ def main():
 
                 shiftx = shiftcoord(xyz1, new_input, shiftsize)
 
-                output2D(shiftx, step, step2)
+                output2D(shiftx, step, step2, "neueKoordinaten{}_{}.xyz".format(step, step2))
 
                 if char == "Ja":
                     shiftchargex = shiftcoordcharges(xyz1, new_charges, shiftsize)
