@@ -1086,7 +1086,7 @@ def main():
         
         #Liest das 2. DIP-Molekül ein und hängt es an das erste an.
         if DIP2 == "Ja":
-            for i in range(len(file_input)):
+            for i in range(len(file_input1)):
                 file_input.append(atom_xyz(file_input1[i].symbol, file_input1[i].coords))
 
 
@@ -1155,7 +1155,7 @@ def main():
 
         #Erstellt Center of Geometry der Moleküle
         file_geo = moveToCenterofGeo(file_input)  # Dip @ CoG
-        file_geo1 = moveToCenterofGeo(file_input1) #DIP2 @ CoG
+        #file_geo1 = moveToCenterofGeo(file_input1) #DIP2 @ CoG
         file_geo2 = moveToCenterofGeo(file_input2)
 
         #Duplizieren sowohl von DIP als auch von PDIR
