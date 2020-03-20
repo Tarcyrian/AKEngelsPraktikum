@@ -58,7 +58,9 @@ def readcharges(file):
 '''Funktion moveToCenterofGeo:
     Berechnet Center of Geometry und gibt die
     veränderten Koordinaten zurück.'''
+
 def moveToCenterofGeo(ret):
+
     centerOfGeo = [0.0, 0.0, 0.0]
 
     for i in range(len(ret)):
@@ -84,8 +86,23 @@ def moveToCenterofGeo(ret):
         while m < 3:
             ret[i].coords[m] += negativeCenterOfGeo[m]
             m += 1
-
     return ret
+
+def getCenterOfGeo(ret):
+    centerOfGeo = [0.0, 0.0, 0.0]
+    for i in range(len(ret)):
+        j = 0
+        while j < 3:
+            centerOfGeo[j] += ret[i].coords[j]
+            j += 1
+
+    k = 0       
+    while k < 3:
+            centerOfGeo[k] /= len(ret)
+            k += 1     
+    
+    return centerOfGeo
+
 
 '''Funktion duplicateDIP:
     Dupliziert ret und verschiebt x oder y um einen konstanten Wert.
@@ -260,14 +277,15 @@ def getchargesDIP1(charge, a, b, c, numberLayers):
 
 '''Bildet die Ladungen um DIP2 und speichert sie in einer Liste.'''
 countChargesDIP2 = 0 
-def getchargesDIP2(charge, a, b, c, numberLayers):
+def getchargesDIP2(charge, a, b, c, numberLayers, DIP2):
     global countChargesDIP2
 
     chargegeaendert = []
 
-    countChargesDIP2 += 1
-    for i in range(len(charge)):
-        chargegeaendert.append(charge_xyz(charge[i].coords, charge[i].charge))
+    if DIP2 == "Nein":
+        countChargesDIP2 += 1
+        for i in range(len(charge)):
+            chargegeaendert.append(charge_xyz(charge[i].coords, charge[i].charge))
 
     countChargesDIP2 +=1  
     charge1 = copy.deepcopy(charge)
@@ -717,7 +735,17 @@ def mergeChargeCoords(coords, charges, path):
         f.write("\n")
     f.close()
 
-
+def mergeSymbolCoords(coords, symbols, path):
+    f = open(path, "w")
+    for j in range(len(coords)):
+        k = 0
+        f.write(symbols[j].symbol)
+        while k < 3:
+            f.write("   ")
+            f.write(str(np.array(coords[j].coords[k])))
+            k += 1
+        f.write("\n")
+    f.close()
 
 
 '''Funktion output:
@@ -1085,7 +1113,7 @@ def main():
         dup2 = input("Soll PDIR dupliziert werden? (Ja, Nein): ")
         
         #Liest das 2. DIP-Molekül ein und hängt es an das erste an.
-        if DIP2 == "Ja":
+        if DIP2 == "Ja" and char == "Nein":
             for i in range(len(file_input1)):
                 file_input.append(atom_xyz(file_input1[i].symbol, file_input1[i].coords))
 
@@ -1098,7 +1126,8 @@ def main():
             axisDIP = input("Um welche Achse soll rotiert werden? (a, b, c): ")
         '''Liest die Ladungen von DIP und PDIR ein, verschiebt sie,
             speichert sie in 2 Listen und macht centerofGeo von beiden'''
-        
+        CenterOfDIP = getCenterOfGeo(file_input)
+        file_geo = moveToCenterofGeo(file_input)
         file_geo3 = moveToCenterofGeo(file_input3) #PDIR charges crystal structure
         if char == "Ja":
 
@@ -1108,23 +1137,36 @@ def main():
             mergeChargeCoords(file_input3, chargesPDIR, "Charges_Merged_PDIR.txt")
             chargesPDIR = readcharges("Charges_Merged_PDIR.txt")
 
+
             geo_chargesPDIR = moveToCenterofGeo(chargesPDIR)
             #geo_chargesDIP = moveToCenterofGeo(chargesDIP1)
             #geo_chargesDIP2 = moveToCenterofGeo(chargesDIP2)
+            
         
             shiftchargesdip1 = getchargesDIP1(chargesDIP1, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP) 
-            shiftchargesdip2 = getchargesDIP2(chargesDIP2, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP)
+            shiftchargesdip2 = getchargesDIP2(chargesDIP2, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP, DIP2)
             PDIRcharges = getchargesPDIR(geo_chargesPDIR, difb, lengthaPDIR, difc, axisDIP, numberChargeLayersPDIR)
             #geo_chargesDIP = moveToCenterofGeo(chargesDIP1)
             #shiftchargesdip1 = moveToCenterofGeo(shiftchargesdip1)
             #shiftchargesdip2 = moveToCenterofGeo(shiftchargesdip2)
+            mergeSymbolCoords(chargesDIP2, file_input1, "NewDip2Molecule.txt")
 
             for i in range(len(shiftchargesdip2)):
                 shiftchargesdip1.append(charge_xyz(shiftchargesdip2[i].coords, shiftchargesdip2[i].charge))
-            geo_chargesDIP = moveToCenterofGeo(shiftchargesdip1)
-            geo_chargeDIPOriginal = moveToCenterofGeo(chargesDIP1)
-            #geo_chargesDIP = shiftchargesdip1
+            
+            if DIP2 == "Nein":
+                geo_chargesDIP = moveToCenterofGeo(shiftchargesdip1)
+            
+            if DIP2 == "Ja":
+                for i in range(len(shiftchargesdip1)):
+                    m = 0
+                    while m < 3:
+                        shiftchargesdip1[i].coords[m] -= CenterOfDIP[m]
+                        m += 1
+                geo_chargesDIP = copy.deepcopy(shiftchargesdip1)
 
+            geo_chargeDIPOriginal = moveToCenterofGeo(chargesDIP1) #The Charge that lies in the original DIP1 molecule
+            #geo_chargesDIP = shiftchargesdip1
             # duplicate the working first layer of DIP
             OneDirection = 1
             if axisDIP == "a":
@@ -1154,9 +1196,22 @@ def main():
             
 
         #Erstellt Center of Geometry der Moleküle
-        file_geo = moveToCenterofGeo(file_input)  # Dip @ CoG
+        # CenterOfDIP = getCenterOfGeo(file_input)
+        # file_geo = moveToCenterofGeo(file_input)  # Dip @ CoG
         #file_geo1 = moveToCenterofGeo(file_input1) #DIP2 @ CoG
         file_geo2 = moveToCenterofGeo(file_input2)
+
+        DIP2MoleculeFromCharges = readXYZ("NewDip2Molecule.txt")
+        # Move the DIP2 molecule from charges by the same amount as DIP1 was moved by moveToCenterOfGeo:
+        for i in range(len(DIP2MoleculeFromCharges)):
+            m = 0
+            while m < 3:
+                DIP2MoleculeFromCharges[i].coords[m] -= CenterOfDIP[m]
+                m += 1
+        # Add the corrected DIP2 to the DIP molecule
+        for oneAtom in DIP2MoleculeFromCharges:
+            file_geo.append(atom_xyz(oneAtom.symbol, oneAtom.coords))
+
 
         #Duplizieren sowohl von DIP als auch von PDIR
         if dup == "Ja":
@@ -1369,7 +1424,7 @@ def main():
             #geo_chargesDIP2 = moveToCenterofGeo(chargesDIP2)
         
             shiftchargesdip1 = getchargesDIP1(chargesDIP1, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP) 
-            shiftchargesdip2 = getchargesDIP2(chargesDIP2, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP)
+            shiftchargesdip2 = getchargesDIP2(chargesDIP2, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP, DIP2)
             PDIRcharges = getchargesPDIR(geo_chargesPDIR, difb, lengthaPDIR, difc, axisDIP, numberChargeLayersPDIR)
             #geo_chargesDIP = moveToCenterofGeo(chargesDIP1)
             #shiftchargesdip1 = moveToCenterofGeo(shiftchargesdip1)
