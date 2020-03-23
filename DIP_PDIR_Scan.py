@@ -1229,6 +1229,7 @@ def main():
         # CenterOfDIP = getCenterOfGeo(file_input)
         # file_geo = moveToCenterofGeo(file_input)  # Dip @ CoG
         #file_geo1 = moveToCenterofGeo(file_input1) #DIP2 @ CoG
+        #This line has to be there to align the CoG of DIP1 and DIP2 to the CoG of the PDIR Dimer, no one knows why
         file_geo2 = moveToCenterofGeo(file_input2)
 
         ### Use this to center on DIP1 when using both DIPs
