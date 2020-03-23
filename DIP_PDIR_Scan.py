@@ -959,7 +959,7 @@ def useroutput1D(char, DIP2, dup, dup2, verschiebung1, verschiebung2,
 
 def useroutput2D(char, DIP2, dup, dup2, verschiebung1, verschiebung2,
     xyz1, xyz2, shiftstart, shiftstart2, shiftsize, shiftsize2, shiftlength,
-    shiftlength2, wahl, axis, angle):
+    shiftlength2, wahl, axis, angle, abstandAuf3):
     f = open("Usereingaben.txt","w")
     f.write("Folgende Usereingaben wurden bei dieser Rechnung benutzt: ")
     f.write("\n\n")
@@ -978,6 +978,7 @@ def useroutput2D(char, DIP2, dup, dup2, verschiebung1, verschiebung2,
     f.write("\n")
     f.write("Um welche Koordinate wurde es verschoben: %s" %verschiebung2)
     f.write("\n")
+    f.write("Abstand auf der dritten Koordinate: %s" %abstandAuf3)
     f.write("\n")
     f.write("Die DIP-Moleküle wurden um die Koordinate %s verschoben." %xyz1)
     f.write("\n")
@@ -1548,7 +1549,7 @@ def main():
         #Erstellt eine Datei, welche die Usereingaben beinhalten.
         useroutput2D(char, DIP2, dup, dup2, verschiebung1, verschiebung2,
             xyz1, xyz2, shiftstart, shiftstart2, shiftsize, shiftsize2,
-            shiftlength, shiftlength2, wahlDIP, axisDIP, angleDIP)
+            shiftlength, shiftlength2, wahlDIP, axisDIP, angleDIP, distance)
 
         #Erstellt einen neuen Ordner und geht hinein
         newdir="{}_{}_vacuum".format(step, xyz1)
