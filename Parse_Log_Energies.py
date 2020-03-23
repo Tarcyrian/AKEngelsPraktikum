@@ -27,6 +27,8 @@ if scanType == "1":
         os.chdir(directory)
         print("Parsing " + directory)
         outputstring += "\nIn " + directory + " found:\n"
+        temp = open("gauss.log", "a")
+        temp.close()
         with open("gauss.log", "r") as log:
             prevtrue = False
             for line in log:
@@ -47,6 +49,8 @@ if scanType == "2":
             os.chdir(otherdirectory)
             print("\tParsing " + otherdirectory)
             outputstring += "\n\tIn " + otherdirectory + " found:\n"
+            temp = open("gauss.log", "a")
+            temp.close()
             with open("gauss.log", "r") as log:
                 prevtrue = False
                 for line in log:
