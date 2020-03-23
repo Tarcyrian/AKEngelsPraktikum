@@ -829,7 +829,7 @@ def outputchargesDIP2D(newcoord, step, step2):
     Erstellt eine com-Datei'''
 def make_com(xyz1, xyz2, chargesDIP, chargesPDIR, char, method):
     if char == "Ja":
-        if method == "2":
+        if method == "2" or "invalid":
             head = """%NProcShared=8
 %Mem=6GB
 %chk=gs.chk
@@ -1135,12 +1135,11 @@ def main():
         sendCalculation = input("Soll die Rechnung am Ende abgeschickt werden? (Ja/Nein): ")
 
     calcMethod ="invalid"
-    while calcMethod !="1" and calcMethod !="2":
-        calcMethod = input("HF (1) oder w-B97 (2)? ")    
+    if sendCalculation =="Ja":
+        while calcMethod !="1" and calcMethod !="2":
+            calcMethod = input("HF (1) oder w-B97 (2)? ")    
 
     if mode == "1":
-        print("VORSICHT: Das Molekül wird in das Center of Geometry geschoben!")
-
         DIP2 = input("Soll das 2. DIP-Molekül aus der Einheitszelle dazugeladen werden? (Ja, Nein): ")
         char = str(input("Sollen Ladungen berücksichtigt werden? (Ja, Nein): "))
         if char == "Ja":
@@ -1449,8 +1448,6 @@ def main():
     '''
 
     if mode == "2":
-        print("VORSICHT: Das Molekül wird in das Center of Geometry geschoben!")
-
         DIP2 = input("Soll das 2. DIP-Molekül aus der Einheitszelle dazugeladen werden? (Ja, Nein): ")
         char = str(input("Sollen Ladungen berücksichtigt werden? (Ja, Nein): "))
         if char == "Ja":
