@@ -1163,6 +1163,7 @@ def main():
         file_geo3 = moveToCenterofGeo(file_input3) #PDIR charges crystal structure
 
         #Duplizieren sowohl von DIP als auch von PDIR
+        verschiebung2 = "0"
         if dup == "Ja":
             verschiebung1 = input("In welche Richtung soll das zweite DIP-Molekül verschoben werden? (xp, xn, yp, yn, zp, zn): ")
             file_geo = duplicateDIP(file_geo, verschiebung1, lengthaDIP, lengthbDIP)
@@ -1470,7 +1471,23 @@ def main():
         '''Liest die Ladungen von DIP und PDIR ein, verschiebt sie,
             speichert sie in 2 Listen und macht centerofGeo von beiden'''
         
+        #Duplizieren sowohl von DIP als auch von PDIR
+        verschiebung2 = "0"
+        if dup == "Ja":
+            verschiebung1 = input("In welche Richtung soll das zweite DIP-Molekül verschoben werden? (xp, xn, yp, yn, zp, zn):")
+            file_geo_verschoben = duplicateDIP(file_geo, verschiebung1, lengthaDIP, lengthbDIP)
+            for i in range(len(file_geo_verschoben)):
+                file_geo.append(atom_xyz(file_geo_verschoben[i].symbol, file_geo_verschoben[i].coords))
+
+        if dup2 == "Ja":
+            verschiebung2 = input("In welche Richtung soll das zweite PDIR-Molekül verschoben werden? (ap, an, bp, bn, cp, cn):") 
+            file_geo2_verschoben = duplicatePDIR(file_geo2, lengthaPDIR, difb, difc, verschiebung2)
+            for i in range(len(file_geo2_verschoben)):
+                file_geo2.append(atom_xyz(file_geo2_verschoben[i].symbol, file_geo2_verschoben[i].coords))
+
         file_geo3 = moveToCenterofGeo(file_input3) #PDIR charges crystal structure
+
+        
         if char == "Ja":
 
             chargesDIP1 = readcharges("first_DIP_charges.txt")
@@ -1485,7 +1502,7 @@ def main():
         
             shiftchargesdip1 = getchargesDIP1(chargesDIP1, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP) 
             shiftchargesdip2 = getchargesDIP2(chargesDIP2, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP, DIP2)
-            PDIRcharges = getchargesPDIR(geo_chargesPDIR, difb, lengthaPDIR, difc, axisDIP, numberChargeLayersPDIR)
+            PDIRcharges = getchargesPDIR(geo_chargesPDIR, difb, lengthaPDIR, difc, axisDIP, numberChargeLayersPDIR, verschiebung2)
             #geo_chargesDIP = moveToCenterofGeo(chargesDIP1)
             #shiftchargesdip1 = moveToCenterofGeo(shiftchargesdip1)
             #shiftchargesdip2 = moveToCenterofGeo(shiftchargesdip2)
@@ -1529,18 +1546,7 @@ def main():
         file_geo1 = moveToCenterofGeo(file_input1) #DIP2 @ CoG
         file_geo2 = moveToCenterofGeo(file_input2)
 
-        #Duplizieren sowohl von DIP als auch von PDIR
-        if dup == "Ja":
-            verschiebung1 = input("In welche Richtung soll das zweite DIP-Molekül verschoben werden? (xp, xn, yp, yn, zp, zn):")
-            file_geo_verschoben = duplicateDIP(file_geo, verschiebung1, lengthaDIP, lengthbDIP)
-            for i in range(len(file_geo_verschoben)):
-                file_geo.append(atom_xyz(file_geo_verschoben[i].symbol, file_geo_verschoben[i].coords))
 
-        if dup2 == "Ja":
-            verschiebung2 = input("In welche Richtung soll das zweite PDIR-Molekül verschoben werden? (ap, an, bp, bn, cp, cn):") 
-            file_geo2_verschoben = duplicatePDIR(file_geo2, lengthaPDIR, difb, difc, verschiebung2)
-            for i in range(len(file_geo2_verschoben)):
-                file_geo2.append(atom_xyz(file_geo2_verschoben[i].symbol, file_geo2_verschoben[i].coords))
 
         #Rotation des Kristalls
         
