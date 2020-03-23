@@ -394,7 +394,7 @@ def getchargesDIP2(charge, a, b, c, numberLayers, DIP2):
 '''Bildet die Ladungen um PDIR und speichert sie in einer Liste.
 Die Ladungen werden anhand der Rotationsaxe ausgewählt.'''
 countChargesPDIR=0
-def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
+def getchargesPDIR(charge, difb, a, difc, rotAxisDIP, numberLayers, direction):
     newcharge = []
     global countChargesPDIR
     difbplusa = difb[0] + a
@@ -408,49 +408,58 @@ def getchargesPDIR(charge, difb, a, difc, rotAxis, numberLayers):
     moleculesB = 5
 
     # Adjust values
-    if rotAxis == "a":
+    if rotAxisDIP == "a":
         beginMultiplierB = 1 - numberLayers
         moleculesB = numberLayers
 
-    if rotAxis == "b":
+    if rotAxisDIP == "b":
         beginMultiplierA = 1 - numberLayers
         moleculesA = numberLayers
 
     #Begin first layer (middle)
-    if (numberLayers >= 1 and (rotAxis == "c" or rotAxis == "0")) or (rotAxis == "a") or (rotAxis == "b"):
+    if (numberLayers >= 1 and (rotAxisDIP == "c" or rotAxisDIP == "0")) or (rotAxisDIP == "a") or (rotAxisDIP == "b"):
         for i in range(moleculesB):
             for j in range(moleculesA):
-                if (beginMultiplierB != -i or beginMultiplierA != -j):
-                    countChargesPDIR +=1
-                    chargeFirstLayer = copy.deepcopy(charge)
-                    for k in range(len(chargeFirstLayer)):
-                        chargeFirstLayer[k].coords[0] += beginMultiplierA*a + beginMultiplierB*difb[0] + j*a + i*difb[0]
-                        chargeFirstLayer[k].coords[1] += beginMultiplierB*difb[1] + i*difb[1]
-                        newcharge.append(charge_xyz(chargeFirstLayer[k].coords, chargeFirstLayer[k].charge))
+                # Check which charge should be left out:
+                if not ((direction == "bn" and beginMultiplierA == -j and (beginMultiplierB + i) == -1) or
+                        (direction == "bp" and beginMultiplierA == -j and (beginMultiplierB + i) == 1) or
+                        (direction == "an" and (beginMultiplierA + j) == -1 and beginMultiplierB == -i) or
+                        (direction == "ap" and (beginMultiplierA + j) == 1 and beginMultiplierB == -i)):
+                    if (beginMultiplierB != -i or beginMultiplierA != -j):
+                        countChargesPDIR +=1
+                        chargeFirstLayer = copy.deepcopy(charge)
+                        for k in range(len(chargeFirstLayer)):
+                            chargeFirstLayer[k].coords[0] += beginMultiplierA*a + beginMultiplierB*difb[0] + j*a + i*difb[0]
+                            chargeFirstLayer[k].coords[1] += beginMultiplierB*difb[1] + i*difb[1]
+                            newcharge.append(charge_xyz(chargeFirstLayer[k].coords, chargeFirstLayer[k].charge))
 
     #Begin second layer (-z)
-    if (numberLayers >= 2 and (rotAxis == "c" or rotAxis == "0")) or (rotAxis == "a") or (rotAxis == "b"):
+    if (numberLayers >= 2 and (rotAxisDIP == "c" or rotAxisDIP == "0")) or (rotAxisDIP == "a") or (rotAxisDIP == "b"):
         for i in range(moleculesB):
             for j in range(moleculesA):
-                countChargesPDIR +=1
-                chargeSecondLayer = copy.deepcopy(charge)
-                for k in range(len(chargeSecondLayer)):
-                    chargeSecondLayer[k].coords[0] += beginMultiplierA*a + beginMultiplierB*difb[0] + j*a + i*difb[0] - difc[0]
-                    chargeSecondLayer[k].coords[1] += beginMultiplierB*difb[1] + i*difb[1] - difc[1]
-                    chargeSecondLayer[k].coords[2] += -difc[2]
-                    newcharge.append(charge_xyz(chargeSecondLayer[k].coords, chargeSecondLayer[k].charge))
+                if not ((direction == "cn" and beginMultiplierA == -j and beginMultiplierB == -i) or
+                        (direction == "cp" and beginMultiplierA == -j and beginMultiplierB == -i)):
+                    countChargesPDIR +=1
+                    chargeSecondLayer = copy.deepcopy(charge)
+                    for k in range(len(chargeSecondLayer)):
+                        chargeSecondLayer[k].coords[0] += beginMultiplierA*a + beginMultiplierB*difb[0] + j*a + i*difb[0] - difc[0]
+                        chargeSecondLayer[k].coords[1] += beginMultiplierB*difb[1] + i*difb[1] - difc[1]
+                        chargeSecondLayer[k].coords[2] += -difc[2]
+                        newcharge.append(charge_xyz(chargeSecondLayer[k].coords, chargeSecondLayer[k].charge))
 
     #Begin third layer (+z)
-    if (numberLayers >= 3 and (rotAxis == "c" or rotAxis == "0")) or (rotAxis == "a") or (rotAxis == "b"):
+    if (numberLayers >= 3 and (rotAxisDIP == "c" or rotAxisDIP == "0")) or (rotAxisDIP == "a") or (rotAxisDIP == "b"):
         for i in range(moleculesB):
             for j in range(moleculesA):
-                countChargesPDIR +=1
-                chargeThirdLayer = copy.deepcopy(charge)
-                for k in range(len(chargeThirdLayer)):
-                    chargeThirdLayer[k].coords[0] += beginMultiplierA*a + beginMultiplierB*difb[0] + j*a + i*difb[0] + difc[0]
-                    chargeThirdLayer[k].coords[1] += beginMultiplierB*difb[1] + i*difb[1] + difc[1]
-                    chargeThirdLayer[k].coords[2] += difc[2]
-                    newcharge.append(charge_xyz(chargeThirdLayer[k].coords, chargeThirdLayer[k].charge))
+                if not ((direction == "cn" and beginMultiplierA == -j and beginMultiplierB == -i) or
+                        (direction == "cp" and beginMultiplierA == -j and beginMultiplierB == -i)):
+                    countChargesPDIR +=1
+                    chargeThirdLayer = copy.deepcopy(charge)
+                    for k in range(len(chargeThirdLayer)):
+                        chargeThirdLayer[k].coords[0] += beginMultiplierA*a + beginMultiplierB*difb[0] + j*a + i*difb[0] + difc[0]
+                        chargeThirdLayer[k].coords[1] += beginMultiplierB*difb[1] + i*difb[1] + difc[1]
+                        chargeThirdLayer[k].coords[2] += difc[2]
+                        newcharge.append(charge_xyz(chargeThirdLayer[k].coords, chargeThirdLayer[k].charge))
 
     
 
@@ -1085,14 +1094,14 @@ def main():
 
     #Differenz zwischen y- und b-Achse und z- und c-Achse
     difb = getbPDIR(gammaPDIR, lengthbPDIR)
-    difc = getcPDIR(alphaPDIR, betaPDIR, gammaPDIR, lengthbPDIR)
+    difc = getcPDIR(alphaPDIR, betaPDIR, gammaPDIR, lengthcPDIR)
 
     #Einlesen der Dateien
     file_input = readXYZ("output_first_DIP_molecule___with_opt_geo.xyz")
     file_input1 = readXYZ("output_second_DIP_molecule___with_opt_geo.xyz")
     file_input2 = readXYZ("PDIR_S0_1.xyz") #geometrieoptimierte Struktur
     file_input3 = readXYZ("PDIR_umsortiert.xyz") #lädt das Molekül in der Struktur des Kristalls
-
+    
     #Initalisieren der Variablen mit Userinput
     mode = "invalid"
     while mode != "1" and mode != "2": # safety measure to ensure correct choice
@@ -1129,7 +1138,20 @@ def main():
             speichert sie in 2 Listen und macht centerofGeo von beiden'''
         CenterOfDIP = getCenterOfGeo(file_input)
         file_geo = moveToCenterofGeo(file_input)
+        file_geo2 = moveToCenterofGeo(file_input2)
         file_geo3 = moveToCenterofGeo(file_input3) #PDIR charges crystal structure
+
+        #Duplizieren sowohl von DIP als auch von PDIR
+        if dup == "Ja":
+            verschiebung1 = input("In welche Richtung soll das zweite DIP-Molekül verschoben werden? (xp, xn, yp, yn, zp, zn):")
+            file_geo = duplicateDIP(file_geo, verschiebung1, lengthaDIP, lengthbDIP)
+        
+        if dup2 == "Ja":
+            verschiebung2 = input("In welche Richtung soll das zweite PDIR-Molekül verschoben werden? (ap, an, bp, bn, cp, cn):") 
+            file_geo2 = duplicatePDIR(file_geo2, lengthaPDIR, difb, difc, verschiebung2)
+
+        CenterOfPDIR = getCenterOfGeo(file_input2)
+
         if char == "Ja":
 
             chargesDIP1 = readcharges("first_DIP_charges.txt")
@@ -1146,7 +1168,7 @@ def main():
         
             shiftchargesdip1 = getchargesDIP1(chargesDIP1, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP) 
             shiftchargesdip2 = getchargesDIP2(chargesDIP2, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP, DIP2)
-            PDIRcharges = getchargesPDIR(geo_chargesPDIR, difb, lengthaPDIR, difc, axisDIP, numberChargeLayersPDIR)
+            PDIRcharges = getchargesPDIR(geo_chargesPDIR, difb, lengthaPDIR, difc, axisDIP, numberChargeLayersPDIR, verschiebung2)
             #geo_chargesDIP = moveToCenterofGeo(chargesDIP1)
             #shiftchargesdip1 = moveToCenterofGeo(shiftchargesdip1)
             #shiftchargesdip2 = moveToCenterofGeo(shiftchargesdip2)
@@ -1165,6 +1187,13 @@ def main():
                         shiftchargesdip1[i].coords[m] -= CenterOfDIP[m]
                         m += 1
                 geo_chargesDIP = copy.deepcopy(shiftchargesdip1)
+
+            if dup2 == "Ja":
+                for i in range(len(PDIRcharges)):
+                    m = 0
+                    while m < 3:
+                        PDIRcharges[i].coords[m] -= CenterOfPDIR[m]
+                        m += 1
 
             geo_chargeDIPOriginal = moveToCenterofGeo(chargesDIP1) #The Charge that lies in the original DIP1 molecule
             #geo_chargesDIP = shiftchargesdip1
@@ -1213,17 +1242,6 @@ def main():
         # # Add the corrected DIP2 to the DIP molecule
         # for oneAtom in DIP2MoleculeFromCharges:
         #     file_geo.append(atom_xyz(oneAtom.symbol, oneAtom.coords))
-
-
-        #Duplizieren sowohl von DIP als auch von PDIR
-        if dup == "Ja":
-            verschiebung1 = input("In welche Richtung soll das zweite DIP-Molekül verschoben werden? (xp, xn, yp, yn, zp, zn):")
-            file_geo = duplicateDIP(file_geo, verschiebung1, lengthaDIP, lengthbDIP)
-        
-
-        if dup2 == "Ja":
-            verschiebung2 = input("In welche Richtung soll das zweite PDIR-Molekül verschoben werden? (ap, an, bp, bn, cp, cn):") 
-            file_geo2 = duplicatePDIR(file_geo2, lengthaPDIR, difb, difc, verschiebung2)
             
 
         #Rotation des Kristalls
