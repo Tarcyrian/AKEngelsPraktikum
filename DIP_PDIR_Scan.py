@@ -1114,7 +1114,7 @@ def main():
         dup2 = input("Soll PDIR dupliziert werden? (Ja, Nein): ")
         
         #Liest das 2. DIP-Molekül ein und hängt es an das erste an.
-        if DIP2 == "Ja" and char == "Nein":
+        if DIP2 == "Ja": # Use and char == "Nein" to center only on DIP1
             for i in range(len(file_input1)):
                 file_input.append(atom_xyz(file_input1[i].symbol, file_input1[i].coords))
 
@@ -1202,16 +1202,17 @@ def main():
         #file_geo1 = moveToCenterofGeo(file_input1) #DIP2 @ CoG
         file_geo2 = moveToCenterofGeo(file_input2)
 
-        DIP2MoleculeFromCharges = readXYZ("NewDip2Molecule.txt")
-        # Move the DIP2 molecule from charges by the same amount as DIP1 was moved by moveToCenterOfGeo:
-        for i in range(len(DIP2MoleculeFromCharges)):
-            m = 0
-            while m < 3:
-                DIP2MoleculeFromCharges[i].coords[m] -= CenterOfDIP[m]
-                m += 1
-        # Add the corrected DIP2 to the DIP molecule
-        for oneAtom in DIP2MoleculeFromCharges:
-            file_geo.append(atom_xyz(oneAtom.symbol, oneAtom.coords))
+        ### Use this to center on DIP1 when using both DIPs
+        # DIP2MoleculeFromCharges = readXYZ("NewDip2Molecule.txt")
+        # # Move the DIP2 molecule from charges by the same amount as DIP1 was moved by moveToCenterOfGeo:
+        # for i in range(len(DIP2MoleculeFromCharges)):
+        #     m = 0
+        #     while m < 3:
+        #         DIP2MoleculeFromCharges[i].coords[m] -= CenterOfDIP[m]
+        #         m += 1
+        # # Add the corrected DIP2 to the DIP molecule
+        # for oneAtom in DIP2MoleculeFromCharges:
+        #     file_geo.append(atom_xyz(oneAtom.symbol, oneAtom.coords))
 
 
         #Duplizieren sowohl von DIP als auch von PDIR
