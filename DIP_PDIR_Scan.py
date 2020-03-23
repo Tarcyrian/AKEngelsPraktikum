@@ -827,9 +827,10 @@ def outputchargesDIP2D(newcoord, step, step2):
 
 '''Funktion make_com:
     Erstellt eine com-Datei'''
-def make_com(xyz1, xyz2, chargesDIP, chargesPDIR, char):
+def make_com(xyz1, xyz2, chargesDIP, chargesPDIR, char, method):
     if char == "Ja":
-        head = """%NProcShared=8
+        if method == "2":
+            head = """%NProcShared=8
 %Mem=6GB
 %chk=gs.chk
 #p wB97XD/cc-pVDZ charge gfinput pop=full TD(nstates=8) 
@@ -838,6 +839,17 @@ Dimer
 
 0 1
 """
+        if method == "1":
+            head = """%NProcShared=8
+%Mem=6GB
+%chk=gs.chk
+# HF/STO-3G charge
+
+Dimer
+
+0 1
+"""
+
         with open("gauss.com","w") as out_file:
             out_file.write(head)
             for struct in xyz1:
@@ -852,10 +864,21 @@ Dimer
             out_file.write("\n\n\n\n")
 
     else:
-        head = """%NProcShared=8
+        if method == "2":
+            head = """%NProcShared=8
 %Mem=6GB
 %chk=gs.chk
 #p wB97XD/cc-pVDZ gfinput pop=full TD(nstates=8) 
+
+Dimer
+
+0 1
+"""
+        if method == "1":
+            head = """%NProcShared=8
+%Mem=6GB
+%chk=gs.chk
+# HF/STO-3G
 
 Dimer
 
@@ -1111,6 +1134,10 @@ def main():
     while sendCalculation != "Ja" and sendCalculation != "Nein":
         sendCalculation = input("Soll die Rechnung am Ende abgeschickt werden? (Ja/Nein): ")
 
+    calcMethod ="invalid"
+    while calcMethod !="1" and calcMethod !="2":
+        calcMethod = input("HF (1) oder w-B97 (2)? ")    
+
     if mode == "1":
         print("VORSICHT: Das Molekül wird in das Center of Geometry geschoben!")
 
@@ -1128,12 +1155,7 @@ def main():
                 file_input.append(atom_xyz(file_input1[i].symbol, file_input1[i].coords))
 
 
-        # Vorgriff auf die Rotation, um zu wissen welche Charges ausgewählt werden müssen
-        axisDIP = "0" # Wenn die 0 nicht überschrieben wird, wurde nicht gedreht.
-        count =0
-        wahlDIP = input("Willst du den DIP Kristall rotieren? (Ja, Nein): ")
-        if wahlDIP == "Ja":
-            axisDIP = input("Um welche Achse soll rotiert werden? (a, b, c): ")
+
         '''Liest die Ladungen von DIP und PDIR ein, verschiebt sie,
             speichert sie in 2 Listen und macht centerofGeo von beiden'''
         CenterOfDIP = getCenterOfGeo(file_input)
@@ -1143,14 +1165,21 @@ def main():
 
         #Duplizieren sowohl von DIP als auch von PDIR
         if dup == "Ja":
-            verschiebung1 = input("In welche Richtung soll das zweite DIP-Molekül verschoben werden? (xp, xn, yp, yn, zp, zn):")
+            verschiebung1 = input("In welche Richtung soll das zweite DIP-Molekül verschoben werden? (xp, xn, yp, yn, zp, zn): ")
             file_geo = duplicateDIP(file_geo, verschiebung1, lengthaDIP, lengthbDIP)
         
         if dup2 == "Ja":
-            verschiebung2 = input("In welche Richtung soll das zweite PDIR-Molekül verschoben werden? (ap, an, bp, bn, cp, cn):") 
+            verschiebung2 = input("In welche Richtung soll das zweite PDIR-Molekül verschoben werden? (ap, an, bp, bn, cp, cn): ") 
             file_geo2 = duplicatePDIR(file_geo2, lengthaPDIR, difb, difc, verschiebung2)
 
         CenterOfPDIR = getCenterOfGeo(file_input2)
+
+        # Vorgriff auf die Rotation, um zu wissen welche Charges ausgewählt werden müssen
+        axisDIP = "0" # Wenn die 0 nicht überschrieben wird, wurde nicht gedreht.
+        count =0
+        wahlDIP = input("Willst du den DIP Kristall rotieren? (Ja, Nein): ")
+        if wahlDIP == "Ja":
+            axisDIP = input("Um welche Achse soll rotiert werden? (a, b, c): ")
 
         if char == "Ja":
 
@@ -1176,7 +1205,7 @@ def main():
 
             for i in range(len(shiftchargesdip2)):
                 shiftchargesdip1.append(charge_xyz(shiftchargesdip2[i].coords, shiftchargesdip2[i].charge))
-            
+            centerOfBothDIPs = getCenterOfGeo(shiftchargesdip1)
             if DIP2 == "Nein":
                 geo_chargesDIP = moveToCenterofGeo(shiftchargesdip1)
             
@@ -1195,7 +1224,20 @@ def main():
                         PDIRcharges[i].coords[m] -= CenterOfPDIR[m]
                         m += 1
 
-            geo_chargeDIPOriginal = moveToCenterofGeo(chargesDIP1) #The Charge that lies in the original DIP1 molecule
+            chargesBothDIP = copy.deepcopy(chargesDIP1)
+
+            for i in range(len(chargesDIP2)):
+                chargesBothDIP.append(charge_xyz(chargesDIP2[i].coords, chargesDIP2[i].charge))
+            if DIP2 == "Nein":
+                geo_chargeDIPOriginal = moveToCenterofGeo(chargesDIP1) #The Charge that lies in the original DIP1 molecule
+            if DIP2 == "Ja":
+                for i in range(len(chargesDIP1)):
+                    m = 0
+                    while m < 3:
+                        chargesBothDIP[i].coords[m] -= centerOfBothDIPs[m]
+                        m += 1
+                geo_chargeDIPOriginal=copy.deepcopy(chargesBothDIP)
+
             #geo_chargesDIP = shiftchargesdip1
             # duplicate the working first layer of DIP
             OneDirection = 1
@@ -1204,7 +1246,7 @@ def main():
             if numberChargeLayersDIP >= 2:
                 DIPchargesSecondLayer = duplicateLayerDIP(geo_chargesDIP, OneDirection*lengthcDIP)
                 if numberChargeLayersDIP >=3:
-                    DIPchargesThirdLayer = duplicateLayerDIP(geo_chargesDIP, OneDirection*lengthcDIP)
+                    DIPchargesThirdLayer = duplicateLayerDIP(geo_chargesDIP, 2*OneDirection*lengthcDIP)
                     for i in range(len(DIPchargesThirdLayer)):
                         geo_chargesDIP.append(charge_xyz(DIPchargesThirdLayer[i].coords, DIPchargesThirdLayer[i].charge))
 
@@ -1217,7 +1259,7 @@ def main():
                     geo_chargesDIP.append(charge_xyz(Tempgeocharges[i].coords, Tempgeocharges[i].charge))
 
                 if numberChargeLayersDIP >= 3:
-                    Tempgeocharges = duplicateLayerDIP(geo_chargeDIPOriginal, OneDirection*lengthcDIP)
+                    Tempgeocharges = duplicateLayerDIP(geo_chargeDIPOriginal, 2*OneDirection*lengthcDIP)
                     for i in range(len(Tempgeocharges)):
                         geo_chargesDIP.append(charge_xyz(Tempgeocharges[i].coords, Tempgeocharges[i].charge))
            
