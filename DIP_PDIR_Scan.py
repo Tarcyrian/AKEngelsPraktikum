@@ -1384,7 +1384,7 @@ def main():
                 geo_chargesPDIR, step)
 
         #Erstellen der com- und sh-Datei
-        make_com(first_input, file_geo2, first_charges, geo_chargesPDIR, char)
+        make_com(first_input, file_geo2, first_charges, geo_chargesPDIR, char, calcMethod)
         make_sh1D(step,xyz)
 
         #Abschicken der Rechnung
@@ -1425,7 +1425,7 @@ def main():
                 
             
 
-            make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char)
+            make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod)
             make_sh1D(step, xyz)
             
             if sendCalculation == "Ja":                
@@ -1656,7 +1656,7 @@ def main():
             outputeverythingDIPPDIR2D(first_input, file_geo2, DIPPDIR, first_charges, geo_chargesPDIR, step, step2)
 
         #Erstellen der com- und sh-Datei
-        make_com(first_input, file_geo2, first_charges, geo_chargesPDIR, char)
+        make_com(first_input, file_geo2, first_charges, geo_chargesPDIR, char, calcMethod)
         make_sh2D(step, step2, xyz1, xyz2)
 
         #Abschicken der Rechnung
@@ -1706,7 +1706,7 @@ def main():
                     outputeverythingDIPPDIR2D(new_input, file_geo2, DIPPDIR, new_charges, geo_chargesPDIR, step, step2)
                 
      
-                make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char)
+                make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod)
                 make_sh2D(step, step2, xyz1, xyz2)
 
                 if sendCalculation == "Ja":
@@ -1760,7 +1760,7 @@ def main():
                     
                     outputeverythingDIPPDIR2D(new_input, file_geo2, DIPPDIR, new_charges, geo_chargesPDIR, step, step2)
 
-                make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char)
+                make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod)
                 make_sh2D(step, step2, xyz1, xyz2)
 
                 if sendCalculation == "Ja":
