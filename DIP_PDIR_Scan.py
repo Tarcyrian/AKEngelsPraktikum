@@ -1369,7 +1369,7 @@ def main():
         
         #Initalisieren der Variablen mit Userinput
 
-        xyz = input("Gib die Koordinate(n) an, die verschoben werden soll(en) (x, y, z): ")
+        xyz = input("Gib die Koordinate an, die verschoben werden soll (x, y, z): ")
         
         shiftstart = float(input("Gib den Startpunkt der ersten Koordinate an: "))
         shiftsize = float(input("Gib die Schrittweite der Verschiebung der ersten Koordinate an: "))
@@ -1451,7 +1451,7 @@ def main():
             for singleAtom in file_input2:
                 bothMoleculesstep.append(atom_xyz(singleAtom.symbol, singleAtom.coords))
 
-            output1D(bothMolecules, "neueKoordinatenBeide{}.xyz".format(step))
+            output1D(bothMoleculesstep, "neueKoordinatenBeide{}.xyz".format(step))
             output1D(shiftxyzstep, "neueKoordinaten{}.xyz".format(step))
             if char == "Ja":
                 shiftchargexyz = shiftcoordcharges(xyz, new_charges, shiftsize)
@@ -1719,7 +1719,7 @@ def main():
         for singleAtom in file_input2:
                 shiftallboth.append(atom_xyz(singleAtom.symbol, singleAtom.coords))
 
-        output2D(shiftallboth, "neueKoordinatenBoth{}_{}.xyz".format(step, step2))
+        output2D(shiftallboth, "neueKoordinatenBeide{}_{}.xyz".format(step, step2))
         output2D(shiftall, "neueKoordinaten{}_{}.xyz".format(step, step2))
 
         first_input = readXYZ("neueKoordinaten{}_{}.xyz".format(step, step2))
@@ -1776,7 +1776,7 @@ def main():
                 for singleAtom in file_input2:
                     shiftallbothstepy.append(atom_xyz(singleAtom.symbol, singleAtom.coords))
 
-                output2D(shiftallbothstepy, "neueKoordinatenBoth{}_{}.xyz".format(step, step2))
+                output2D(shiftallbothstepy, "neueKoordinatenBeide{}_{}.xyz".format(step, step2))
 
                 output2D(shifty, "neueKoordinaten{}_{}.xyz".format(step, step2))
 
@@ -1831,7 +1831,7 @@ def main():
                 for singleAtom in file_input2:
                     shiftallbothstepx.append(atom_xyz(singleAtom.symbol, singleAtom.coords))
 
-                output2D(shiftallbothstepx, "neueKoordinatenBoth{}_{}.xyz".format(step, step2))
+                output2D(shiftallbothstepx, "neueKoordinatenBeide{}_{}.xyz".format(step, step2))
 
                 output2D(shiftx, "neueKoordinaten{}_{}.xyz".format(step, step2))
 
