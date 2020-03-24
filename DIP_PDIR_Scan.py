@@ -915,12 +915,31 @@ Dimer
     
 
 '''Funktion make_sh:
-    Erstellt eine sh-Datei'''
-def make_sh1D(step, xyz):
+    Erstellt eine sh-Datei
+
+
+    How to read the Job-Name:
+
+    D1aP1CHS_08x_05y
+
+    D1  1 DIP molecule
+    a   DIP is rotated around a (b, c) axis
+    P1  1 PDIR molecule (rotation currently not supported)
+    C   calculated with Charges (or V for vacuum)
+    H   Method (or w for wB97-XD or T for TD-cB97-XD)
+    S   Basis set STO-3G (or c for cc-pVDZ)
+    _   Space holder
+    08  Step number
+    x   axis of this stepping
+    _   Space holder
+   (05  optional second step number for 2D scans
+    y   axis of this stepping)
+    '''
+def make_sh1D(nDIP, rotAxisDIP, nPDIR, chargeOrVacuum, method, basisSet, step1, axis1):
     head = """#PBS -l nodes=1:ppn=8
 #PBS -l walltime=800:00:00
 #PBS -l mem=8GB
-#PBS -N {}_{}Dimer
+#PBS -N D{}{}P{}{}{}{}_{}{}
 
 cd $PBS_O_WORKDIR
 cp -rf * $TMPDIR
@@ -937,14 +956,34 @@ rm Gau-*
 cp -rf * $PBS_O_WORKDIR
 
 """
+    CV = ""
+    if chargeOrVacuum == "charge":
+        CV = "C"
+    else:
+        CV = "V"
+
+    MET = ""
+    if method == "1":
+        MET = "H"
+    if method == "2":
+        MET = "T"
+    if method == "3":
+        MET = "w"
+
+    BS = ""
+    if basisSet == "1":
+        BS = "c"
+    else:
+        BS = "S"
+
     with open("gauss.sh", "w") as out_file:
-        out_file.write(head.format("charge-field", step, xyz))
+        out_file.write(head.format(nDIP, rotAxisDIP, nPDIR, CV, MET, BS, str(step1).zfill(2), axis1))
 
-def make_sh2D(step, step2, xyz1, xyz2):
+def make_sh2D(nDIP, rotAxisDIP, nPDIR, chargeOrVacuum, method, basisSet, step1, axis1, step2, axis2):
     head = """#PBS -l nodes=1:ppn=8
 #PBS -l walltime=800:00:00
 #PBS -l mem=8GB
-#PBS -N {}_{}_{}_{}Dimer
+#PBS -N D{}{}P{}{}{}{}_{}{}_{}{}
 
 cd $PBS_O_WORKDIR
 cp -rf * $TMPDIR
@@ -961,8 +1000,25 @@ rm Gau-*
 cp -rf * $PBS_O_WORKDIR
 
 """
+    if chargeOrVacuum == "charge":
+        CV = "C"
+    else:
+        CV = "V"
+
+    if method == "1":
+        MET = "H"
+    if method == "2":
+        MET = "T"
+    if method == "3":
+        MET = "w"
+
+    if basisSet == "1":
+        BS = "c"
+    else:
+        BS = "S"
+
     with open("gauss.sh","w") as out_file:
-        out_file.write(head.format("charge-field", step, step2, xyz1, xyz2))
+        out_file.write(head.format(nDIP, rotAxisDIP, nPDIR, CV, MET, str(step1).zfill(2), axis1, str(step2).zfill(2)))
 
 def useroutput1D(char, DIP2, dup, dup2, verschiebung1, verschiebung2,
     xyz, shiftstart, shiftsize, shiftlength, wahlPDIR, axisPDIR, anglePDIR,
@@ -1155,9 +1211,10 @@ def main():
     while sendCalculation != "Ja" and sendCalculation != "Nein":
         sendCalculation = input("Soll die Rechnung am Ende abgeschickt werden? (Ja/Nein): ")
 
-    calcMethod ="invalid"
+    calcMethod = "1"
     basisSet = "1" # 1: cc-pVDZ; 2: STO-3G;
     if sendCalculation =="Ja":
+        calcMethod = "invalid"
         while calcMethod !="1" and calcMethod !="2" and calcMethod != "3":
             calcMethod = input("HF (1) oder TD-w-B97XD (2) oder w-B97XD (3)? ")
         if calcMethod == "1":
@@ -1180,7 +1237,9 @@ def main():
         dup2 = input("Soll PDIR dupliziert werden? (Ja, Nein): ")
         
         #Liest das 2. DIP-Molekül ein und hängt es an das erste an.
+        nDIP = "1"
         if DIP2 == "Ja": # Use and char == "Nein" to center only on DIP1
+            nDIP = "2"
             for i in range(len(file_input1)):
                 file_input.append(atom_xyz(file_input1[i].symbol, file_input1[i].coords))
 
@@ -1199,9 +1258,11 @@ def main():
             verschiebung1 = input("In welche Richtung soll das zweite DIP-Molekül verschoben werden? (xp, xn, yp, yn, zp, zn): ")
             file_geo = duplicateDIP(file_geo, verschiebung1, lengthaDIP, lengthbDIP)
         
+        nPDIR = "1"
         if dup2 == "Ja":
             verschiebung2 = input("In welche Richtung soll das zweite PDIR-Molekül verschoben werden? (ap, an, bp, bn, cp, cn): ") 
             file_geo2 = duplicatePDIR(file_geo2, lengthaPDIR, difb, difc, verschiebung2)
+            nPDIR = "2"
 
         CenterOfPDIR = getCenterOfGeo(file_input2)
 
@@ -1326,6 +1387,7 @@ def main():
             
 
         #Rotation des Kristalls
+        letteraxisDIP = axisDIP
         if wahlDIP == "Ja":
             if axisDIP == "a":
                 axisDIP = [1,0,0]
@@ -1423,7 +1485,7 @@ def main():
 
         #Erstellen der com- und sh-Datei
         make_com(first_input, file_geo2, first_charges, geo_chargesPDIR, char, calcMethod, basisSet)
-        make_sh1D(step,xyz)
+        make_sh1D(nDIP, letteraxisDIP, nPDIR, chargeOrVacuum, calcMethod, basisSet, step, xyz)
 
         #Abschicken der Rechnung
         if sendCalculation == "Ja":
@@ -1464,7 +1526,7 @@ def main():
             
 
             make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod, basisSet)
-            make_sh1D(step, xyz)
+            make_sh1D(nDIP, letteraxisDIP, nPDIR, chargeOrVacuum, calcMethod, basisSet, step, xyz)
             
             if sendCalculation == "Ja":                
                 subprocess.call('qsub -V gauss.sh', shell=True)
@@ -1501,7 +1563,9 @@ def main():
         dup2 = input("Soll PDIR dupliziert werden? (Ja, Nein): ")
         
         #Liest das 2. DIP-Molekül ein und hängt es an das erste an.
+        nDIP = "1"
         if DIP2 == "Ja":
+            nDIP = "2"
             for i in range(len(file_input1)):
                 file_input.append(atom_xyz(file_input1[i].symbol, file_input1[i].coords))
 
@@ -1521,9 +1585,11 @@ def main():
             # for i in range(len(file_geo_verschoben)): # No longer needed, probably erroneous
             #     file_geo.append(atom_xyz(file_geo_verschoben[i].symbol, file_geo_verschoben[i].coords))
 
+        nPDIR = "1"
         if dup2 == "Ja":
             verschiebung2 = input("In welche Richtung soll das zweite PDIR-Molekül verschoben werden? (ap, an, bp, bn, cp, cn):") 
             file_geo2 = duplicatePDIR(file_geo2, lengthaPDIR, difb, difc, verschiebung2)
+            nPDIR = "2"
             # for i in range(len(file_geo2_verschoben)): # No longer needed, probably erroneous
             #     file_geo2.append(atom_xyz(file_geo2_verschoben[i].symbol, file_geo2_verschoben[i].coords))
 
@@ -1743,7 +1809,7 @@ def main():
 
         #Erstellen der com- und sh-Datei
         make_com(first_input, file_geo2, first_charges, geo_chargesPDIR, char, calcMethod, basisSet)
-        make_sh2D(step, step2, xyz1, xyz2)
+        make_sh2D(nDIP, axisDIP, nPDIR, chargeOrVacuum, calcMethod, basisSet, step1, xyz1, step2, xyz2)
 
         #Abschicken der Rechnung
         if sendCalculation == "Ja":
@@ -1793,7 +1859,7 @@ def main():
                 
      
                 make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod, basisSet)
-                make_sh2D(step, step2, xyz1, xyz2)
+                make_sh2D(nDIP, axisDIP, nPDIR, chargeOrVacuum, calcMethod, basisSet, step1, xyz1, step2, xyz2)
 
                 if sendCalculation == "Ja":
                     subprocess.call('qsub -V gauss.sh', shell = True)
@@ -1847,7 +1913,7 @@ def main():
                     outputeverythingDIPPDIR2D(new_input, file_geo2, DIPPDIR, new_charges, geo_chargesPDIR, step, step2)
 
                 make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod, basisSet)
-                make_sh2D(step, step2, xyz1, xyz2)
+                make_sh2D(nDIP, axisDIP, nPDIR, chargeOrVacuum, calcMethod, basisSet, step1, xyz1, step2, xyz2)
 
                 if sendCalculation == "Ja":
                     subprocess.call('qsub -V gauss.sh', shell = True)
