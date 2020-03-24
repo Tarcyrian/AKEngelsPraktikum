@@ -827,9 +827,13 @@ def outputchargesDIP2D(newcoord, step, step2):
 
 '''Funktion make_com:
     Erstellt eine com-Datei'''
-def make_com(xyz1, xyz2, chargesDIP, chargesPDIR, char, method):
+def make_com(xyz1, xyz2, chargesDIP, chargesPDIR, char, method, basisSet):
+    if basisSet == "1":
+        basisSetString = "cc-pVDZ"
+    if basisSet == "2":
+        basisSetString = "STO-3G"
     if char == "Ja":
-        if method == "2" or "invalid":
+        if method == "2":
             head = """%NProcShared=8
 %Mem=6GB
 %chk=gs.chk
@@ -839,16 +843,16 @@ Dimer
 
 0 1
 """
-        if method == "1":
+        if method == "1" or "invalid":
             head = """%NProcShared=8
 %Mem=6GB
 %chk=gs.chk
-# HF/STO-3G charge
+# HF/{} charge
 
 Dimer
 
 0 1
-"""
+""".format(basisSetString)
         if method == "3":
             head = """%NProcShared=8
 %Mem=6GB
@@ -883,16 +887,16 @@ Dimer
 
 0 1
 """
-        if method == "1":
+        if method == "1" or "invalid":
             head = """%NProcShared=8
 %Mem=6GB
 %chk=gs.chk
-# HF/STO-3G
+# HF/{}
 
 Dimer
 
 0 1
-"""
+""".format(basisSetString)
         if method == "3":
             head = """%NProcShared=8
 %Mem=6GB
@@ -1154,9 +1158,14 @@ def main():
         sendCalculation = input("Soll die Rechnung am Ende abgeschickt werden? (Ja/Nein): ")
 
     calcMethod ="invalid"
+    basisSet = "1" # 1: cc-pVDZ; 2: STO-3G;
     if sendCalculation =="Ja":
         while calcMethod !="1" and calcMethod !="2" and calcMethod != "3":
             calcMethod = input("HF (1) oder TD-w-B97XD (2) oder w-B97XD (3)? ")
+        if calcMethod == "1":
+            basisSet = input("Basissatz: cc-pVDZ (1) oder STO-3G (2)? ")
+            while basisSet != "1" and basisSet != "2":
+                basisSet = input("Basissatz: cc-pVDZ (1) oder STO-3G (2)? ")
 
     if mode == "1":
         DIP2 = input("Soll das 2. DIP-Molekül aus der Einheitszelle dazugeladen werden? (Ja, Nein): ")
@@ -1403,7 +1412,7 @@ def main():
                 geo_chargesPDIR, step)
 
         #Erstellen der com- und sh-Datei
-        make_com(first_input, file_geo2, first_charges, geo_chargesPDIR, char, calcMethod)
+        make_com(first_input, file_geo2, first_charges, geo_chargesPDIR, char, calcMethod, basisSet)
         make_sh1D(step,xyz)
 
         #Abschicken der Rechnung
@@ -1444,7 +1453,7 @@ def main():
                 
             
 
-            make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod)
+            make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod, basisSet)
             make_sh1D(step, xyz)
             
             if sendCalculation == "Ja":                
@@ -1678,7 +1687,7 @@ def main():
             outputeverythingDIPPDIR2D(first_input, file_geo2, DIPPDIR, first_charges, geo_chargesPDIR, step, step2)
 
         #Erstellen der com- und sh-Datei
-        make_com(first_input, file_geo2, first_charges, geo_chargesPDIR, char, calcMethod)
+        make_com(first_input, file_geo2, first_charges, geo_chargesPDIR, char, calcMethod, basisSet)
         make_sh2D(step, step2, xyz1, xyz2)
 
         #Abschicken der Rechnung
@@ -1728,7 +1737,7 @@ def main():
                     outputeverythingDIPPDIR2D(new_input, file_geo2, DIPPDIR, new_charges, geo_chargesPDIR, step, step2)
                 
      
-                make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod)
+                make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod, basisSet)
                 make_sh2D(step, step2, xyz1, xyz2)
 
                 if sendCalculation == "Ja":
@@ -1782,7 +1791,7 @@ def main():
                     
                     outputeverythingDIPPDIR2D(new_input, file_geo2, DIPPDIR, new_charges, geo_chargesPDIR, step, step2)
 
-                make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod)
+                make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod, basisSet)
                 make_sh2D(step, step2, xyz1, xyz2)
 
                 if sendCalculation == "Ja":
