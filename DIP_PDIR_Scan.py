@@ -849,7 +849,16 @@ Dimer
 
 0 1
 """
+        if method == "3":
+            head = """%NProcShared=8
+%Mem=6GB
+%chk=gs.chk
+#p wB97XD/cc-pVDZ charge
 
+Dimer
+
+0 1
+"""
         with open("gauss.com","w") as out_file:
             out_file.write(head)
             for struct in xyz1:
@@ -879,6 +888,16 @@ Dimer
 %Mem=6GB
 %chk=gs.chk
 # HF/STO-3G
+
+Dimer
+
+0 1
+"""
+        if method == "3":
+            head = """%NProcShared=8
+%Mem=6GB
+%chk=gs.chk
+#p wB97XD/cc-pVDZ
 
 Dimer
 
@@ -1136,8 +1155,8 @@ def main():
 
     calcMethod ="invalid"
     if sendCalculation =="Ja":
-        while calcMethod !="1" and calcMethod !="2":
-            calcMethod = input("HF (1) oder w-B97 (2)? ")    
+        while calcMethod !="1" and calcMethod !="2" and calcMethod != "3":
+            calcMethod = input("HF (1) oder TD-w-B97XD (2) oder w-B97XD (3)? ")
 
     if mode == "1":
         DIP2 = input("Soll das 2. DIP-Molekül aus der Einheitszelle dazugeladen werden? (Ja, Nein): ")
