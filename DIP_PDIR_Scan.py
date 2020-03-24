@@ -843,7 +843,7 @@ Dimer
 
 0 1
 """
-        if method == "1" or "invalid":
+        if method == "1" or method == "invalid":
             head = """%NProcShared=8
 %Mem=6GB
 %chk=gs.chk
@@ -887,7 +887,7 @@ Dimer
 
 0 1
 """
-        if method == "1" or "invalid":
+        if method == "1" or method == "invalid":
             head = """%NProcShared=8
 %Mem=6GB
 %chk=gs.chk
