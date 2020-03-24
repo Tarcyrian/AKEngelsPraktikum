@@ -1171,6 +1171,11 @@ def main():
         DIP2 = input("Soll das 2. DIP-Molekül aus der Einheitszelle dazugeladen werden? (Ja, Nein): ")
         char = str(input("Sollen Ladungen berücksichtigt werden? (Ja, Nein): "))
         if char == "Ja":
+            chargeOrVacuum = "charge"
+        else:
+            chargeOrVacuum = "vacuum"
+
+        if char == "Ja":
             numberChargeLayersPDIR = int(input("Wie viele Layer an PDIR Ladungen sollen berücksichtigt werden? "))
             numberChargeLayersDIP = int(input("Wie viele Layer an DIP Ladungen sollen berücksichtigt werden? "))
         dup = input("Soll DIP dupliziert werden? (Ja, Nein): ")
@@ -1376,7 +1381,7 @@ def main():
         useroutput1D(char, DIP2, dup, dup2, verschiebung1, verschiebung2, xyz, shiftstart,
             shiftsize, shiftlength, wahlPDIR, axisPDIR, anglePDIR, wahlDIP, axisDIP, angleDIP)
         
-        newdir="{}_{}_vacuum".format(step, xyz)
+        newdir="{}_{}_{}".format(step, xyz, chargeOrVacuum)
         os.mkdir(newdir)
         os.chdir(newdir)
 
@@ -1432,7 +1437,7 @@ def main():
 
             os.chdir(main_dir)
 
-            newdir="{}_{}_vacuum".format(step, xyz)
+            newdir="{}_{}_{}".format(step, xyz, chargeOrVacuum)
             os.mkdir(newdir)
             os.chdir(newdir)
 
@@ -1479,6 +1484,11 @@ def main():
     if mode == "2":
         DIP2 = input("Soll das 2. DIP-Molekül aus der Einheitszelle dazugeladen werden? (Ja, Nein): ")
         char = str(input("Sollen Ladungen berücksichtigt werden? (Ja, Nein): "))
+        if char == "Ja":
+            chargeOrVacuum = "charge"
+        else:
+            chargeOrVacuum = "vacuum"
+            
         if char == "Ja":
             numberChargeLayersPDIR = int(input("Wie viele Layer an PDIR Ladungen sollen berücksichtigt werden? "))
             numberChargeLayersDIP = int(input("Wie viele Layer an DIP Ladungen sollen berücksichtigt werden? "))
@@ -1645,12 +1655,12 @@ def main():
             shiftlength, shiftlength2, wahlDIP, axisDIP, angleDIP, distance)
 
         #Erstellt einen neuen Ordner und geht hinein
-        newdir="{}_{}_vacuum".format(step, xyz1)
+        newdir="{}_{}_{}".format(step, xyz1, chargeOrVacuum)
         os.mkdir(newdir)
         os.chdir(newdir)
 
         #Erstellt einen neuen Ordner und geht hinein
-        newdir2 = "{}_{}_vacuum".format(step2, xyz2)
+        newdir2 = "{}_{}_{}".format(step2, xyz2, chargeOrVacuum)
         os.mkdir(newdir2)
         os.chdir(newdir2)
 
@@ -1711,7 +1721,7 @@ def main():
                 os.chdir(main_dir)
                 os.chdir(newdir)
 
-                newdir3 = "{}_{}_vacuum".format(step2, xyz2)
+                newdir3 = "{}_{}_{}".format(step2, xyz2, chargeOrVacuum)
                 os.mkdir(newdir3)
                 os.chdir(newdir3)
 
@@ -1762,11 +1772,11 @@ def main():
             
                 os.chdir(main_dir)
 
-                newdir = "{}_{}_vacuum".format(step, xyz1)
+                newdir = "{}_{}_{}".format(step, xyz1, chargeOrVacuum)
                 os.mkdir(newdir)
                 os.chdir(newdir)
 
-                newdir5 = "{}_{}_vacuum".format(step2, xyz2)
+                newdir5 = "{}_{}_{}".format(step2, xyz2, chargeOrVacuum)
                 os.mkdir(newdir5)
                 os.chdir(newdir5)
 
