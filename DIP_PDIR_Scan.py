@@ -1144,7 +1144,7 @@ def thirdAxis(first, second):
         if second == "x":
             return "y"
         if second == "y":
-            return x
+            return "x"
 
 def duplicateLayerDIP(original, offset):
     # Es ist egal ob man hier DIP1 oder DIP2 nimmt, denn es wird am Ende zusammengezählt.
