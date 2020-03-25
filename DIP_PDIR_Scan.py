@@ -1000,11 +1000,13 @@ rm Gau-*
 cp -rf * $PBS_O_WORKDIR
 
 """
+    CV = ""
     if chargeOrVacuum == "charge":
         CV = "C"
     else:
         CV = "V"
 
+    MET = ""
     if method == "1":
         MET = "H"
     if method == "2":
@@ -1012,13 +1014,14 @@ cp -rf * $PBS_O_WORKDIR
     if method == "3":
         MET = "w"
 
+    BS = ""
     if basisSet == "1":
         BS = "c"
     else:
         BS = "S"
 
     with open("gauss.sh","w") as out_file:
-        out_file.write(head.format(nDIP, rotAxisDIP, nPDIR, CV, MET, str(step1).zfill(2), axis1, str(step2).zfill(2)))
+        out_file.write(head.format(nDIP, rotAxisDIP, nPDIR, CV, MET, BS, str(step1).zfill(2), axis1, str(step2).zfill(2), axis2))
 
 def useroutput1D(char, DIP2, dup, dup2, verschiebung1, verschiebung2,
     xyz, shiftstart, shiftsize, shiftlength, wahlPDIR, axisPDIR, anglePDIR,
@@ -1698,7 +1701,7 @@ def main():
         #This line has to be there to align the CoG of DIP1 and DIP2 to the CoG of the PDIR Dimer, no one knows why
         file_geo2 = moveToCenterofGeo(file_input2)
 
-        
+        letteraxisDIP = axisDIP
         #Rotation des Kristalls
         if wahlDIP == "Ja":
             if axisDIP == "a":
@@ -1809,7 +1812,7 @@ def main():
 
         #Erstellen der com- und sh-Datei
         make_com(first_input, file_geo2, first_charges, geo_chargesPDIR, char, calcMethod, basisSet)
-        make_sh2D(nDIP, axisDIP, nPDIR, chargeOrVacuum, calcMethod, basisSet, step1, xyz1, step2, xyz2)
+        make_sh2D(nDIP, letteraxisDIP, nPDIR, chargeOrVacuum, calcMethod, basisSet, step, xyz1, step2, xyz2)
 
         #Abschicken der Rechnung
         if sendCalculation == "Ja":
@@ -1859,7 +1862,7 @@ def main():
                 
      
                 make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod, basisSet)
-                make_sh2D(nDIP, axisDIP, nPDIR, chargeOrVacuum, calcMethod, basisSet, step1, xyz1, step2, xyz2)
+                make_sh2D(nDIP, letteraxisDIP, nPDIR, chargeOrVacuum, calcMethod, basisSet, step, xyz1, step2, xyz2)
 
                 if sendCalculation == "Ja":
                     subprocess.call('qsub -V gauss.sh', shell = True)
@@ -1913,7 +1916,7 @@ def main():
                     outputeverythingDIPPDIR2D(new_input, file_geo2, DIPPDIR, new_charges, geo_chargesPDIR, step, step2)
 
                 make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod, basisSet)
-                make_sh2D(nDIP, axisDIP, nPDIR, chargeOrVacuum, calcMethod, basisSet, step1, xyz1, step2, xyz2)
+                make_sh2D(nDIP, letteraxisDIP, nPDIR, chargeOrVacuum, calcMethod, basisSet, step, xyz1, step2, xyz2)
 
                 if sendCalculation == "Ja":
                     subprocess.call('qsub -V gauss.sh', shell = True)
