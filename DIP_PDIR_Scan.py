@@ -905,6 +905,16 @@ Dimer
 
 0 1
 """
+        if method == "4":
+            head = """%NProcShared=4
+%Mem=3GB
+%chk=gs.chk
+#p PM7
+
+Dimer
+
+0 1
+"""
         with open("gauss.com","w") as out_file:
             out_file.write(head)
             for struct in xyz1:
@@ -926,7 +936,7 @@ Dimer
     a   DIP is rotated around a (b, c) axis
     P1  1 PDIR molecule (rotation currently not supported)
     C   calculated with Charges (or V for vacuum)
-    H   Method (or w for wB97-XD or T for TD-cB97-XD)
+    H   Method (or w for wB97-XD or T for TD-cB97-XD or P for PM7)
     S   Basis set STO-3G (or c for cc-pVDZ)
     _   Space holder
     08  Step number
@@ -936,9 +946,9 @@ Dimer
     y   axis of this stepping)
     '''
 def make_sh1D(nDIP, rotAxisDIP, nPDIR, chargeOrVacuum, method, basisSet, step1, axis1):
-    head = """#PBS -l nodes=1:ppn=8
+    head = """#PBS -l nodes=1:ppn={}
 #PBS -l walltime=800:00:00
-#PBS -l mem=8GB
+#PBS -l mem={}GB
 #PBS -N D{}{}P{}{}{}{}_{}{}
 
 cd $PBS_O_WORKDIR
@@ -963,26 +973,34 @@ cp -rf * $PBS_O_WORKDIR
         CV = "V"
 
     MET = ""
+    PROC = "8"
+    MEM = "8"
     if method == "1":
         MET = "H"
     if method == "2":
         MET = "T"
     if method == "3":
         MET = "w"
+    if method == "4":
+        MET = "P"
+        PROC = "4"
+        MEM = "4"
 
     BS = ""
+    if basisSet == "0":
+        BS = "-"
     if basisSet == "1":
         BS = "c"
-    else:
+    if basisSet == "2":
         BS = "S"
 
     with open("gauss.sh", "w") as out_file:
-        out_file.write(head.format(nDIP, rotAxisDIP, nPDIR, CV, MET, BS, str(step1).zfill(2), axis1))
+        out_file.write(head.format(PROC, MEM, nDIP, rotAxisDIP, nPDIR, CV, MET, BS, str(step1).zfill(2), axis1))
 
 def make_sh2D(nDIP, rotAxisDIP, nPDIR, chargeOrVacuum, method, basisSet, step1, axis1, step2, axis2):
-    head = """#PBS -l nodes=1:ppn=8
+    head = """#PBS -l nodes=1:ppn={}
 #PBS -l walltime=800:00:00
-#PBS -l mem=8GB
+#PBS -l mem={}GB
 #PBS -N D{}{}P{}{}{}{}_{}{}_{}{}
 
 cd $PBS_O_WORKDIR
@@ -1007,21 +1025,29 @@ cp -rf * $PBS_O_WORKDIR
         CV = "V"
 
     MET = ""
+    PROC = "8"
+    MEM = "8"
     if method == "1":
         MET = "H"
     if method == "2":
         MET = "T"
     if method == "3":
         MET = "w"
+    if method == "4":
+        MET = "P"
+        PROC = "4"
+        MEM = "4"
 
     BS = ""
+    if basisSet == "0":
+        BS = "-"
     if basisSet == "1":
         BS = "c"
-    else:
+    if basisSet == "2":
         BS = "S"
 
     with open("gauss.sh","w") as out_file:
-        out_file.write(head.format(nDIP, rotAxisDIP, nPDIR, CV, MET, BS, str(step1).zfill(2), axis1, str(step2).zfill(2), axis2))
+        out_file.write(head.format(PROC, MEM, nDIP, rotAxisDIP, nPDIR, CV, MET, BS, str(step1).zfill(2), axis1, str(step2).zfill(2), axis2))
 
 def useroutput1D(char, DIP2, dup, dup2, verschiebung1, verschiebung2,
     xyz, shiftstart, shiftsize, shiftlength, wahlPDIR, axisPDIR, anglePDIR,
@@ -1226,12 +1252,14 @@ def main():
     basisSet = "1" # 1: cc-pVDZ; 2: STO-3G;
     if sendCalculation =="Ja":
         calcMethod = "invalid"
-        while calcMethod !="1" and calcMethod !="2" and calcMethod != "3":
-            calcMethod = input("HF (1) oder TD-w-B97XD (2) oder w-B97XD (3)? ")
+        while calcMethod !="1" and calcMethod !="2" and calcMethod != "3" and calcMethod != "4":
+            calcMethod = input("HF (1) oder TD-w-B97XD (2) oder w-B97XD (3) oder PM7 (4)? ")
         if calcMethod == "1":
             basisSet = input("Basissatz: cc-pVDZ (1) oder STO-3G (2)? ")
             while basisSet != "1" and basisSet != "2":
                 basisSet = input("Basissatz: cc-pVDZ (1) oder STO-3G (2)? ")
+    if calcMethod == "4":
+        basisSet = "0"
 
     if mode == "1":
         DIP2 = input("Soll das 2. DIP-Molekül aus der Einheitszelle dazugeladen werden? (Ja, Nein): ")
