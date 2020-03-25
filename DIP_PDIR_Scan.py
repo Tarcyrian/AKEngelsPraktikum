@@ -1241,6 +1241,8 @@ def main():
         else:
             chargeOrVacuum = "vacuum"
 
+        numberChargeLayersPDIR = 0
+        numberChargeLayersDIP = 0
         if char == "Ja":
             numberChargeLayersPDIR = int(input("Wie viele Layer an PDIR Ladungen sollen berücksichtigt werden? "))
             numberChargeLayersDIP = int(input("Wie viele Layer an DIP Ladungen sollen berücksichtigt werden? "))
@@ -1568,6 +1570,8 @@ def main():
         else:
             chargeOrVacuum = "vacuum"
 
+        numberChargeLayersPDIR = 0
+        numberChargeLayersDIP = 0
         if char == "Ja":
             numberChargeLayersPDIR = int(input("Wie viele Layer an PDIR Ladungen sollen berücksichtigt werden? "))
             numberChargeLayersDIP = int(input("Wie viele Layer an DIP Ladungen sollen berücksichtigt werden? "))
