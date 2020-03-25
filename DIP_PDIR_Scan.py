@@ -1025,11 +1025,15 @@ cp -rf * $PBS_O_WORKDIR
 
 def useroutput1D(char, DIP2, dup, dup2, verschiebung1, verschiebung2,
     xyz, shiftstart, shiftsize, shiftlength, wahlPDIR, axisPDIR, anglePDIR,
-    wahlDIP, axisDIP, angleDIP):
+    wahlDIP, axisDIP, angleDIP, numberChargeLayersDIP, numberChargeLayersPDIR):
     f=open("Usereingaben.txt","w")
     f.write("Folgende Usereingaben wurden bei dieser Rechnung benutzt: ")
     f.write("\n\n")
     f.write("Wurden Ladungen berücksichtigt: %s" %char)
+    f.write("\n")
+    f.write("   DIP Charge Layer: %s" %numberChargeLayersDIP)
+    f.write("\n")
+    f.write("   PDIR Charge Layer: %s" %numberChargeLayersPDIR)
     f.write("\n")
     f.write("\n")
     f.write("Ist das 2. DIP-Molekül aus der Einheitszelle dabei: %s" %DIP2)
@@ -1071,11 +1075,15 @@ def useroutput1D(char, DIP2, dup, dup2, verschiebung1, verschiebung2,
 
 def useroutput2D(char, DIP2, dup, dup2, verschiebung1, verschiebung2,
     xyz1, xyz2, shiftstart, shiftstart2, shiftsize, shiftsize2, shiftlength,
-    shiftlength2, wahl, axis, angle, abstandAuf3):
+    shiftlength2, wahl, axis, angle, abstandAuf3, numberChargeLayersDIP, numberChargeLayersPDIR):
     f = open("Usereingaben.txt","w")
     f.write("Folgende Usereingaben wurden bei dieser Rechnung benutzt: ")
     f.write("\n\n")
     f.write("Wurden Ladungen berücksichtigt: %s" %char)
+    f.write("\n")
+    f.write("   DIP Charge Layer: %s" %numberChargeLayersDIP)
+    f.write("\n")
+    f.write("   PDIR Charge Layer: %s" %numberChargeLayersPDIR)
     f.write("\n")
     f.write("\n")
     f.write("Ist das 2. DIP-Molekül aus der Einheitszelle dabei: %s" %DIP2)
@@ -1449,7 +1457,8 @@ def main():
         #Erstellt eine Datei, welche die Usereingaben beinhalten.
 
         useroutput1D(char, DIP2, dup, dup2, verschiebung1, verschiebung2, xyz, shiftstart,
-            shiftsize, shiftlength, wahlPDIR, axisPDIR, anglePDIR, wahlDIP, axisDIP, angleDIP)
+            shiftsize, shiftlength, wahlPDIR, axisPDIR, anglePDIR, wahlDIP, axisDIP, angleDIP,
+            numberChargeLayersDIP, numberChargeLayersPDIR)
         
         newdir="{}_{}_{}".format(step, xyz, chargeOrVacuum)
         os.mkdir(newdir)
@@ -1766,7 +1775,8 @@ def main():
         #Erstellt eine Datei, welche die Usereingaben beinhalten.
         useroutput2D(char, DIP2, dup, dup2, verschiebung1, verschiebung2,
             xyz1, xyz2, shiftstart, shiftstart2, shiftsize, shiftsize2,
-            shiftlength, shiftlength2, wahlDIP, axisDIP, angleDIP, distance)
+            shiftlength, shiftlength2, wahlDIP, axisDIP, angleDIP, distance,
+            numberChargeLayersDIP, numberChargeLayersPDIR)
 
         #Erstellt einen neuen Ordner und geht hinein
         newdir="{}_{}_{}".format(step, xyz1, chargeOrVacuum)
