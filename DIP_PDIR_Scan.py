@@ -907,7 +907,7 @@ Dimer
 """
         if method == "4":
             head = """%NProcShared=4
-%Mem=3GB
+%Mem=2GB
 %chk=gs.chk
 #p PM7
 
@@ -1263,7 +1263,9 @@ def main():
 
     if mode == "1":
         DIP2 = input("Soll das 2. DIP-Molekül aus der Einheitszelle dazugeladen werden? (Ja, Nein): ")
-        char = str(input("Sollen Ladungen berücksichtigt werden? (Ja, Nein): "))
+        char = "Nein"
+        if calcMethod != "4":
+            char = str(input("Sollen Ladungen berücksichtigt werden? (Ja, Nein): "))
         if char == "Ja":
             chargeOrVacuum = "charge"
         else:
@@ -1592,7 +1594,9 @@ def main():
 
     if mode == "2":
         DIP2 = input("Soll das 2. DIP-Molekül aus der Einheitszelle dazugeladen werden? (Ja, Nein): ")
-        char = str(input("Sollen Ladungen berücksichtigt werden? (Ja, Nein): "))
+        char = "Nein"
+        if calcMethod != "4":
+            char = str(input("Sollen Ladungen berücksichtigt werden? (Ja, Nein): "))
         if char == "Ja":
             chargeOrVacuum = "charge"
         else:
