@@ -10,7 +10,7 @@ linebreak.
 
 import os
 
-searchstring = "\\HF=" # Change this if you want to search for something different
+searchstring = "SCF Done:  E" # Change this if you want to search for something different
 # Ask the User what type of scan is to be evaluated:
 scanType = "invalid"
 while scanType != "1" and scanType != "2":
