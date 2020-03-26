@@ -1492,7 +1492,7 @@ def main():
             shiftsize, shiftlength, wahlPDIR, axisPDIR, anglePDIR, wahlDIP, axisDIP, angleDIP,
             numberChargeLayersDIP, numberChargeLayersPDIR)
         
-        newdir="{}_{}_{}".format(step, xyz, chargeOrVacuum)
+        newdir="{}_{}_{}".format(str(step).zfill(2), xyz, chargeOrVacuum)
         os.mkdir(newdir)
         os.chdir(newdir)
 
@@ -1548,7 +1548,7 @@ def main():
 
             os.chdir(main_dir)
 
-            newdir="{}_{}_{}".format(step, xyz, chargeOrVacuum)
+            newdir="{}_{}_{}".format(str(step).zfill(2), xyz, chargeOrVacuum)
             os.mkdir(newdir)
             os.chdir(newdir)
 
@@ -1815,12 +1815,12 @@ def main():
             numberChargeLayersDIP, numberChargeLayersPDIR)
 
         #Erstellt einen neuen Ordner und geht hinein
-        newdir="{}_{}_{}".format(step, xyz1, chargeOrVacuum)
+        newdir="{}_{}_{}".format(str(step).zfill(2), xyz1, chargeOrVacuum)
         os.mkdir(newdir)
         os.chdir(newdir)
 
         #Erstellt einen neuen Ordner und geht hinein
-        newdir2 = "{}_{}_{}".format(step2, xyz2, chargeOrVacuum)
+        newdir2 = "{}_{}_{}".format(str(step2).zfill(2), xyz2, chargeOrVacuum)
         os.mkdir(newdir2)
         os.chdir(newdir2)
 
@@ -1881,7 +1881,7 @@ def main():
                 os.chdir(main_dir)
                 os.chdir(newdir)
 
-                newdir3 = "{}_{}_{}".format(step2, xyz2, chargeOrVacuum)
+                newdir3 = "{}_{}_{}".format(str(step2).zfill(2), xyz2, chargeOrVacuum)
                 os.mkdir(newdir3)
                 os.chdir(newdir3)
 
@@ -1932,11 +1932,11 @@ def main():
             
                 os.chdir(main_dir)
 
-                newdir = "{}_{}_{}".format(step, xyz1, chargeOrVacuum)
+                newdir = "{}_{}_{}".format(str(step).zfill(2), xyz1, chargeOrVacuum)
                 os.mkdir(newdir)
                 os.chdir(newdir)
 
-                newdir5 = "{}_{}_{}".format(step2, xyz2, chargeOrVacuum)
+                newdir5 = "{}_{}_{}".format(str(step2).zfill(2), xyz2, chargeOrVacuum)
                 os.mkdir(newdir5)
                 os.chdir(newdir5)
 
