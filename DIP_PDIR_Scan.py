@@ -173,9 +173,14 @@ def duplicatePDIR(ret, x, difb, difc, verschiebung):
 
 '''Bildet die Ladungen um DIP1 und speichert sie in einer Liste.'''  
 countChargesDIP1 = 0
-def getchargesDIP1(charge, a, b, c, numberLayers):
+def getchargesDIP1(charge, a, b, c, numberLayers, axisDIP, xyz):
     global countChargesDIP1
     newcharge =[]
+    
+    shiftb = True
+    if axisDIP == "a" and (xyz == "z" or xyz == "x"):
+        shiftb = False
+
     
     # First layer DIP1
     if numberLayers >= 1:
@@ -204,189 +209,200 @@ def getchargesDIP1(charge, a, b, c, numberLayers):
             newcharge.append(charge_xyz(charge4[i].coords, charge4[i].charge))
 
         # Begin row DIP1 +b
-        countChargesDIP1 += 1
-        charge5 = copy.deepcopy(charge)
-        for i in range(len(charge)):
-            charge5[i].coords[1] += b
-            newcharge.append(charge_xyz(charge5[i].coords, charge5[i].charge))
+        if shiftb:
+            countChargesDIP1 += 1
+            charge5 = copy.deepcopy(charge)
+            for i in range(len(charge)):
+                charge5[i].coords[1] += b
+                newcharge.append(charge_xyz(charge5[i].coords, charge5[i].charge))
         
-        countChargesDIP1 += 1
-        charge6 = copy.deepcopy(charge)
-        for i in range(len(charge)):
-            charge6[i].coords[0] += a
-            charge6[i].coords[1] += b
-            newcharge.append(charge_xyz(charge6[i].coords, charge6[i].charge))
+        if shiftb:
+            countChargesDIP1 += 1
+            charge6 = copy.deepcopy(charge)
+            for i in range(len(charge)):
+                charge6[i].coords[0] += a
+                charge6[i].coords[1] += b
+                newcharge.append(charge_xyz(charge6[i].coords, charge6[i].charge))
 
-        countChargesDIP1 += 1
-        charge7 = copy.deepcopy(charge)
-        for i in range(len(charge)):   
-            charge7[i].coords[0] -= a
-            charge7[i].coords[1] += b
-            newcharge.append(charge_xyz(charge7[i].coords, charge7[i].charge))
+        if shiftb:
+            countChargesDIP1 += 1
+            charge7 = copy.deepcopy(charge)
+            for i in range(len(charge)):   
+                charge7[i].coords[0] -= a
+                charge7[i].coords[1] += b
+                newcharge.append(charge_xyz(charge7[i].coords, charge7[i].charge))
 
-        countChargesDIP1 += 1
-        charge8 = copy.deepcopy(charge)
-        for i in range(len(charge)):
-            charge8[i].coords[0] += 2*a
-            charge8[i].coords[1] += b
-            newcharge.append(charge_xyz(charge8[i].coords, charge8[i].charge))
+        if shiftb:
+            countChargesDIP1 += 1
+            charge8 = copy.deepcopy(charge)
+            for i in range(len(charge)):
+                charge8[i].coords[0] += 2*a
+                charge8[i].coords[1] += b
+                newcharge.append(charge_xyz(charge8[i].coords, charge8[i].charge))
 
-        countChargesDIP1 += 1
-        charge9 = copy.deepcopy(charge)
-        for i in range(len(charge)):   
-            charge9[i].coords[0] -= 2*a
-            charge9[i].coords[1] += b
-            newcharge.append(charge_xyz(charge9[i].coords, charge9[i].charge))
+        if shiftb:
+            countChargesDIP1 += 1
+            charge9 = copy.deepcopy(charge)
+            for i in range(len(charge)):   
+                charge9[i].coords[0] -= 2*a
+                charge9[i].coords[1] += b
+                newcharge.append(charge_xyz(charge9[i].coords, charge9[i].charge))
 
         # Begin row DIP1 -b
-        countChargesDIP1 += 1
-        charge10 = copy.deepcopy(charge)
-        for i in range(len(charge)):
-            charge10[i].coords[1] -= b
-            newcharge.append(charge_xyz(charge10[i].coords, charge10[i].charge))
+        if shiftb:
+            countChargesDIP1 += 1
+            charge10 = copy.deepcopy(charge)
+            for i in range(len(charge)):
+                charge10[i].coords[1] -= b
+                newcharge.append(charge_xyz(charge10[i].coords, charge10[i].charge))
         
-        countChargesDIP1 += 1
-        charge11 = copy.deepcopy(charge)
-        for i in range(len(charge)):
-            charge11[i].coords[0] += a
-            charge11[i].coords[1] -= b
-            newcharge.append(charge_xyz(charge11[i].coords, charge11[i].charge))
+        if shiftb:
+            countChargesDIP1 += 1
+            charge11 = copy.deepcopy(charge)
+            for i in range(len(charge)):
+                charge11[i].coords[0] += a
+                charge11[i].coords[1] -= b
+                newcharge.append(charge_xyz(charge11[i].coords, charge11[i].charge))
 
-        countChargesDIP1 += 1
-        charge12 = copy.deepcopy(charge)
-        for i in range(len(charge)):   
-            charge12[i].coords[0] -= a
-            charge12[i].coords[1] -= b
-            newcharge.append(charge_xyz(charge12[i].coords, charge12[i].charge))
+        if shiftb:
+            countChargesDIP1 += 1
+            charge12 = copy.deepcopy(charge)
+            for i in range(len(charge)):   
+                charge12[i].coords[0] -= a
+                charge12[i].coords[1] -= b
+                newcharge.append(charge_xyz(charge12[i].coords, charge12[i].charge))
 
-        countChargesDIP1 += 1
-        charge13 = copy.deepcopy(charge)
-        for i in range(len(charge)):
-            charge13[i].coords[0] += 2*a
-            charge13[i].coords[1] -= b
-            newcharge.append(charge_xyz(charge13[i].coords, charge13[i].charge))
+        if shiftb:
+            countChargesDIP1 += 1
+            charge13 = copy.deepcopy(charge)
+            for i in range(len(charge)):
+                charge13[i].coords[0] += 2*a
+                charge13[i].coords[1] -= b
+                newcharge.append(charge_xyz(charge13[i].coords, charge13[i].charge))
 
-        countChargesDIP1 += 1
-        charge14 = copy.deepcopy(charge)
-        for i in range(len(charge)):   
-            charge14[i].coords[0] -= 2*a
-            charge14[i].coords[1] -= b
-            newcharge.append(charge_xyz(charge14[i].coords, charge14[i].charge))
+        if shiftb:
+            countChargesDIP1 += 1
+            charge14 = copy.deepcopy(charge)
+            for i in range(len(charge)):   
+                charge14[i].coords[0] -= 2*a
+                charge14[i].coords[1] -= b
+                newcharge.append(charge_xyz(charge14[i].coords, charge14[i].charge))
 
     return newcharge
 
 '''Bildet die Ladungen um DIP2 und speichert sie in einer Liste.'''
 countChargesDIP2 = 0 
-def getchargesDIP2(charge, a, b, c, numberLayers, DIP2):
+def getchargesDIP2(charge, a, b, c, numberLayers, DIP2, axisDIP, xyz):
     global countChargesDIP2
 
     chargegeaendert = []
 
-    if DIP2 == "Nein":
-        countChargesDIP2 += 1
-        for i in range(len(charge)):
-            chargegeaendert.append(charge_xyz(charge[i].coords, charge[i].charge))
+    if not(axisDIP == "a" and (xyz == "z" or xyz == "x")):
+        if DIP2 == "Nein":
+            countChargesDIP2 += 1
+            for i in range(len(charge)):
+                chargegeaendert.append(charge_xyz(charge[i].coords, charge[i].charge))
 
-    countChargesDIP2 +=1  
-    charge1 = copy.deepcopy(charge)
-    for i in range(len(charge1)):
-        charge1[i].coords[0] -= 2 * a
-        chargegeaendert.append(charge_xyz(charge1[i].coords, charge1[i].charge))
+        countChargesDIP2 +=1  
+        charge1 = copy.deepcopy(charge)
+        for i in range(len(charge1)):
+            charge1[i].coords[0] -= 2 * a
+            chargegeaendert.append(charge_xyz(charge1[i].coords, charge1[i].charge))
 
-    countChargesDIP2 +=1
-    charge2 = copy.deepcopy(charge)
-    for i in range(len(charge2)):
-        charge2[i].coords[0] -= a
-        chargegeaendert.append(charge_xyz(charge2[i].coords, charge2[i].charge))
-    
-    countChargesDIP2 +=1
-    charge3 = copy.deepcopy(charge)
-    for i in range(len(charge3)):
-        charge3[i].coords[1] += b
-        chargegeaendert.append(charge_xyz(charge3[i].coords, charge3[i].charge))
+        countChargesDIP2 +=1
+        charge2 = copy.deepcopy(charge)
+        for i in range(len(charge2)):
+            charge2[i].coords[0] -= a
+            chargegeaendert.append(charge_xyz(charge2[i].coords, charge2[i].charge))
+        
+        countChargesDIP2 +=1
+        charge3 = copy.deepcopy(charge)
+        for i in range(len(charge3)):
+            charge3[i].coords[1] += b
+            chargegeaendert.append(charge_xyz(charge3[i].coords, charge3[i].charge))
 
-    countChargesDIP2 +=1
-    charge4 = copy.deepcopy(charge)
-    for i in range(len(charge4)):
-        charge4[i].coords[0] += a
-        charge4[i].coords[1] += b
-        chargegeaendert.append(charge_xyz(charge4[i].coords, charge4[i].charge))
-    
-    countChargesDIP2 +=1
-    charge5 = copy.deepcopy(charge)
-    for i in range(len(charge5)):
-        charge5[i].coords[1] += b
-        charge5[i].coords[0] -= 2 * a
-        chargegeaendert.append(charge_xyz(charge5[i].coords, charge5[i].charge))
+        countChargesDIP2 +=1
+        charge4 = copy.deepcopy(charge)
+        for i in range(len(charge4)):
+            charge4[i].coords[0] += a
+            charge4[i].coords[1] += b
+            chargegeaendert.append(charge_xyz(charge4[i].coords, charge4[i].charge))
+        
+        countChargesDIP2 +=1
+        charge5 = copy.deepcopy(charge)
+        for i in range(len(charge5)):
+            charge5[i].coords[1] += b
+            charge5[i].coords[0] -= 2 * a
+            chargegeaendert.append(charge_xyz(charge5[i].coords, charge5[i].charge))
 
-    countChargesDIP2 +=1
-    charge6 = copy.deepcopy(charge)
-    for i in range(len(charge6)):
-        charge6[i].coords[1] += b
-        charge6[i].coords[0] -= a
-        chargegeaendert.append(charge_xyz(charge6[i].coords, charge6[i].charge))
+        countChargesDIP2 +=1
+        charge6 = copy.deepcopy(charge)
+        for i in range(len(charge6)):
+            charge6[i].coords[1] += b
+            charge6[i].coords[0] -= a
+            chargegeaendert.append(charge_xyz(charge6[i].coords, charge6[i].charge))
 
-    countChargesDIP2 +=1
-    charge7 = copy.deepcopy(charge)
-    for i in range(len(charge7)):
-        charge7[i].coords[0] += a
-        chargegeaendert.append(charge_xyz(charge7[i].coords, charge7[i].charge))
+        countChargesDIP2 +=1
+        charge7 = copy.deepcopy(charge)
+        for i in range(len(charge7)):
+            charge7[i].coords[0] += a
+            chargegeaendert.append(charge_xyz(charge7[i].coords, charge7[i].charge))
 
-    # Row DIP2 +2b
-    countChargesDIP2 +=1
-    charge8 = copy.deepcopy(charge)
-    for i in range(len(charge8)):
-        charge8[i].coords[1] += 2*b
-        chargegeaendert.append(charge_xyz(charge8[i].coords, charge8[i].charge))
+        # Row DIP2 +2b
+        countChargesDIP2 +=1
+        charge8 = copy.deepcopy(charge)
+        for i in range(len(charge8)):
+            charge8[i].coords[1] += 2*b
+            chargegeaendert.append(charge_xyz(charge8[i].coords, charge8[i].charge))
 
-    countChargesDIP2 +=1
-    charge9 = copy.deepcopy(charge)
-    for i in range(len(charge9)):
-        charge9[i].coords[0] += a
-        charge9[i].coords[1] += 2*b
-        chargegeaendert.append(charge_xyz(charge9[i].coords, charge9[i].charge))
+        countChargesDIP2 +=1
+        charge9 = copy.deepcopy(charge)
+        for i in range(len(charge9)):
+            charge9[i].coords[0] += a
+            charge9[i].coords[1] += 2*b
+            chargegeaendert.append(charge_xyz(charge9[i].coords, charge9[i].charge))
 
-    countChargesDIP2 +=1
-    charge10 = copy.deepcopy(charge)
-    for i in range(len(charge10)):
-        charge10[i].coords[1] += 2*b
-        charge10[i].coords[0] -= 2 * a
-        chargegeaendert.append(charge_xyz(charge10[i].coords, charge10[i].charge))
+        countChargesDIP2 +=1
+        charge10 = copy.deepcopy(charge)
+        for i in range(len(charge10)):
+            charge10[i].coords[1] += 2*b
+            charge10[i].coords[0] -= 2 * a
+            chargegeaendert.append(charge_xyz(charge10[i].coords, charge10[i].charge))
 
-    countChargesDIP2 +=1
-    charge11 = copy.deepcopy(charge)
-    for i in range(len(charge11)):
-        charge11[i].coords[1] += 2*b
-        charge11[i].coords[0] -= a
-        chargegeaendert.append(charge_xyz(charge11[i].coords, charge11[i].charge))
+        countChargesDIP2 +=1
+        charge11 = copy.deepcopy(charge)
+        for i in range(len(charge11)):
+            charge11[i].coords[1] += 2*b
+            charge11[i].coords[0] -= a
+            chargegeaendert.append(charge_xyz(charge11[i].coords, charge11[i].charge))
 
-    # Row DIP2 -b
-    countChargesDIP2 +=1
-    charge12 = copy.deepcopy(charge)
-    for i in range(len(charge12)):
-        charge12[i].coords[1] -= b
-        chargegeaendert.append(charge_xyz(charge12[i].coords, charge12[i].charge))
+        # Row DIP2 -b
+        countChargesDIP2 +=1
+        charge12 = copy.deepcopy(charge)
+        for i in range(len(charge12)):
+            charge12[i].coords[1] -= b
+            chargegeaendert.append(charge_xyz(charge12[i].coords, charge12[i].charge))
 
-    countChargesDIP2 +=1
-    charge13 = copy.deepcopy(charge)
-    for i in range(len(charge13)):
-        charge13[i].coords[0] += a
-        charge13[i].coords[1] -= b
-        chargegeaendert.append(charge_xyz(charge13[i].coords, charge13[i].charge))
+        countChargesDIP2 +=1
+        charge13 = copy.deepcopy(charge)
+        for i in range(len(charge13)):
+            charge13[i].coords[0] += a
+            charge13[i].coords[1] -= b
+            chargegeaendert.append(charge_xyz(charge13[i].coords, charge13[i].charge))
 
-    countChargesDIP2 +=1
-    charge14 = copy.deepcopy(charge)
-    for i in range(len(charge14)):
-        charge14[i].coords[1] -= b
-        charge14[i].coords[0] -= 2 * a
-        chargegeaendert.append(charge_xyz(charge14[i].coords, charge14[i].charge))
+        countChargesDIP2 +=1
+        charge14 = copy.deepcopy(charge)
+        for i in range(len(charge14)):
+            charge14[i].coords[1] -= b
+            charge14[i].coords[0] -= 2 * a
+            chargegeaendert.append(charge_xyz(charge14[i].coords, charge14[i].charge))
 
-    countChargesDIP2 +=1
-    charge15 = copy.deepcopy(charge)
-    for i in range(len(charge15)):
-        charge15[i].coords[1] -= b
-        charge15[i].coords[0] -= a
-        chargegeaendert.append(charge_xyz(charge15[i].coords, charge15[i].charge))
+        countChargesDIP2 +=1
+        charge15 = copy.deepcopy(charge)
+        for i in range(len(charge15)):
+            charge15[i].coords[1] -= b
+            charge15[i].coords[0] -= a
+            chargegeaendert.append(charge_xyz(charge15[i].coords, charge15[i].charge))
 
 
     return chargegeaendert
@@ -394,7 +410,7 @@ def getchargesDIP2(charge, a, b, c, numberLayers, DIP2):
 '''Bildet die Ladungen um PDIR und speichert sie in einer Liste.
 Die Ladungen werden anhand der Rotationsaxe ausgewählt.'''
 countChargesPDIR=0
-def getchargesPDIR(charge, difb, a, difc, rotAxisDIP, numberLayers, direction):
+def getchargesPDIR(charge, difb, a, difc, rotAxisDIP, numberLayers, direction, xyz):
     newcharge = []
     global countChargesPDIR
     difbplusa = difb[0] + a
@@ -406,6 +422,14 @@ def getchargesPDIR(charge, difb, a, difc, rotAxisDIP, numberLayers, direction):
     beginMultiplierB = -2
     moleculesA = 5
     moleculesB = 5
+
+    # Set values that rotation and translation are correct
+    if rotAxisDIP == "a" and (xyz == "z" or xyz == "x"):
+        rotAxisDIP = "0"
+
+    if rotAxisDIP == "b" and (xyz == "z" or xyz == "y"):
+        rotAxisDIP = "0"
+
 
     # Adjust values
     if rotAxisDIP == "a":
@@ -1316,6 +1340,45 @@ def main():
         if wahlDIP == "Ja":
             axisDIP = input("Um welche Achse soll rotiert werden? (a, b, c): ")
 
+        letteraxisDIP = axisDIP
+        if wahlDIP == "Ja":
+            if axisDIP == "a":
+                axisDIP = [1,0,0]
+                angleDIP = 180 - alphaDIP
+                print("Vorsicht: y = z und z = y")
+            elif axisDIP == "b":
+                axisDIP = [0,1,0]
+                angleDIP = 180 - betaDIP
+                print("Vorsicht: x = z und z = x")
+            elif axisDIP == "c":
+                axisDIP = [0,0,1]
+                angleDIP = 180 - gammaDIP
+                print("Vorsicht: x = y und y = x")
+
+        wahlPDIR = input("Willst du den PDIR-Kristall rotieren? (Ja, Nein): ")
+        if wahlPDIR == "Ja":
+            axisPDIR = input("Um welche Achse soll rotiert werden? (a, b, c): ")
+            if axisPDIR == "a":
+                axisPDIR = [1,0,0]
+                anglePDIR = 180 - alphaPDIR
+
+            elif axisPDIR == "b":
+                axisPDIR = [0,1,0]
+                anglePDIR = 180 - betaPDIR
+
+            elif axisPDIR == "c":
+                axisPDIR = [0,0,1]
+                anglePDIR = 180 - gammaPDIR
+
+
+        #Initalisieren der Variablen mit Userinput
+        xyz = input("Gib die Koordinate an, die verschoben werden soll (x, y, z): ")
+        
+        shiftstart = float(input("Gib den Startpunkt der {}-Koordinate an: ".format(xyz)))
+        shiftsize = float(input("Gib die Schrittweite der Verschiebung der {}-Koordinate an: ".format(xyz)))
+        shiftlength = float(input("Gib den Endpunkt der Verschiebung ein: "))
+
+
         if char == "Ja":
 
             chargesDIP1 = readcharges("first_DIP_charges.txt")
@@ -1330,9 +1393,9 @@ def main():
             #geo_chargesDIP2 = moveToCenterofGeo(chargesDIP2)
             
         
-            shiftchargesdip1 = getchargesDIP1(chargesDIP1, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP) 
-            shiftchargesdip2 = getchargesDIP2(chargesDIP2, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP, DIP2) #DIP2: is the second DIP there?
-            PDIRcharges = getchargesPDIR(geo_chargesPDIR, difb, lengthaPDIR, difc, axisDIP, numberChargeLayersPDIR, verschiebung2)
+            shiftchargesdip1 = getchargesDIP1(chargesDIP1, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP, letteraxisDIP, xyz) 
+            shiftchargesdip2 = getchargesDIP2(chargesDIP2, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP, DIP2, letteraxisDIP, xyz) #DIP2: is the second DIP there?
+            PDIRcharges = getchargesPDIR(geo_chargesPDIR, difb, lengthaPDIR, difc, letteraxisDIP, numberChargeLayersPDIR, verschiebung2, xyz)
             #geo_chargesDIP = moveToCenterofGeo(chargesDIP1)
             #shiftchargesdip1 = moveToCenterofGeo(shiftchargesdip1)
             #shiftchargesdip2 = moveToCenterofGeo(shiftchargesdip2)
@@ -1383,12 +1446,17 @@ def main():
             #geo_chargesDIP = shiftchargesdip1
             # duplicate the working first layer of DIP
             OneDirection = 1
-            if axisDIP == "a":
+            if letteraxisDIP == "a":
                 OneDirection = -1
-            if numberChargeLayersDIP >= 2:
+            OriginalOneDirection = OneDirection
+
+            if numberChargeLayersDIP >= 2 or (letteraxisDIP == "a" and (xyz == "z" or xyz == "x")):
                 DIPchargesSecondLayer = duplicateLayerDIP(geo_chargesDIP, OneDirection*lengthcDIP)
-                if numberChargeLayersDIP >=3:
+                if numberChargeLayersDIP >=3 or (letteraxisDIP == "a" and (xyz == "z" or xyz == "x")):
+                    if letteraxisDIP == "a" and (xyz == "z" or xyz == "x"):
+                        OneDirection = -0.5*OneDirection
                     DIPchargesThirdLayer = duplicateLayerDIP(geo_chargesDIP, 2*OneDirection*lengthcDIP)
+                    OneDirection = OriginalOneDirection
                     for i in range(len(DIPchargesThirdLayer)):
                         geo_chargesDIP.append(charge_xyz(DIPchargesThirdLayer[i].coords, DIPchargesThirdLayer[i].charge))
 
@@ -1400,8 +1468,11 @@ def main():
                 for i in range(len(Tempgeocharges)):
                     geo_chargesDIP.append(charge_xyz(Tempgeocharges[i].coords, Tempgeocharges[i].charge))
 
-                if numberChargeLayersDIP >= 3:
+                if numberChargeLayersDIP >= 3 or (letteraxisDIP == "a" and (xyz == "z" or  xyz == "x")):
+                    if letteraxisDIP == "a" and (xyz == "z" or xyz == "x"):
+                        OneDirection = -0.5*OneDirection
                     Tempgeocharges = duplicateLayerDIP(geo_chargeDIPOriginal, 2*OneDirection*lengthcDIP)
+                    OneDirection = OriginalOneDirection
                     for i in range(len(Tempgeocharges)):
                         geo_chargesDIP.append(charge_xyz(Tempgeocharges[i].coords, Tempgeocharges[i].charge))
            
@@ -1430,55 +1501,19 @@ def main():
             
 
         #Rotation des Kristalls
-        letteraxisDIP = axisDIP
         if wahlDIP == "Ja":
-            if axisDIP == "a":
-                axisDIP = [1,0,0]
-                angleDIP = 180 - alphaDIP
-                print("Vorsicht: y = z und z = y")
-            elif axisDIP == "b":
-                axisDIP = [0,1,0]
-                angleDIP = 180 - betaDIP
-                print("Vorsicht: x = z und z = x")
-            elif axisDIP == "c":
-                axisDIP = [0,0,1]
-                angleDIP = 180 - gammaDIP
-                print("Vorsicht: x = y und y = x")
-
+            # From this point on axisDIP must be [ , , ]
             file_geo = product_matrix_vector(rot_axis_angle(axisDIP, angleDIP), file_geo)
-
             if char == "Ja":
                 geo_chargesDIP = product_matrix_vector_charges(rot_axis_angle(axisDIP, angleDIP), geo_chargesDIP)
+        
 
         #Rotation des Kristalls
-        wahlPDIR = input("Willst du den PDIR-Kristall rotieren? (Ja, Nein): ")
         if wahlPDIR == "Ja":
-            axisPDIR = input("Um welche Achse soll rotiert werden? (a, b, c): ")
-            if axisPDIR == "a":
-                axisPDIR = [1,0,0]
-                anglePDIR = 180 - alphaPDIR
-
-            elif axisPDIR == "b":
-                axisPDIR = [0,1,0]
-                anglePDIR = 180 - betaPDIR
-
-            elif axisPDIR == "c":
-                axisPDIR = [0,0,1]
-                anglePDIR = 180 - gammaPDIR
-            
-
             file_geo2 = product_matrix_vector(rot_axis_angle(axisPDIR, anglePDIR), file_geo2)
-
             if char == "Ja":
                 geo_chargesPDIR = product_matrix_vector_charges(rot_axis_angle(axisPDIR, anglePDIR), geo_chargesPDIR)
         
-        #Initalisieren der Variablen mit Userinput
-
-        xyz = input("Gib die Koordinate an, die verschoben werden soll (x, y, z): ")
-        
-        shiftstart = float(input("Gib den Startpunkt der ersten Koordinate an: "))
-        shiftsize = float(input("Gib die Schrittweite der Verschiebung der ersten Koordinate an: "))
-        shiftlength = float(input("Gib den Endpunkt der Verschiebung ein: "))
         
         #Erstellt einen neuen Ordner, geht hinein und macht ihn zum Hauptordner
         new= input ("Ordnernamen angeben: ")
@@ -1650,6 +1685,48 @@ def main():
         wahlDIP = input("Willst du den DIP Kristall rotieren? (Ja, Nein): ")
         if wahlDIP == "Ja":
             axisDIP = input("Um welche Achse soll rotiert werden? (a, b, c): ")
+
+        letteraxisDIP = axisDIP
+        if wahlDIP == "Ja":
+            if axisDIP == "a":
+                axisDIP = [1,0,0]
+                angleDIP = 180 - alphaDIP
+                print("Vorsicht: y = z und z = y")
+            elif axisDIP == "b":
+                axisDIP = [0,1,0]
+                angleDIP = 180 - betaDIP
+                print("Vorsicht: x = z und z = x")
+            elif axisDIP == "c":
+                axisDIP = [0,0,1]
+                angleDIP = 180 - gammaDIP
+                print("Vorsicht: x = y und y = x")
+
+        wahlPDIR = input("Willst du den PDIR-Kristall rotieren? (Ja, Nein): ")
+        if wahlPDIR == "Ja":
+            axisPDIR = input("Um welche Achse soll rotiert werden? (a, b, c): ")
+            if axisPDIR == "a":
+                axisPDIR = [1,0,0]
+                anglePDIR = 180 - alphaPDIR
+
+            elif axisPDIR == "b":
+                axisPDIR = [0,1,0]
+                anglePDIR = 180 - betaPDIR
+
+            elif axisPDIR == "c":
+                axisPDIR = [0,0,1]
+                anglePDIR = 180 - gammaPDIR
+
+        #Initalisieren weiterer Varibalen
+        xyz1 = input("Gib die 1. Koordinate an, die verschoben werden soll (x, y, z): ")
+        xyz2 = input("Gib die 2. Koordinate an, die verschoben werden soll (x, y, z): ")
+        distance = float(input("Gib den Abstand auf der {}-Achse an: ".format(thirdAxis(xyz1, xyz2))))
+
+        shiftstart = float(input("Gib den Startpunkt der ersten Koordinate an: "))
+        shiftsize = float(input("Gib die Schrittweite der Verschiebung der ersten Koordinate an: "))
+        shiftlength = float(input("Gib den Endpunkt der erste Koordinate an: "))
+        shiftstart2 = float(input("Gib den Startpunkt der zweiten Koordinate an: "))
+        shiftsize2 = float(input("Gib die Schrittweite der Verschiebung der zweiten Koordinate an: "))
+        shiftlength2 = float(input("Gib den Endpunkt der zweiten Koordinate an: "))
         
         if char == "Ja":
 
@@ -1665,9 +1742,10 @@ def main():
             #geo_chargesDIP2 = moveToCenterofGeo(chargesDIP2)
             
         
-            shiftchargesdip1 = getchargesDIP1(chargesDIP1, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP) 
-            shiftchargesdip2 = getchargesDIP2(chargesDIP2, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP, DIP2) #DIP2: is the second DIP there?
-            PDIRcharges = getchargesPDIR(geo_chargesPDIR, difb, lengthaPDIR, difc, axisDIP, numberChargeLayersPDIR, verschiebung2)
+            shiftchargesdip1 = getchargesDIP1(chargesDIP1, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP, letteraxisDIP, thirdAxis(xyz1, xyz2)) 
+            shiftchargesdip2 = getchargesDIP2(chargesDIP2, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP,
+                DIP2, letteraxisDIP, thirdAxis(xyz1, xyz2)) #DIP2: is the second DIP there?
+            PDIRcharges = getchargesPDIR(geo_chargesPDIR, difb, lengthaPDIR, difc, letteraxisDIP, numberChargeLayersPDIR, verschiebung2, thirdAxis(xyz1, xyz2))
             #geo_chargesDIP = moveToCenterofGeo(chargesDIP1)
             #shiftchargesdip1 = moveToCenterofGeo(shiftchargesdip1)
             #shiftchargesdip2 = moveToCenterofGeo(shiftchargesdip2)
@@ -1718,12 +1796,18 @@ def main():
             #geo_chargesDIP = shiftchargesdip1
             # duplicate the working first layer of DIP
             OneDirection = 1
-            if axisDIP == "a":
+            if letteraxisDIP == "a":
                 OneDirection = -1
-            if numberChargeLayersDIP >= 2:
+            OriginalOneDirection = OneDirection
+            xyz3 = thirdAxis(xyz1, xyz2)
+
+            if numberChargeLayersDIP >= 2 or (letteraxisDIP == "a" and (xyz3 == "z" or xyz3 == "x")):
                 DIPchargesSecondLayer = duplicateLayerDIP(geo_chargesDIP, OneDirection*lengthcDIP)
-                if numberChargeLayersDIP >=3:
+                if numberChargeLayersDIP >=3 or (letteraxisDIP == "a" and (xyz3 == "z" or xyz3 == "x")):
+                    if letteraxisDIP == "a" and (xyz3 == "z" or xyz3 == "x"):
+                        OneDirection = -0.5*OneDirection
                     DIPchargesThirdLayer = duplicateLayerDIP(geo_chargesDIP, 2*OneDirection*lengthcDIP)
+                    OneDirection = OriginalOneDirection
                     for i in range(len(DIPchargesThirdLayer)):
                         geo_chargesDIP.append(charge_xyz(DIPchargesThirdLayer[i].coords, DIPchargesThirdLayer[i].charge))
 
@@ -1735,8 +1819,11 @@ def main():
                 for i in range(len(Tempgeocharges)):
                     geo_chargesDIP.append(charge_xyz(Tempgeocharges[i].coords, Tempgeocharges[i].charge))
 
-                if numberChargeLayersDIP >= 3:
+                if numberChargeLayersDIP >= 3 or (letteraxisDIP == "a" and (xyz3 == "z" or  xyz3 == "x")):
+                    if letteraxisDIP == "a" and (xyz3 == "z" or xyz3 == "x"):
+                        OneDirection = -0.5*OneDirection
                     Tempgeocharges = duplicateLayerDIP(geo_chargeDIPOriginal, 2*OneDirection*lengthcDIP)
+                    OneDirection = OriginalOneDirection
                     for i in range(len(Tempgeocharges)):
                         geo_chargesDIP.append(charge_xyz(Tempgeocharges[i].coords, Tempgeocharges[i].charge))
            
@@ -1746,60 +1833,17 @@ def main():
         #This line has to be there to align the CoG of DIP1 and DIP2 to the CoG of the PDIR Dimer, no one knows why
         file_geo2 = moveToCenterofGeo(file_input2)
 
-        letteraxisDIP = axisDIP
         #Rotation des Kristalls
         if wahlDIP == "Ja":
-            if axisDIP == "a":
-                axisDIP = [1,0,0]
-                angleDIP = 180 - alphaDIP
-                print("Vorsicht: y = z und z = y")
-            elif axisDIP == "b":
-                axisDIP = [0,1,0]
-                angleDIP = 180 - betaDIP
-                print("Vorsicht: x = z und z = x")
-            elif axisDIP == "c":
-                axisDIP = [0,0,1]
-                angleDIP = 180 - gammaDIP
-                print("Vorsicht: x = y und y = x")
-
             file_geo = product_matrix_vector(rot_axis_angle(axisDIP, angleDIP), file_geo)
-
             if char == "Ja":
                 geo_chargesDIP = product_matrix_vector_charges(rot_axis_angle(axisDIP, angleDIP), geo_chargesDIP)
 
         #Rotation des Kristalls
-        wahlPDIR = input("Willst du den PDIR-Kristall rotieren? (Ja, Nein): ")
         if wahlPDIR == "Ja":
-            axisPDIR = input("Um welche Achse soll rotiert werden? (a, b, c): ")
-            if axisPDIR == "a":
-                axisPDIR = [1,0,0]
-                anglePDIR = 180 - alphaPDIR
-
-            elif axisPDIR == "b":
-                axisPDIR = [0,1,0]
-                anglePDIR = 180 - betaPDIR
-
-            elif axisPDIR == "c":
-                axisPDIR = [0,0,1]
-                anglePDIR = 180 - gammaPDIR
-            
-
             file_geo2 = product_matrix_vector(rot_axis_angle(axisPDIR, anglePDIR), file_geo2)
-
             if char == "Ja":
                 geo_chargesPDIR = product_matrix_vector_charges(rot_axis_angle(axisPDIR, anglePDIR), geo_chargesPDIR)
-
-        #Initalisieren weiterer Varibalen
-        xyz1 = input("Gib die 1. Koordinate an, die verschoben werden soll (x, y, z): ")
-        xyz2 = input("Gib die 2. Koordinate an, die verschoben werden soll (x, y, z): ")
-        distance = float(input("Gib den Abstand auf der {}-Achse an: ".format(thirdAxis(xyz1, xyz2))))
-
-        shiftstart = float(input("Gib den Startpunkt der ersten Koordinate an: "))
-        shiftsize = float(input("Gib die Schrittweite der Verschiebung der ersten Koordinate an: "))
-        shiftlength = float(input("Gib den Endpunkt der erste Koordinate an: "))
-        shiftstart2 = float(input("Gib den Startpunkt der zweiten Koordinate an: "))
-        shiftsize2 = float(input("Gib die Schrittweite der Verschiebung der zweiten Koordinate an: "))
-        shiftlength2 = float(input("Gib den Endpunkt der zweiten Koordinate an: "))
 
 
         #Erstellt einen neuen Ordner, geht hinein und macht ihn zum Hauptordner
