@@ -952,8 +952,8 @@ Dimer
 0 1
 """
         if method == "4":
-            head = """%NProcShared=4
-%Mem=2GB
+            head = """%NProcShared=8
+%Mem=6GB
 %chk=gs.chk
 #p PM7
 
@@ -1029,8 +1029,8 @@ cp -rf * $PBS_O_WORKDIR
         MET = "w"
     if method == "4":
         MET = "P"
-        PROC = "4"
-        MEM = "4"
+        PROC = "8"
+        MEM = "8"
 
     BS = ""
     if basisSet == "0":
