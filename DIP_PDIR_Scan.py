@@ -778,7 +778,6 @@ def mergeSymbolCoords(coords, symbols, path):
         f.write("\n")
     f.close()
 
-
 '''Funktion output:
     Öffnet eine neue xyz-Datei und speichert dort
     die veränderten Koordinaten und Symbole ab.'''
@@ -885,6 +884,16 @@ Dimer
 
 0 1
 """
+        if method == "4":
+            head = """%NProcShared=4
+%Mem=2GB
+%chk=gs.chk
+#p PM7
+
+Dimer
+
+0 1
+"""
         with open("gauss.com","w") as out_file:
             out_file.write(head)
             for struct in xyz1:
@@ -892,11 +901,12 @@ Dimer
             for struct in xyz2:
                 out_file.write("{} {:12.6f} {:12.6f} {:12.6f}\n".format(struct.symbol, *struct.coords))
             out_file.write("\n")
-            for struct in chargesDIP:
-                out_file.write("{:12.6f} {:12.6f} {:12.6f} {:12.6f}\n".format(*struct.coords, struct.charge))
-            for struct in chargesPDIR:
-                out_file.write("{:12.6f} {:12.6f} {:12.6f} {:12.6f}\n".format(*struct.coords, struct.charge))
-            out_file.write("\n\n\n\n")
+            if method != "4":
+                for struct in chargesDIP:
+                    out_file.write("{:12.6f} {:12.6f} {:12.6f} {:12.6f}\n".format(*struct.coords, struct.charge))
+                for struct in chargesPDIR:
+                    out_file.write("{:12.6f} {:12.6f} {:12.6f} {:12.6f}\n".format(*struct.coords, struct.charge))
+                out_file.write("\n\n\n\n")
 
     else:
         if method == "2":
@@ -1260,9 +1270,11 @@ def main():
     #Einlesen der Dateien
     file_input = readXYZ("output_first_DIP_molecule___with_opt_geo.xyz")
     file_input1 = readXYZ("output_second_DIP_molecule___with_opt_geo.xyz")
-    file_input2 = readXYZ("PDIR_S0_1.xyz") #geometrieoptimierte Struktur
+    # Choose which one you want:
+    #file_input2 = readXYZ("PDIR_S0_1.xyz") #geometrieoptimierte Struktur
+    file_input2 = readXYZ("PDIR_umsortiert.xyz") #lädt das Molekül in der Struktur des Kristalls
     file_input3 = readXYZ("PDIR_umsortiert.xyz") #lädt das Molekül in der Struktur des Kristalls
-    
+
     #Initalisieren der Variablen mit Userinput
     mode = "invalid"
     while mode != "1" and mode != "2": # safety measure to ensure correct choice
@@ -1287,9 +1299,12 @@ def main():
 
     if mode == "1":
         DIP2 = input("Soll das 2. DIP-Molekül aus der Einheitszelle dazugeladen werden? (Ja, Nein): ")
-        char = "Nein"
-        if calcMethod != "4":
-            char = str(input("Sollen Ladungen berücksichtigt werden? (Ja, Nein): "))
+
+        makeMoleculesFromCharges = "Nein"
+        if calcMethod == "4":
+            print("Bei PM7 werden Ladungen automatisch in Moleküle umgewandelt!")
+            makeMoleculesFromCharges = "Ja"
+        char = str(input("Sollen Ladungen berücksichtigt werden? (Ja, Nein): "))
         if char == "Ja":
             chargeOrVacuum = "charge"
         else:
@@ -1300,6 +1315,9 @@ def main():
         if char == "Ja":
             numberChargeLayersPDIR = int(input("Wie viele Layer an PDIR Ladungen sollen berücksichtigt werden? "))
             numberChargeLayersDIP = int(input("Wie viele Layer an DIP Ladungen sollen berücksichtigt werden? "))
+            if calcMethod != "4":
+                makeMoleculesFromCharges = input("Sollen die Ladungen in Moleküle umgewandelt werden? (Ja, Nein): ")
+
         dup = input("Soll DIP dupliziert werden (experimentell)? (Ja, Nein): ")
         dup2 = input("Soll PDIR dupliziert werden? (Ja, Nein): ")
         
@@ -1499,6 +1517,24 @@ def main():
         # for oneAtom in DIP2MoleculeFromCharges:
         #     file_geo.append(atom_xyz(oneAtom.symbol, oneAtom.coords))
             
+        if makeMoleculesFromCharges == "Ja":
+            # Begin with PDIR:
+            lenSinglePDIR = len(file_input2)
+            j = 0
+            for i in range(len(geo_chargesPDIR)):
+                file_geo2.append(atom_xyz(file_input2[j].symbol, geo_chargesPDIR[i].coords))
+                j += 1
+                if j >= lenSinglePDIR:
+                    j = 0
+            # DIP:
+            lenSingleDIP = len(file_input)
+            j = 0
+            for i in range(len(geo_chargesDIP)):
+                file_geo.append(atom_xyz(file_input[j].symbol, geo_chargesDIP[i].coords))
+                j += 1
+                if j >= lenSingleDIP:
+                    j = 0
+
 
         #Rotation des Kristalls
         if wahlDIP == "Ja":
@@ -1535,7 +1571,7 @@ def main():
             veränderten Koordinaten in eine Datei und liest sie wieder ein.'''
         shiftxyz = shiftcoord(xyz, file_geo, shiftstart)
         bothMolecules = copy.deepcopy(shiftxyz)
-        for singleAtom in file_input2:
+        for singleAtom in file_geo2:
             bothMolecules.append(atom_xyz(singleAtom.symbol, singleAtom.coords))
 
         output1D(bothMolecules, "neueKoordinatenBeide{}.xyz".format(step))
@@ -1547,7 +1583,7 @@ def main():
             Verändert die Koordinaten der Ladungen zum Startpunkt, speichert sie in einer Datei
             liest sie ein und gibt eine xyz-Datei aus, in der die Ladungen und die beiden
             Moleküle DIP und PDIR vorhanden sind.'''
-        if char == "Ja":
+        if char == "Ja" and makeMoleculesFromCharges == "Nein":
             shiftchargexyz = shiftcoordcharges(xyz, geo_chargesDIP, shiftstart)
             outputchargesDIP1D(shiftchargexyz, step)
 
@@ -1576,7 +1612,7 @@ def main():
 
             new_input = readXYZ("neueKoordinaten%s.xyz" %step)
 
-            if char == "Ja":
+            if char == "Ja" and makeMoleculesFromCharges == "Nein":
                     new_charges = readcharges("neuechargesDIP{}.txt".format(step))
 
             step = step + 1
@@ -1594,7 +1630,7 @@ def main():
 
             output1D(bothMoleculesstep, "neueKoordinatenBeide{}.xyz".format(step))
             output1D(shiftxyzstep, "neueKoordinaten{}.xyz".format(step))
-            if char == "Ja":
+            if char == "Ja" and makeMoleculesFromCharges == "Nein":
                 shiftchargexyz = shiftcoordcharges(xyz, new_charges, shiftsize)
                 outputchargesDIP1D(shiftchargexyz, step)
                 new_charges = readcharges("neuechargesDIP{}.txt".format(step))
