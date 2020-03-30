@@ -1,9 +1,6 @@
 '''
-A Quick and Dirty solution to the tedious problem of having to open each Gaussian logfile
-on its own.
 This Program parses all gauss.log files and extracts the line that contains the HF energy.
-The following line is also extracted since the energy sometimes continues over a
-linebreak.
+The values are stored in a csv table.
 '''
 
 
