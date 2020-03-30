@@ -848,12 +848,12 @@ def outputchargesDIP2D(newcoord, step, step2):
 
 '''Funktion make_com:
     Erstellt eine com-Datei'''
-def make_com(xyz1, xyz2, chargesDIP, chargesPDIR, char, method, basisSet):
+def make_com(xyz1, xyz2, chargesDIP, chargesPDIR, char, method, basisSet, charMols):
     if basisSet == "1":
         basisSetString = "cc-pVDZ"
     if basisSet == "2":
         basisSetString = "STO-3G"
-    if char == "Ja":
+    if char == "Ja" and charMols == "Nein":
         if method == "2":
             head = """%NProcShared=8
 %Mem=6GB
@@ -884,16 +884,7 @@ Dimer
 
 0 1
 """
-        if method == "4":
-            head = """%NProcShared=4
-%Mem=2GB
-%chk=gs.chk
-#p PM7
 
-Dimer
-
-0 1
-"""
         with open("gauss.com","w") as out_file:
             out_file.write(head)
             for struct in xyz1:
@@ -901,12 +892,11 @@ Dimer
             for struct in xyz2:
                 out_file.write("{} {:12.6f} {:12.6f} {:12.6f}\n".format(struct.symbol, *struct.coords))
             out_file.write("\n")
-            if method != "4":
-                for struct in chargesDIP:
-                    out_file.write("{:12.6f} {:12.6f} {:12.6f} {:12.6f}\n".format(*struct.coords, struct.charge))
-                for struct in chargesPDIR:
-                    out_file.write("{:12.6f} {:12.6f} {:12.6f} {:12.6f}\n".format(*struct.coords, struct.charge))
-                out_file.write("\n\n\n\n")
+            for struct in chargesDIP:
+                out_file.write("{:12.6f} {:12.6f} {:12.6f} {:12.6f}\n".format(*struct.coords, struct.charge))
+            for struct in chargesPDIR:
+                out_file.write("{:12.6f} {:12.6f} {:12.6f} {:12.6f}\n".format(*struct.coords, struct.charge))
+            out_file.write("\n\n\n\n")
 
     else:
         if method == "2":
@@ -1599,7 +1589,7 @@ def main():
                 geo_chargesPDIR, step)
 
         #Erstellen der com- und sh-Datei
-        make_com(first_input, file_geo2, first_charges, geo_chargesPDIR, char, calcMethod, basisSet)
+        make_com(first_input, file_geo2, first_charges, geo_chargesPDIR, char, calcMethod, basisSet, makeMoleculesFromCharges)
         make_sh1D(nDIP, letteraxisDIP, nPDIR, chargeOrVacuum, calcMethod, basisSet, step, xyz)
 
         #Abschicken der Rechnung
@@ -1640,7 +1630,7 @@ def main():
                 
             
 
-            make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod, basisSet)
+            make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod, basisSet, makeMoleculesFromCharges)
             make_sh1D(nDIP, letteraxisDIP, nPDIR, chargeOrVacuum, calcMethod, basisSet, step, xyz)
             
             if sendCalculation == "Ja":                
@@ -1666,8 +1656,11 @@ def main():
     if mode == "2":
         DIP2 = input("Soll das 2. DIP-Molekül aus der Einheitszelle dazugeladen werden? (Ja, Nein): ")
         char = "Nein"
-        if calcMethod != "4":
-            char = str(input("Sollen Ladungen berücksichtigt werden? (Ja, Nein): "))
+        makeMoleculesFromCharges = "Nein"
+        if calcMethod == "4":
+            print("Bei PM7 werden Ladungen automatisch in Moleküle umgewandelt!")
+            makeMoleculesFromCharges = "Ja"
+        char = str(input("Sollen Ladungen berücksichtigt werden? (Ja, Nein): "))
         if char == "Ja":
             chargeOrVacuum = "charge"
         else:
@@ -1678,6 +1671,8 @@ def main():
         if char == "Ja":
             numberChargeLayersPDIR = int(input("Wie viele Layer an PDIR Ladungen sollen berücksichtigt werden? "))
             numberChargeLayersDIP = int(input("Wie viele Layer an DIP Ladungen sollen berücksichtigt werden? "))
+            if calcMethod != "4":
+                makeMoleculesFromCharges = input("Sollen die Ladungen in Moleküle umgewandelt werden? (Ja, Nein): ")
         dup = input("Soll DIP dupliziert werden (experimentell)? (Ja, Nein): ")
         dup2 = input("Soll PDIR dupliziert werden? (Ja, Nein): ")
         
@@ -1869,6 +1864,24 @@ def main():
         #This line has to be there to align the CoG of DIP1 and DIP2 to the CoG of the PDIR Dimer, no one knows why
         file_geo2 = moveToCenterofGeo(file_input2)
 
+        if makeMoleculesFromCharges == "Ja":
+            # Begin with PDIR:
+            lenSinglePDIR = len(file_input2)
+            j = 0
+            for i in range(len(geo_chargesPDIR)):
+                file_geo2.append(atom_xyz(file_input2[j].symbol, geo_chargesPDIR[i].coords))
+                j += 1
+                if j >= lenSinglePDIR:
+                    j = 0
+            # DIP:
+            lenSingleDIP = len(file_input)
+            j = 0
+            for i in range(len(geo_chargesDIP)):
+                file_geo.append(atom_xyz(file_input[j].symbol, geo_chargesDIP[i].coords))
+                j += 1
+                if j >= lenSingleDIP:
+                    j = 0
+
         #Rotation des Kristalls
         if wahlDIP == "Ja":
             file_geo = product_matrix_vector(rot_axis_angle(axisDIP, angleDIP), file_geo)
@@ -1911,7 +1924,7 @@ def main():
         shiftall = shiftcoord(xyz2, shiftz, shiftstart2)
 
         shiftallboth = copy.deepcopy(shiftall)
-        for singleAtom in file_input2:
+        for singleAtom in file_geo2:
                 shiftallboth.append(atom_xyz(singleAtom.symbol, singleAtom.coords))
 
         output2D(shiftallboth, "neueKoordinatenBeide{}_{}.xyz".format(step, step2))
@@ -1923,7 +1936,7 @@ def main():
             Verändert die Koordinaten der Ladungen zum Startpunkt, speichert sie in einer Datei
             liest sie ein und gibt eine xyz-Datei aus, in der die Ladungen und die beiden
             Moleküle DIP und PDIR vorhanden sind.'''
-        if char == "Ja":
+        if char == "Ja" and makeMoleculesFromCharges == "Nein":
             shiftchargexyz1 = shiftcoordcharges(xyz1, geo_chargesDIP, shiftstart)
             shiftchargez = shiftcoordcharges(thirdAxis(xyz1, xyz2), shiftchargexyz1, distance)
             shiftallcharges = shiftcoordcharges(xyz2, shiftchargez, shiftstart2)
@@ -1937,7 +1950,7 @@ def main():
             outputeverythingDIPPDIR2D(first_input, file_geo2, DIPPDIR, first_charges, geo_chargesPDIR, step, step2)
 
         #Erstellen der com- und sh-Datei
-        make_com(first_input, file_geo2, first_charges, geo_chargesPDIR, char, calcMethod, basisSet)
+        make_com(first_input, file_geo2, first_charges, geo_chargesPDIR, char, calcMethod, basisSet, makeMoleculesFromCharges)
         make_sh2D(nDIP, letteraxisDIP, nPDIR, chargeOrVacuum, calcMethod, basisSet, step, xyz1, step2, xyz2)
 
         #Abschicken der Rechnung
@@ -1953,7 +1966,7 @@ def main():
 
                 new_input = readXYZ("neueKoordinaten{}_{}.xyz".format(step, step2))
 
-                if char == "Ja":
+                if char == "Ja" and makeMoleculesFromCharges == "Nein":
                     new_charges = readcharges("neuechargesDIP{}_{}.txt".format(step, step2))
                     
                 step2 = step2 + 1
@@ -1975,7 +1988,7 @@ def main():
 
                 output2D(shifty, "neueKoordinaten{}_{}.xyz".format(step, step2))
 
-                if char == "Ja":
+                if char == "Ja" and makeMoleculesFromCharges == "Nein":
                     shiftchargey = shiftcoordcharges(xyz2, new_charges, shiftsize2)
 
                     outputchargesDIP2D(shiftchargey, step, step2)
@@ -1987,7 +2000,7 @@ def main():
                     outputeverythingDIPPDIR2D(new_input, file_geo2, DIPPDIR, new_charges, geo_chargesPDIR, step, step2)
                 
      
-                make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod, basisSet)
+                make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod, basisSet, makeMoleculesFromCharges)
                 make_sh2D(nDIP, letteraxisDIP, nPDIR, chargeOrVacuum, calcMethod, basisSet, step, xyz1, step2, xyz2)
 
                 if sendCalculation == "Ja":
@@ -2004,7 +2017,7 @@ def main():
 
                 new_input = readXYZ("neueKoordinaten{}_{}.xyz".format(step, step2))
 
-                if char == "Ja":
+                if char == "Ja" and makeMoleculesFromCharges == "Nein":
                     new_input = readXYZ("neueKoordinaten{}_{}.xyz".format(step, step2))
                     new_charges = readcharges("neuechargesDIP{}_{}.txt".format(step, step2))
 
@@ -2030,7 +2043,7 @@ def main():
 
                 output2D(shiftx, "neueKoordinaten{}_{}.xyz".format(step, step2))
 
-                if char == "Ja":
+                if char == "Ja" and makeMoleculesFromCharges == "Nein":
                     shiftchargex = shiftcoordcharges(xyz1, new_charges, shiftsize)
 
                     outputchargesDIP2D(shiftchargex, step, step2)
@@ -2041,7 +2054,7 @@ def main():
                     
                     outputeverythingDIPPDIR2D(new_input, file_geo2, DIPPDIR, new_charges, geo_chargesPDIR, step, step2)
 
-                make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod, basisSet)
+                make_com(new_input, file_geo2, new_charges, geo_chargesPDIR, char, calcMethod, basisSet, makeMoleculesFromCharges)
                 make_sh2D(nDIP, letteraxisDIP, nPDIR, chargeOrVacuum, calcMethod, basisSet, step, xyz1, step2, xyz2)
 
                 if sendCalculation == "Ja":
