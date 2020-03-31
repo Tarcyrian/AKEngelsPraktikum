@@ -1103,8 +1103,8 @@ cp -rf * $PBS_O_WORKDIR
         MET = "w"
     if method == "4":
         MET = "P"
-        PROC = "4"
-        MEM = "4"
+        PROC = "8"
+        MEM = "8"
 
     BS = ""
     if basisSet == "0":
