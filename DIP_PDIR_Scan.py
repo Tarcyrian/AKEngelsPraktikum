@@ -173,7 +173,7 @@ def duplicatePDIR(ret, x, difb, difc, verschiebung):
 
 '''Bildet die Ladungen um DIP1 und speichert sie in einer Liste.'''  
 countChargesDIP1 = 0
-def getchargesDIP1(charge, a, b, c, numberLayers, axisDIP, xyz):
+def getchargesDIP1(charge, a, b, c, numberLayers, axisDIP, xyz, reduceChargeSize):
     global countChargesDIP1
     newcharge =[]
     
@@ -184,6 +184,9 @@ def getchargesDIP1(charge, a, b, c, numberLayers, axisDIP, xyz):
     if axisDIP == "b" and (xyz == "z" or xyz == "y"):
         shifta = False
 
+    full = True
+    if reduceChargeSize == "Ja":
+        full = False
     
     # First layer DIP1
     if numberLayers >= 1:
@@ -201,14 +204,14 @@ def getchargesDIP1(charge, a, b, c, numberLayers, axisDIP, xyz):
                 charge2[i].coords[0] -= a
                 newcharge.append(charge_xyz(charge2[i].coords, charge2[i].charge))
 
-        if shifta:
+        if shifta and full:
             countChargesDIP1 += 1
             charge3 = copy.deepcopy(charge)
             for i in range(len(charge)):
                 charge3[i].coords[0] += 2*a
                 newcharge.append(charge_xyz(charge3[i].coords, charge3[i].charge))
 
-        if shifta:
+        if shifta and full:
             countChargesDIP1 += 1
             charge4 = copy.deepcopy(charge)
             for i in range(len(charge)):   
@@ -239,7 +242,7 @@ def getchargesDIP1(charge, a, b, c, numberLayers, axisDIP, xyz):
                 charge7[i].coords[1] += b
                 newcharge.append(charge_xyz(charge7[i].coords, charge7[i].charge))
 
-        if shiftb and shifta:
+        if shiftb and shifta and full:
             countChargesDIP1 += 1
             charge8 = copy.deepcopy(charge)
             for i in range(len(charge)):
@@ -247,7 +250,7 @@ def getchargesDIP1(charge, a, b, c, numberLayers, axisDIP, xyz):
                 charge8[i].coords[1] += b
                 newcharge.append(charge_xyz(charge8[i].coords, charge8[i].charge))
 
-        if shiftb and shifta:
+        if shiftb and shifta and full:
             countChargesDIP1 += 1
             charge9 = copy.deepcopy(charge)
             for i in range(len(charge)):   
@@ -279,7 +282,7 @@ def getchargesDIP1(charge, a, b, c, numberLayers, axisDIP, xyz):
                 charge12[i].coords[1] -= b
                 newcharge.append(charge_xyz(charge12[i].coords, charge12[i].charge))
 
-        if shiftb and shifta:
+        if shiftb and shifta and full:
             countChargesDIP1 += 1
             charge13 = copy.deepcopy(charge)
             for i in range(len(charge)):
@@ -287,7 +290,7 @@ def getchargesDIP1(charge, a, b, c, numberLayers, axisDIP, xyz):
                 charge13[i].coords[1] -= b
                 newcharge.append(charge_xyz(charge13[i].coords, charge13[i].charge))
 
-        if shiftb and shifta:
+        if shiftb and shifta and full:
             countChargesDIP1 += 1
             charge14 = copy.deepcopy(charge)
             for i in range(len(charge)):   
@@ -299,13 +302,17 @@ def getchargesDIP1(charge, a, b, c, numberLayers, axisDIP, xyz):
 
 '''Bildet die Ladungen um DIP2 und speichert sie in einer Liste.'''
 countChargesDIP2 = 0 
-def getchargesDIP2(charge, a, b, c, numberLayers, DIP2, axisDIP, xyz):
+def getchargesDIP2(charge, a, b, c, numberLayers, DIP2, axisDIP, xyz, reduceChargeSize):
     global countChargesDIP2
 
     chargegeaendert = []
     duplicateA = True
     if axisDIP == "b" and (xyz == "z" or xyz == "y"):
         duplicateA = False
+
+    full = True
+    if reduceChargeSize == "Ja":
+        full = False
 
     if not(axisDIP == "a" and (xyz == "z" or xyz == "x")):
 
@@ -314,7 +321,7 @@ def getchargesDIP2(charge, a, b, c, numberLayers, DIP2, axisDIP, xyz):
             for i in range(len(charge)):
                 chargegeaendert.append(charge_xyz(charge[i].coords, charge[i].charge))
 
-        if duplicateA:
+        if duplicateA and full:
             countChargesDIP2 +=1  
             charge1 = copy.deepcopy(charge)
             for i in range(len(charge1)):
@@ -334,7 +341,7 @@ def getchargesDIP2(charge, a, b, c, numberLayers, DIP2, axisDIP, xyz):
                 charge3[i].coords[1] += b
                 chargegeaendert.append(charge_xyz(charge3[i].coords, charge3[i].charge))
 
-        if duplicateA:
+        if duplicateA and full:
             countChargesDIP2 +=1
             charge4 = copy.deepcopy(charge)
             for i in range(len(charge4)):
@@ -342,7 +349,7 @@ def getchargesDIP2(charge, a, b, c, numberLayers, DIP2, axisDIP, xyz):
                 charge4[i].coords[1] += b
                 chargegeaendert.append(charge_xyz(charge4[i].coords, charge4[i].charge))
         
-        if duplicateA:
+        if duplicateA and full:
             countChargesDIP2 +=1
             charge5 = copy.deepcopy(charge)
             for i in range(len(charge5)):
@@ -357,7 +364,7 @@ def getchargesDIP2(charge, a, b, c, numberLayers, DIP2, axisDIP, xyz):
             charge6[i].coords[0] -= a
             chargegeaendert.append(charge_xyz(charge6[i].coords, charge6[i].charge))
 
-        if duplicateA:
+        if duplicateA and full:
             countChargesDIP2 +=1
             charge7 = copy.deepcopy(charge)
             for i in range(len(charge7)):
@@ -365,14 +372,14 @@ def getchargesDIP2(charge, a, b, c, numberLayers, DIP2, axisDIP, xyz):
                 chargegeaendert.append(charge_xyz(charge7[i].coords, charge7[i].charge))
 
         # Row DIP2 +2b
-        if duplicateA:
+        if duplicateA and full:
             countChargesDIP2 +=1
             charge8 = copy.deepcopy(charge)
             for i in range(len(charge8)):
                 charge8[i].coords[1] += 2*b
                 chargegeaendert.append(charge_xyz(charge8[i].coords, charge8[i].charge))
 
-        if duplicateA:
+        if duplicateA and full:
             countChargesDIP2 +=1
             charge9 = copy.deepcopy(charge)
             for i in range(len(charge9)):
@@ -380,30 +387,30 @@ def getchargesDIP2(charge, a, b, c, numberLayers, DIP2, axisDIP, xyz):
                 charge9[i].coords[1] += 2*b
                 chargegeaendert.append(charge_xyz(charge9[i].coords, charge9[i].charge))
 
-        if duplicateA:
+        if duplicateA and full:
             countChargesDIP2 +=1
             charge10 = copy.deepcopy(charge)
             for i in range(len(charge10)):
                 charge10[i].coords[1] += 2*b
                 charge10[i].coords[0] -= 2 * a
                 chargegeaendert.append(charge_xyz(charge10[i].coords, charge10[i].charge))
-
-        countChargesDIP2 +=1
-        charge11 = copy.deepcopy(charge)
-        for i in range(len(charge11)):
-            charge11[i].coords[1] += 2*b
-            charge11[i].coords[0] -= a
-            chargegeaendert.append(charge_xyz(charge11[i].coords, charge11[i].charge))
+        if full:
+            countChargesDIP2 +=1
+            charge11 = copy.deepcopy(charge)
+            for i in range(len(charge11)):
+                charge11[i].coords[1] += 2*b
+                charge11[i].coords[0] -= a
+                chargegeaendert.append(charge_xyz(charge11[i].coords, charge11[i].charge))
 
         # Row DIP2 -b
-        if duplicateA:
+        if duplicateA and full:
             countChargesDIP2 +=1
             charge12 = copy.deepcopy(charge)
             for i in range(len(charge12)):
                 charge12[i].coords[1] -= b
                 chargegeaendert.append(charge_xyz(charge12[i].coords, charge12[i].charge))
 
-        if duplicateA:
+        if duplicateA and full:
             countChargesDIP2 +=1
             charge13 = copy.deepcopy(charge)
             for i in range(len(charge13)):
@@ -411,7 +418,7 @@ def getchargesDIP2(charge, a, b, c, numberLayers, DIP2, axisDIP, xyz):
                 charge13[i].coords[1] -= b
                 chargegeaendert.append(charge_xyz(charge13[i].coords, charge13[i].charge))
 
-        if duplicateA:
+        if duplicateA and full:
             countChargesDIP2 +=1
             charge14 = copy.deepcopy(charge)
             for i in range(len(charge14)):
@@ -419,12 +426,13 @@ def getchargesDIP2(charge, a, b, c, numberLayers, DIP2, axisDIP, xyz):
                 charge14[i].coords[0] -= 2 * a
                 chargegeaendert.append(charge_xyz(charge14[i].coords, charge14[i].charge))
 
-        countChargesDIP2 +=1
-        charge15 = copy.deepcopy(charge)
-        for i in range(len(charge15)):
-            charge15[i].coords[1] -= b
-            charge15[i].coords[0] -= a
-            chargegeaendert.append(charge_xyz(charge15[i].coords, charge15[i].charge))
+        if full:
+            countChargesDIP2 +=1
+            charge15 = copy.deepcopy(charge)
+            for i in range(len(charge15)):
+                charge15[i].coords[1] -= b
+                charge15[i].coords[0] -= a
+                chargegeaendert.append(charge_xyz(charge15[i].coords, charge15[i].charge))
 
 
     return chargegeaendert
@@ -432,7 +440,7 @@ def getchargesDIP2(charge, a, b, c, numberLayers, DIP2, axisDIP, xyz):
 '''Bildet die Ladungen um PDIR und speichert sie in einer Liste.
 Die Ladungen werden anhand der Rotationsaxe ausgewählt.'''
 countChargesPDIR=0
-def getchargesPDIR(charge, difb, a, difc, rotAxisDIP, numberLayers, direction, xyz):
+def getchargesPDIR(charge, difb, a, difc, rotAxisDIP, numberLayers, direction, xyz, reduceChargeSize):
     newcharge = []
     global countChargesPDIR
     difbplusa = difb[0] + a
@@ -461,6 +469,20 @@ def getchargesPDIR(charge, difb, a, difc, rotAxisDIP, numberLayers, direction, x
     if rotAxisDIP == "b":
         beginMultiplierA = 1 - numberLayers
         moleculesA = numberLayers
+
+    if reduceChargeSize == "Ja" and rotAxisDIP == "0":
+        beginMultiplierA += 1
+        beginMultiplierB += 1
+        moleculesA -= 2
+        moleculesB -= 2
+
+    if reduceChargeSize == "Ja" and rotAxisDIP == "a":
+        beginMultiplierA += 1
+        moleculesA -= 2
+
+    if reduceChargeSize == "Ja" and rotAxisDIP == "b":
+        beginMultiplierB += 1
+        moleculesB -= 2
 
     #Begin first layer (middle)
     if (numberLayers >= 1 and (rotAxisDIP == "c" or rotAxisDIP == "0")) or (rotAxisDIP == "a") or (rotAxisDIP == "b"):
@@ -1317,6 +1339,7 @@ def main():
             print("Bei PM7 werden Ladungen automatisch in Moleküle umgewandelt!")
             makeMoleculesFromCharges = "Ja"
         char = str(input("Sollen Ladungen berücksichtigt werden? (Ja, Nein): "))
+        reduceChargeSize = "Nein"
         if char == "Ja":
             chargeOrVacuum = "charge"
         else:
@@ -1329,6 +1352,8 @@ def main():
             numberChargeLayersDIP = int(input("Wie viele Layer an DIP Ladungen sollen berücksichtigt werden? "))
             if calcMethod != "4":
                 makeMoleculesFromCharges = input("Sollen die Ladungen in Moleküle umgewandelt werden? (Ja, Nein): ")
+            if makeMoleculesFromCharges == "Ja":
+                reduceChargeSize = input("Soll die Ladungs-(Molekül-)Umgebung auf 3x3 reduziert werden? (Ja, Nein): ")
 
         dup = input("Soll DIP dupliziert werden (experimentell)? (Ja, Nein): ")
         dup2 = input("Soll PDIR dupliziert werden? (Ja, Nein): ")
@@ -1423,9 +1448,10 @@ def main():
             #geo_chargesDIP2 = moveToCenterofGeo(chargesDIP2)
             
         
-            shiftchargesdip1 = getchargesDIP1(chargesDIP1, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP, letteraxisDIP, xyz) 
-            shiftchargesdip2 = getchargesDIP2(chargesDIP2, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP, DIP2, letteraxisDIP, xyz) #DIP2: is the second DIP there?
-            PDIRcharges = getchargesPDIR(geo_chargesPDIR, difb, lengthaPDIR, difc, letteraxisDIP, numberChargeLayersPDIR, verschiebung2, xyz)
+            shiftchargesdip1 = getchargesDIP1(chargesDIP1, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP, letteraxisDIP, xyz, reduceChargeSize) 
+            shiftchargesdip2 = getchargesDIP2(chargesDIP2, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP,
+                DIP2, letteraxisDIP, xyz, reduceChargeSize) #DIP2: is the second DIP there?
+            PDIRcharges = getchargesPDIR(geo_chargesPDIR, difb, lengthaPDIR, difc, letteraxisDIP, numberChargeLayersPDIR, verschiebung2, xyz, reduceChargeSize)
             #geo_chargesDIP = moveToCenterofGeo(chargesDIP1)
             #shiftchargesdip1 = moveToCenterofGeo(shiftchargesdip1)
             #shiftchargesdip2 = moveToCenterofGeo(shiftchargesdip2)
@@ -1685,6 +1711,7 @@ def main():
             print("Bei PM7 werden Ladungen automatisch in Moleküle umgewandelt!")
             makeMoleculesFromCharges = "Ja"
         char = str(input("Sollen Ladungen berücksichtigt werden? (Ja, Nein): "))
+        reduceChargeSize = "Nein"
         if char == "Ja":
             chargeOrVacuum = "charge"
         else:
@@ -1697,6 +1724,8 @@ def main():
             numberChargeLayersDIP = int(input("Wie viele Layer an DIP Ladungen sollen berücksichtigt werden? "))
             if calcMethod != "4":
                 makeMoleculesFromCharges = input("Sollen die Ladungen in Moleküle umgewandelt werden? (Ja, Nein): ")
+            if makeMoleculesFromCharges == "Ja":
+                reduceChargeSize = input("Soll die Ladungs-(Molekül-)Umgebung auf 3x3 reduziert werden? (Ja, Nein): ")
         dup = input("Soll DIP dupliziert werden (experimentell)? (Ja, Nein): ")
         dup2 = input("Soll PDIR dupliziert werden? (Ja, Nein): ")
         
@@ -1797,10 +1826,10 @@ def main():
             #geo_chargesDIP2 = moveToCenterofGeo(chargesDIP2)
             
         
-            shiftchargesdip1 = getchargesDIP1(chargesDIP1, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP, letteraxisDIP, thirdAxis(xyz1, xyz2)) 
+            shiftchargesdip1 = getchargesDIP1(chargesDIP1, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP, letteraxisDIP, thirdAxis(xyz1, xyz2), reduceChargeSize) 
             shiftchargesdip2 = getchargesDIP2(chargesDIP2, lengthaDIP, lengthbDIP, lengthcDIP, numberChargeLayersDIP,
-                DIP2, letteraxisDIP, thirdAxis(xyz1, xyz2)) #DIP2: is the second DIP there?
-            PDIRcharges = getchargesPDIR(geo_chargesPDIR, difb, lengthaPDIR, difc, letteraxisDIP, numberChargeLayersPDIR, verschiebung2, thirdAxis(xyz1, xyz2))
+                DIP2, letteraxisDIP, thirdAxis(xyz1, xyz2), reduceChargeSize) #DIP2: is the second DIP there?
+            PDIRcharges = getchargesPDIR(geo_chargesPDIR, difb, lengthaPDIR, difc, letteraxisDIP, numberChargeLayersPDIR, verschiebung2, thirdAxis(xyz1, xyz2), reduceChargeSize)
             #geo_chargesDIP = moveToCenterofGeo(chargesDIP1)
             #shiftchargesdip1 = moveToCenterofGeo(shiftchargesdip1)
             #shiftchargesdip2 = moveToCenterofGeo(shiftchargesdip2)
