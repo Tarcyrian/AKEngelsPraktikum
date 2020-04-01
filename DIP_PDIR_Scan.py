@@ -88,6 +88,7 @@ def moveToCenterofGeo(ret):
             m += 1
     return ret
 
+'''returns the center of Geo without moving anything'''
 def getCenterOfGeo(ret):
     centerOfGeo = [0.0, 0.0, 0.0]
     for i in range(len(ret)):
@@ -179,15 +180,21 @@ def getchargesDIP1(charge, a, b, c, numberLayers, axisDIP, xyz, reduceChargeSize
     
     shiftb = True # Should charges be duplicated along b axis (before rotating)
     shifta = True
+    # Determine the correct orientation of the charge layer
+    # and leave out the "wrong" charges
     if axisDIP == "a" and (xyz == "z" or xyz == "x"):
         shiftb = False
     if axisDIP == "b" and (xyz == "z" or xyz == "y"):
         shifta = False
 
     full = True
-    if reduceChargeSize == "Ja":
+    # Will the size of the layer be reduced to 3x3?
+    if reduceChargeSize == "Ja": 
         full = False
     
+
+    # Add every single charge to the newcharge array if applicable
+    # DIP1 charges are symetric around the central DIP1 molecule.
     # First layer DIP1
     if numberLayers >= 1:
         if shifta:
@@ -306,6 +313,7 @@ def getchargesDIP2(charge, a, b, c, numberLayers, DIP2, axisDIP, xyz, reduceChar
     global countChargesDIP2
 
     chargegeaendert = []
+    # Basically the same as with DIP1
     duplicateA = True
     if axisDIP == "b" and (xyz == "z" or xyz == "y"):
         duplicateA = False
@@ -316,6 +324,7 @@ def getchargesDIP2(charge, a, b, c, numberLayers, DIP2, axisDIP, xyz, reduceChar
 
     if not(axisDIP == "a" and (xyz == "z" or xyz == "x")):
 
+        # DIP2 charges are not symmetric, so watch out which charges need to removed or added
         if DIP2 == "Nein" and duplicateA:
             countChargesDIP2 += 1
             for i in range(len(charge)):
@@ -442,12 +451,11 @@ Die Ladungen werden anhand der Rotationsaxe ausgewählt.'''
 countChargesPDIR=0
 def getchargesPDIR(charge, difb, a, difc, rotAxisDIP, numberLayers, direction, xyz, reduceChargeSize):
     newcharge = []
-    global countChargesPDIR
-    difbplusa = difb[0] + a
-    difbminusa = difb[0] - a
-    minusdifbminusa = - difb[0] - a
-    minusdifbplusa = - difb[0] + a
 
+    # count the number of charges
+    global countChargesPDIR
+
+    # Set standard size of a charge layers (5x5)
     beginMultiplierA = -2
     beginMultiplierB = -2
     moleculesA = 5
@@ -798,6 +806,7 @@ def outputeverythingDIPPDIR2D(retDIP, retPDIR, retDIPPDIR, chargesDIP,
 
     f.close()
 
+# Merges charges and coordinates of two different arrays and saves the result to a file
 def mergeChargeCoords(coords, charges, path):
     f = open(path, "w")
     for j in range(len(coords)):
@@ -810,6 +819,7 @@ def mergeChargeCoords(coords, charges, path):
         f.write("\n")
     f.close()
 
+# Merges atomic symbols and coordinates of two different arrays and saves the result to a file
 def mergeSymbolCoords(coords, symbols, path):
     f = open(path, "w")
     for j in range(len(coords)):
@@ -841,7 +851,7 @@ def output1D(newcoord, fileName):
         f.write("\n")
     f.close()
 
-# maybe cleanup later
+# maybe cleanup later, since identical to output1D
 def output2D(newcoord, fileName):
     f = open(fileName, "w")
     f.write(str(int(len(newcoord))))
@@ -1051,7 +1061,7 @@ cp -rf * $PBS_O_WORKDIR
         MET = "w"
     if method == "4":
         MET = "P"
-        PROC = "8"
+        PROC = "8" # For PM7 with only few atoms, change these to 4
         MEM = "8"
 
     BS = ""
@@ -1103,7 +1113,7 @@ cp -rf * $PBS_O_WORKDIR
         MET = "w"
     if method == "4":
         MET = "P"
-        PROC = "8"
+        PROC = "8" # For PM7 with only few atoms, change these to 4
         MEM = "8"
 
     BS = ""
@@ -1223,6 +1233,7 @@ def useroutput2D(char, DIP2, dup, dup2, verschiebung1, verschiebung2,
     f.write("\n")
     f.close()
 
+# Input two axes and return the third one
 def thirdAxis(first, second):
     if first == "x":
         if second == "y":
@@ -1240,6 +1251,7 @@ def thirdAxis(first, second):
         if second == "y":
             return "x"
 
+# Take a layer of DIP (or any charge actually) and duplicate it along c (z) with the specified offset
 def duplicateLayerDIP(original, offset):
     # Es ist egal ob man hier DIP1 oder DIP2 nimmt, denn es wird am Ende zusammengezählt.
     global countChargesDIP2
@@ -1331,6 +1343,8 @@ def main():
     if calcMethod == "4":
         basisSet = "0"
 
+
+    # Begin 1D Mode
     if mode == "1":
         DIP2 = input("Soll das 2. DIP-Molekül aus der Einheitszelle dazugeladen werden? (Ja, Nein): ")
 
@@ -1435,6 +1449,7 @@ def main():
 
 
         if char == "Ja":
+            # We recommend not to change anything in this indent unless you want to waste some hours
 
             chargesDIP1 = readcharges("first_DIP_charges.txt")
             chargesDIP2 = readcharges("second_DIP_charges.txt")
@@ -1507,6 +1522,7 @@ def main():
 
             OriginalOneDirection = OneDirection
 
+            # It is necessary to check for some (many) cases in which we need to duplicate the layer.
             if numberChargeLayersDIP >= 2 or (letteraxisDIP == "a" and (xyz == "z" or xyz == "x")) or (letteraxisDIP == "b" and (xyz == "z" or xyz == "y")):
                 DIPchargesSecondLayer = duplicateLayerDIP(geo_chargesDIP, OneDirection*lengthcDIP)
                 if numberChargeLayersDIP >=3 or (letteraxisDIP == "a" and (xyz == "z" or xyz == "x")) or (letteraxisDIP == "b" and (xyz == "z" or xyz == "y")):
@@ -1556,7 +1572,10 @@ def main():
         # # Add the corrected DIP2 to the DIP molecule
         # for oneAtom in DIP2MoleculeFromCharges:
         #     file_geo.append(atom_xyz(oneAtom.symbol, oneAtom.coords))
-            
+        
+
+        # This converts the charges to molecules by merging the symbols of the original molecule with the coordinates of the charges
+        # It relies on the fact that the atoms are in the same order in both cases.
         if makeMoleculesFromCharges == "Ja":
             # Begin with PDIR:
             lenSinglePDIR = len(file_input2)
@@ -1696,7 +1715,7 @@ def main():
 
     Visual aid for better visibility.
 
-
+    Since most of the logic is identical with 1D, look there for further information.
 
 
 
