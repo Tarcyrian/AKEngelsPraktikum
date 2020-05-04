@@ -2029,7 +2029,8 @@ def main():
 
         #Abschicken der Rechnung
         if sendCalculation == "Ja":
-            subprocess.call('qsub -V gauss.sh', shell = True)
+            #subprocess.call('qsub -V gauss.sh', shell = True)
+            print("XXXXXX.master")
 
         #Schleife, die die ebengenannten Schritte wiederholt.
         i = shiftstart
@@ -2078,7 +2079,8 @@ def main():
                 make_sh2D(nDIP, letteraxisDIP, nPDIR, chargeOrVacuum, calcMethod, basisSet, step, xyz1, step2, xyz2)
 
                 if sendCalculation == "Ja":
-                    subprocess.call('qsub -V gauss.sh', shell = True)
+                    #subprocess.call('qsub -V gauss.sh', shell = True)
+                    print("XXXXXX.master")
 
                 j = j + shiftsize2
             
@@ -2132,7 +2134,8 @@ def main():
                 make_sh2D(nDIP, letteraxisDIP, nPDIR, chargeOrVacuum, calcMethod, basisSet, step, xyz1, step2, xyz2)
 
                 if sendCalculation == "Ja":
-                    subprocess.call('qsub -V gauss.sh', shell = True)
+                    #subprocess.call('qsub -V gauss.sh', shell = True)
+                    print("XXXXXX.master")
 
             else:
                 break
